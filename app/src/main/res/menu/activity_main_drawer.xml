@@ -20,7 +20,7 @@
             android:title="Menu Item 4" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="More Cool Stuff">
         <menu>
             <item
                 android:id="@+id/nav_share"
