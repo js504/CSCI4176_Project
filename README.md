@@ -9,4 +9,3 @@ project for mobile computing
 ```
 Targeting Nexus 5 or 6 emulators? API 25
 ```
-
