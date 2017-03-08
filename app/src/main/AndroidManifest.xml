@@ -18,7 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main_GUI"></activity>
+        <activity android:name=".Main_GUI" />
+        <activity android:name=".CreateNewPoster"
+            android:label="@string/add_new_poster_title"/>
     </application>
 
 </manifest>
