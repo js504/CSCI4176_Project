@@ -10,6 +10,7 @@ public class Main_GUI extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__gui);
+        finish();
     }
 
 
