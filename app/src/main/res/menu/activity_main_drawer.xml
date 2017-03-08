@@ -3,39 +3,58 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_accountInfo"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Menu Item 1" />
+            android:title="Account Info" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_MainGUI"
             android:icon="@drawable/ic_menu_gallery"
             android:title="View Posters"
             />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_mapGUI"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Menu Item 3" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Menu Item 4" />
-
+            android:title="Map View" />
         <item
             android:id="@+id/create_poster"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Add Poster" />
+        <item
+            android:id="@+id/nav_manageBulletins"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Manage Bulletins" />
+        <item
+            android:id="@+id/create_nearByBulletins"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Nearby Bulletins" />
+        <item
+            android:id="@+id/nav_searchEvents"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Search Events" />
+        <item
+            android:id="@+id/nav_manageEvents"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Manage Events" />
     </group>
 
     <item android:title="More Cool Stuff">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_createEvents"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Menu Item 5" />
+                android:title="Create New Event" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_addEvent"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Menu Item 6" />
+                android:title="Add one of My Event" />
+            <item
+                android:id="@+id/nav_delBulletinBoards"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Delete Bulletin Boards" />
+            <item
+                android:id="@+id/nav_achievement"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Achievements" />
         </menu>
     </item>
 
