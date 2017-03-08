@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_create_new_poster"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="in.geobullet.csci_4176_project.CreateNewPoster"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:id="@+id/create_poster_content"
+        >
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radio_button_layout"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/event_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/poster_event_type"
+                android:onClick="onEventOrServiceClick"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/service_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/poster_service_type"
+                android:onClick="onEventOrServiceClick"
+                android:checked="false"/>
+        </RadioGroup>
+
+
+        <EditText
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_edit_text"
+            android:hint="@string/add_poster_title_hint"
+            android:layout_below="@id/radio_button_layout"
+            />
+        <!---->
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:layout_below="@id/title_edit_text"-->
+            <!--android:id="@+id/divider_one"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"/>-->
+
+        <EditText
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/address_edit_text"
+            android:hint="@string/add_poster_location_hint"
+            android:layout_below="@id/title_edit_text"
+            />
+
+        <EditText
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/city_edit_text"
+            android:hint="@string/add_poster_city_hint"
+            android:layout_below="@id/address_edit_text"
+
+            />
+
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_date_text_view"
+            android:text="@string/start_date_label"
+            android:textSize="20sp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/city_edit_text"
+            />
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/select_start_date_button"
+            android:text="@string/start_date_button_label"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/city_edit_text"
+            android:onClick="showDialog"
+            />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/end_date_text_view"
+            android:text="@string/end_date_label"
+            android:textSize="20sp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/select_start_date_button"
+            />
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/select_end_date_button"
+            android:text="@string/end_date_button_label"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/select_start_date_button"
+            android:onClick="showDialog"
+            />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_time_text_view"
+            android:text="@string/start_time_label"
+            android:textSize="20sp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/select_end_date_button"
+            />
+
+        <Button
+            android:layout_marginTop="5dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_time_button"
+            android:text="@string/start_time_button_label"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/select_end_date_button"
+            android:onClick="showDialog"
+            />
+
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/end_time_text_view"
+            android:text="@string/end_time_label"
+            android:textSize="20sp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/start_time_button"
+            />
+
+        <Button
+            android:layout_marginTop="5dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/end_time_button"
+            android:text="@string/end_time_button_label"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/start_time_button"
+            android:onClick="showDialog"
+            />
+
+        <EditText
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:id="@+id/details_text_area"
+            android:hint="@string/add_poster_details_hint"
+            android:layout_below="@id/end_time_button"
+            android:layout_marginTop="15dp"
+            android:inputType="textMultiLine"
+            android:lines="10"
+            android:minLines="5"
+            android:gravity="top|start"
+            android:maxLines="15"
+            android:scrollbars="vertical"
+            android:layout_marginBottom="10dp"
+            />
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/poster_text_view"
+            android:text="@string/add_poster_upload_image_label"
+            android:textSize="20sp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/details_text_area"
+            />
+
+        <Button
+            android:layout_marginTop="5dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/browse_posters_button"
+            android:text="@string/browse_button_label"
+            android:layout_toEndOf="@id/poster_text_view"
+            android:layout_below="@id/details_text_area"
+            />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/poster_preview_label"
+            android:text="@string/preview_label"
+            android:textSize="20sp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/browse_posters_button"
+            />
+
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="300dp"
+            android:id="@+id/poster_preview"
+            android:layout_below="@id/poster_preview_label"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/poster_preview_desc"
+            />
+
+        <Button
+            android:layout_marginTop="25dp"
+            android:layout_width="300dp"
+            android:layout_height="75dp"
+            android:id="@+id/submit_poster_button"
+            android:text="@string/submit_poster"
+            android:layout_below="@id/poster_preview_label"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            />
+
+
+
+    </RelativeLayout>
+</ScrollView>
+

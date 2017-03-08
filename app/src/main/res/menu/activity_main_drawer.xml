@@ -19,6 +19,11 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Menu Item 4" />
+
+        <item
+            android:id="@+id/create_poster"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Add Poster" />
     </group>
 
     <item android:title="More Cool Stuff">
