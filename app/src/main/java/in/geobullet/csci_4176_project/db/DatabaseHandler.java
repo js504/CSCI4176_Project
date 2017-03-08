@@ -116,8 +116,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addUser() {
+    public void addUser(User user) {
+
         // todo finish
+
+    }
+
+    public void addBoard(Board board) {
+
+        // todo finish
+
+    }
+
+    public void addPoster(Poster poster) {
+
+        // todo finish
+
+    }
+
+    public void addBoardPosterPair(BoardPosterPair bpp) {
+
+        // todo finish
+
+    }
+
+    public void addUserFavorite(UserFavorite userFav) {
+
+        // todo finish
+
     }
 
 
