@@ -97,7 +97,7 @@ public class CreateNewPoster extends AppCompatActivity {
         browsePostersButton = (Button)findViewById(R.id.browse_posters_button);
         submitPosterButton = (Button)findViewById(R.id.submit_poster_button);
 
-
+        finish();
     }
 
     @Override
