@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_MainGUI) {
             Intent i = new Intent(MainActivity.this,Main_GUI.class);
-            startActivity(i);
-            //startService(i);
+            //startActivity(i);
+            startService(i);
             vf.setDisplayedChild(1);
         } else if (id == R.id.nav_mapGUI) {
             vf.setDisplayedChild(0);
