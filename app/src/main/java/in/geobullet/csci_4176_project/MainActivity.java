@@ -13,9 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ViewFlipper;
 
-import in.geobullet.csci_4176_project.db.DatabaseHandler;
+import in.geobullet.csci_4176_project.db.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,8 +23,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final DatabaseHandler dbHandler = new DatabaseHandler(this);
-
+        DatabaseHelper dbHelper = new DatabaseHelper();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,46 +86,23 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        //swtich the layout of the content
-        ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
-
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_accountInfo) {
+        if (id == R.id.nav_camera) {
             // Handle the camera action
-
-            //startActivity(new Intent(MainActivity.this,Main_GUI.class));
-
-
-        } else if (id == R.id.nav_MainGUI) {
+        } else if (id == R.id.nav_gallery) {
             Intent i = new Intent(MainActivity.this,Main_GUI.class);
             startActivity(i);
-            //startService(i);
-            vf.setDisplayedChild(1);
-        } else if (id == R.id.nav_mapGUI) {
-            vf.setDisplayedChild(0);
-        } else if (id == R.id.create_poster) {
-            Intent i = new Intent(MainActivity.this, CreateNewPoster.class);
-            startService(i);
-            vf.setDisplayedChild(2);
-        } else if (id == R.id.nav_manageBulletins) {
 
-        } else if (id == R.id.create_nearByBulletins) {
+        } else if (id == R.id.nav_slideshow) {
+            startActivity(new Intent(MainActivity.this, MapsActivity.class));
 
-        }
-        else if(id == R.id.nav_searchEvents){
+        } else if (id == R.id.nav_manage) {
 
-        }else if(id == R.id.nav_manageEvents){
+        } else if (id == R.id.nav_share) {
 
-        }else if(id == R.id.nav_createEvents){
-
-        }else if(id == R.id.nav_addEvent){
-
-        }else if(id == R.id.nav_delBulletinBoards){
-
-        }
-        else if(id == R.id.nav_achievement){
+        } else if (id == R.id.nav_send) {
 
         }
 

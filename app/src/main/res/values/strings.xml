@@ -7,31 +7,5 @@
     <string name="action_something1">Sumthin</string>
     <string name="action_something2">Sumthin else</string>
     <string name="title_activity_main">GeoBulletin</string>
-    <string name="add_new_poster_title">Add Poster</string>
-
-    <string name="poster_event_type">Event</string>
-    <string name="poster_service_type">Service</string>
-
-    <string name="add_poster_title_hint">Title</string>
-    <string name="add_poster_location_hint">Location Address</string>
-    <string name="add_poster_city_hint">City</string>
-
-    <string name="start_date_button_label">Start Date</string>
-    <string name="start_date_label">Start Date:</string>
-    <string name="end_date_button_label">End Date</string>
-    <string name="end_date_label">End Date:</string>
-
-    <string name="start_time_button_label">Start Time</string>
-    <string name="start_time_label">Start Time:</string>
-    <string name="end_time_button_label">End Time</string>
-    <string name="end_time_label">End Time:</string>
-
-    <string name="add_poster_details_hint">Details</string>
-    <string name="add_poster_upload_image_label">Poster/Photo:</string>
-    <string name="browse_button_label">Browse</string>
-    <string name="preview_label">Preview:</string>
-    <string name="submit_poster">Submit Poster</string>
-    <string name="poster_preview_desc">Poster Preview</string>
-
-
+    <string name="title_activity_maps">Map</string>
 </resources>
