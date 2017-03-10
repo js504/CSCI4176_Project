@@ -96,8 +96,6 @@ public class CreateNewPoster extends AppCompatActivity {
         endTimeButton = (Button)findViewById(R.id.end_time_button);
         browsePostersButton = (Button)findViewById(R.id.browse_posters_button);
         submitPosterButton = (Button)findViewById(R.id.submit_poster_button);
-
-        finish();
     }
 
     @Override
