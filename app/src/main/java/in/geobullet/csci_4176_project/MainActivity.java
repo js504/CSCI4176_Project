@@ -96,27 +96,26 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_accountInfo) {
-            // Handle the camera action
-
             //startActivity(new Intent(MainActivity.this,Main_GUI.class));
+            vf.setDisplayedChild(0);
+
+        } else if (id == R.id.nav_mapGUI) {
+
+            Intent i = new Intent(MainActivity.this, MapsActivity.class);
+            startService(i);
+            vf.setDisplayedChild(1);
 
         } else if (id == R.id.nav_MainGUI) {
 
             Intent i = new Intent(MainActivity.this, Main_GUI.class);
             startService(i);
-            vf.setDisplayedChild(1);
+            vf.setDisplayedChild(2);
 
-        } else if (id == R.id.nav_mapGUI) {
-
-//            Intent i = new Intent(MainActivity.this, MapsActivity.class);
-//            startService(i);
-            vf.setDisplayedChild(0);
-
-        } else if (id == R.id.create_poster) {
+        }  else if (id == R.id.create_poster) {
 
             Intent i = new Intent(MainActivity.this, CreateNewPoster.class);
             startService(i);
-            vf.setDisplayedChild(2);
+            vf.setDisplayedChild(3);
 
         } else if (id == R.id.nav_manageBulletins) {
 

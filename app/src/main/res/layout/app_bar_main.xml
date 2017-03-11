@@ -27,8 +27,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
+
         <include
             layout="@layout/content_main"
+            android:id="@+id/content_main"/>
+        <include
+            layout="@layout/activity_maps"
             android:id="@+id/mapGUI"/>
         <include
             layout="@layout/activity_main__gui"
