@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity
 
 
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -75,10 +76,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_something1) {
             return true;
-        }
-        if (id == R.id.action_something2) {
+        } else if (id == R.id.action_something2) {
             return true;
         }
 
@@ -99,34 +100,39 @@ public class MainActivity extends AppCompatActivity
 
             //startActivity(new Intent(MainActivity.this,Main_GUI.class));
 
-
         } else if (id == R.id.nav_MainGUI) {
-            Intent i = new Intent(MainActivity.this,Main_GUI.class);
+
+            Intent i = new Intent(MainActivity.this, Main_GUI.class);
             startService(i);
             vf.setDisplayedChild(1);
+
         } else if (id == R.id.nav_mapGUI) {
+
+//            Intent i = new Intent(MainActivity.this, MapsActivity.class);
+//            startService(i);
             vf.setDisplayedChild(0);
+
         } else if (id == R.id.create_poster) {
+
             Intent i = new Intent(MainActivity.this, CreateNewPoster.class);
             startService(i);
             vf.setDisplayedChild(2);
+
         } else if (id == R.id.nav_manageBulletins) {
 
         } else if (id == R.id.create_nearByBulletins) {
 
-        }
-        else if(id == R.id.nav_searchEvents){
+        } else if (id == R.id.nav_searchEvents) {
 
-        }else if(id == R.id.nav_manageEvents){
+        } else if (id == R.id.nav_manageEvents) {
 
-        }else if(id == R.id.nav_createEvents){
+        } else if (id == R.id.nav_createEvents) {
 
-        }else if(id == R.id.nav_addEvent){
+        } else if (id == R.id.nav_addEvent) {
 
-        }else if(id == R.id.nav_delBulletinBoards){
+        } else if (id == R.id.nav_delBulletinBoards) {
 
-        }
-        else if(id == R.id.nav_achievement){
+        } else if (id == R.id.nav_achievement) {
 
         }
 

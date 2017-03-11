@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
 
         // retrieve saved location/camera states from saved instance
-        if(savedInstanceState != null){
+        if(savedInstanceState != null) {
             mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
@@ -75,6 +75,7 @@ public class MapsActivity extends FragmentActivity
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .build();
+
         mGoogleApiClient.connect();
     }
 
@@ -89,23 +90,27 @@ public class MapsActivity extends FragmentActivity
 
     // Save the State on context switch
     @Override
-    protected void onSaveInstanceState(Bundle outState){
-        if(mMap != null){
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mMap != null) {
             outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
             outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
             super.onSaveInstanceState(outState);
         }
     }
 
+
+    // todo https://developers.google.com/maps/documentation/android-api/location
+
+
     // handle Permission Changes
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
-        switch(requestCode){
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:{
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        switch(requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
-                }else if(grantResults.length > 0){
+                } else if (grantResults.length > 0) {
                 }
             }
         }
@@ -114,74 +119,91 @@ public class MapsActivity extends FragmentActivity
 
     // Connection Handlers
     @Override
-    public void onConnected(Bundle connectionHint){
+    public void onConnected(Bundle connectionHint) {
         SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult result){
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
         // Handler for case where connection fails
         Log.d(TAG, "Connection Failed: " + result.getErrorCode());
     }
     @Override
-    public void onConnectionSuspended(int cause){
+    public void onConnectionSuspended(int cause) {
         Log.d(TAG, "Connection Suspended");
     }
 
 
-    public LatLng getDeviceLocation(){
+    public LatLng getDeviceLocation() {
+
         // First, request the permissions for
+
         LatLng coords = null;
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED){
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
-        }else{
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        } else {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{ android.Manifest.permission.ACCESS_FINE_LOCATION },
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+            );
         }
 
-        if(mLocationPermissionGranted){
+        if (mLocationPermissionGranted) {
             mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
 
-        // get the coords that the system will be using as the current
+        // Get the coords that the system will be using as the current
 
-        if(mCameraPosition != null){
+        if (mCameraPosition != null) {
+
             mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
             coords = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
-        }else if (mLastKnownLocation != null){
+
+        } else if (mLastKnownLocation != null) {
+
             coords = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coords, DEFAULT_ZOOM));
-        }else{
+
+        } else {
             Log.d(PTAG, "Location null, using defaults");
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocationHalifax, DEFAULT_ZOOM));
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
-
         }
+
         return coords;
     }
 
-    public void updateLocationUI(){
-        if(mMap == null){ return; }
+    public void updateLocationUI() {
+        if (mMap == null) {
+            return;
+        }
 
         // Request the location permissions, so to know if we can do a thing
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+
             Log.d(PTAG, "inside updateLocationUI, granted");
             mLocationPermissionGranted = true;
 
-        }else{
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        } else {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{ android.Manifest.permission.ACCESS_FINE_LOCATION },
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+            );
             Log.d(PTAG, "inside updateLocationUI, requesting permission");
         }
-        if(mLocationPermissionGranted){
+
+        if (mLocationPermissionGranted) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        }else{
+        } else {
             mMap.setMyLocationEnabled(false);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             mLastKnownLocation = null;
