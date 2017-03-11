@@ -3,10 +3,10 @@ package in.geobullet.csci_4176_project;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -84,8 +84,12 @@ public class MapsActivity extends FragmentActivity
         mMap = googleMap;
 
         updateLocationUI();
+
+//        LatLng coords = new LatLng(44.6488, 63.5752);
         LatLng coords = getDeviceLocation();
+
         mMap.addMarker(new MarkerOptions().position(coords).title("Halifax is here"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(coords));
     }
 
     // Save the State on context switch
