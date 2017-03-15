@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.create_poster) {
 
             Intent i = new Intent(MainActivity.this, CreateNewPoster.class);
-            startService(i);
-            vf.setDisplayedChild(2);
+            startActivity(i);
+            //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_manageBulletins) {
 
