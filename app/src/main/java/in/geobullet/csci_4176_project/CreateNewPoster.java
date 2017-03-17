@@ -3,12 +3,10 @@ package in.geobullet.csci_4176_project;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import java.util.Calendar;
-
 import android.app.TimePickerDialog;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +15,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import java.util.Calendar;
 
 /**
  *
@@ -36,7 +36,6 @@ public class CreateNewPoster extends AppCompatActivity {
     private static final String END_DATE_LABEL = "End Date";
     private static final String START_TIME_LABEL = "Start Time";
     private static final String END_TIME_LABEL = "End Time";
-
 
     //Layout radio buttons
     private RadioButton eventRadioButton;
@@ -96,6 +95,8 @@ public class CreateNewPoster extends AppCompatActivity {
         endTimeButton = (Button)findViewById(R.id.end_time_button);
         browsePostersButton = (Button)findViewById(R.id.browse_posters_button);
         submitPosterButton = (Button)findViewById(R.id.submit_poster_button);
+
+
     }
 
     @Override

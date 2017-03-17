@@ -127,11 +127,13 @@ public class MapsActivity extends FragmentActivity
         SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
         // Handler for case where connection fails
         Log.d(TAG, "Connection Failed: " + result.getErrorCode());
     }
+
     @Override
     public void onConnectionSuspended(int cause) {
         Log.d(TAG, "Connection Suspended");

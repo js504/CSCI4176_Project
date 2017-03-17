@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db;
+package in.geobullet.csci_4176_project.db.Classes;
 
 /* Used to populate the value in the PosterType column of the Poster database table */
 
