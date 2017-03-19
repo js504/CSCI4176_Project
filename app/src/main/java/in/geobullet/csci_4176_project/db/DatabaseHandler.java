@@ -29,13 +29,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             "CREATE TABLE " + TABLE_USER +
                 " (" +
                     KEY_ID +
-                    "FirstName VARCHAR(255)," +
+                    "FirstName VARCHAR(255), " +
                     "LastName VARCHAR(255), " +
                     "DisplayName VARCHAR(255), " +
                     "Email VARCHAR(255), " +
                     "Password VARCHAR(255), " +
                     "IsAdmin TINYINT " +
-                ")";
+                ");";
 
     private static final String CREATE_TABLE_BOARD =
             "CREATE TABLE " + TABLE_BOARD +
@@ -48,7 +48,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     "RadiusInMeters INTEGER, " +
                     "Longitude DOUBLE, " +
                     "Latitude DOUBLE " +
-                ")";
+                ");";
 
     private static final String CREATE_TABLE_POSTER =
             "CREATE TABLE " + TABLE_POSTER +
@@ -67,7 +67,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     "StartTime DATETIME, " +
                     "EndTime DATETIME, " +
                     "PhotoName VARCHAR(255) " +
-                ")";
+                ");";
 
     private static final String CREATE_TABLE_BOARD_POSTER_PAIR =
             "CREATE TABLE " + TABLE_BOARD_POSTER_PAIR +
@@ -75,7 +75,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     KEY_ID +
                     "BoardId INTEGER, " +
                     "PosterId INTEGER " +
-                ")";
+                ");";
 
     private static final String CREATE_TABLE_USER_FAVORITE =
             "CREATE TABLE " + TABLE_USER_FAVORITE +
@@ -83,7 +83,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     KEY_ID +
                     "UserId INTEGER, " +
                     "BoardPosterPairId INTEGER " +
-                ")";
+                ");";
 
 
     public DatabaseHandler(Context context) {

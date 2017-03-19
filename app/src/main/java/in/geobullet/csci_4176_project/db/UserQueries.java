@@ -41,7 +41,41 @@ public class UserQueries {
     }
 
 
-    // todo getUserById
+    public User getUserById(int id) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        String query = "SELECT * FROM " + DatabaseHandler.TABLE_USER +
+                " WHERE Id = " + id + ";";
+
+        User u = null;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                u = new User();
+
+                int fNameIdx = cursor.getColumnIndex("FirstName");
+                int lNameIdx = cursor.getColumnIndex("LastName");
+                int dNameIdx = cursor.getColumnIndex("DisplayName");
+                int emailIdx = cursor.getColumnIndex("Email");
+                int passIdx = cursor.getColumnIndex("Password");
+                int isAdminIdx = cursor.getColumnIndex("IsAdmin");
+
+                u.setFirstName(cursor.getString(fNameIdx));
+                u.setLastName(cursor.getString(lNameIdx));
+                u.setDisplayName(cursor.getString(dNameIdx));
+                u.setEmail(cursor.getString(emailIdx));
+                u.setPassword(cursor.getString(passIdx));
+                u.setAdmin(cursor.getInt(isAdminIdx) == 1);
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return u;
+    }
 
 
     public User getUserByEmailPass(String email, String pass) {
