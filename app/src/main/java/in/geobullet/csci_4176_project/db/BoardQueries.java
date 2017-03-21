@@ -1,7 +1,6 @@
 package in.geobullet.csci_4176_project.db;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.format.DateFormat;
@@ -16,15 +15,13 @@ import in.geobullet.csci_4176_project.db.Classes.Board;
 
 public class BoardQueries {
 
-    private DatabaseHandler dbHandler;
+    private SQLiteDatabase db;
 
-    public BoardQueries(Context c) {
-        dbHandler = new DatabaseHandler(c);
+    public BoardQueries(SQLiteDatabase db) {
+        this.db = db;
     }
 
     public void addBoard(Board board) {
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
-
         ContentValues vals = new ContentValues();
 
         vals.put("Created", DateFormat.format("yyyy-MM-dd HH:mm:ss", board.getCreated()).toString());
@@ -37,12 +34,10 @@ public class BoardQueries {
 
         db.insert(DatabaseHandler.TABLE_BOARD, null, vals);
 
-        db.close();
+        // (The calling class is responsible for closing the database)
     }
 
     public Board getBoardById(int id) {
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
-
         String query = "SELECT * FROM Board where Id = " + id + ";";
 
         Cursor cursor = db.rawQuery(query, null);
@@ -72,9 +67,9 @@ public class BoardQueries {
             } while (cursor.moveToNext());
         }
 
-        db.close();
-
         return b;
+
+        // (The calling class is responsible for closing the database)
     }
 
 

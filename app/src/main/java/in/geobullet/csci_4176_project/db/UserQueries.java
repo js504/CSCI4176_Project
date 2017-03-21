@@ -1,15 +1,11 @@
 package in.geobullet.csci_4176_project.db;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.util.Log;
 
 import in.geobullet.csci_4176_project.db.Classes.User;
-import in.geobullet.csci_4176_project.db.Classes.UserFavorite;
 
 /**
  * Created by Nick on 2017-03-15.
@@ -17,14 +13,14 @@ import in.geobullet.csci_4176_project.db.Classes.UserFavorite;
 
 public class UserQueries {
 
-    private DatabaseHandler dbHandler;
+    private SQLiteDatabase db;
 
-    public UserQueries(Context c) {
-        dbHandler = new DatabaseHandler(c);
+    public UserQueries(SQLiteDatabase db) {
+        this.db = db;
     }
 
     public void addUser(User user) {
-        SQLiteDatabase db = dbHandler.getWritableDatabase();
+        Log.d("UserQueries", "addUser: start");
 
         ContentValues vals = new ContentValues();
 
@@ -37,13 +33,13 @@ public class UserQueries {
 
         db.insert(DatabaseHandler.TABLE_USER, null, vals);
 
-        db.close();
+        Log.d("UserQueries", "addUser: end");
+
+        // (The calling class is responsible for closing the database)
     }
 
 
     public User getUserById(int id) {
-        SQLiteDatabase db = dbHandler.getWritableDatabase();
-
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_USER +
                 " WHERE Id = " + id + ";";
 
@@ -72,7 +68,7 @@ public class UserQueries {
             } while (cursor.moveToNext());
         }
 
-        db.close();
+        // (The calling class is responsible for closing the database)
 
         return u;
     }
@@ -80,32 +76,37 @@ public class UserQueries {
 
     public User getUserByEmailPass(String email, String pass) {
 
-        List<UserFavorite> favs = new ArrayList<UserFavorite>();
+        User u = null;
 
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_USER +
-                " WHERE Email LIKE " + email + " AND Password LIKE ;";
+                " WHERE Email LIKE '" + email + "' AND Password LIKE '" + pass + "';";
 
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
-                UserFavorite fav = new UserFavorite();
+                u = new User();
 
-                int userIdIndex = cursor.getColumnIndex("UserId");
-                int bppIndex = cursor.getColumnIndex("BoardPosterPairId");
+                int fNameIdx = cursor.getColumnIndex("FirstName");
+                int lNameIdx = cursor.getColumnIndex("LastName");
+                int dNameIdx = cursor.getColumnIndex("DisplayName");
+                int emailIdx = cursor.getColumnIndex("Email");
+                int passIdx = cursor.getColumnIndex("Password");
+                int isAdminIdx = cursor.getColumnIndex("IsAdmin");
 
-                fav.setUserId(Integer.parseInt(cursor.getString(userIdIndex)));
-                fav.setBoardPosterPairId(Integer.parseInt(cursor.getString(bppIndex)));
-
-                favs.add(fav);
+                u.setFirstName(cursor.getString(fNameIdx));
+                u.setLastName(cursor.getString(lNameIdx));
+                u.setDisplayName(cursor.getString(dNameIdx));
+                u.setEmail(cursor.getString(emailIdx));
+                u.setPassword(cursor.getString(passIdx));
+                u.setAdmin(cursor.getInt(isAdminIdx) == 1);
 
             } while (cursor.moveToNext());
         }
 
-        db.close();
+        return u;
 
-        return null;
+        // (The calling class is responsible for closing the database)
     }
 
 

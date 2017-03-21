@@ -10,11 +10,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ViewFlipper;
 
+import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity
@@ -24,7 +26,28 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        /* Begin Database Seeding */
+
+        Log.d("DBhandler", "Creating dbHandler..");
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
+        Log.d("DBhandler", "dbHandler created.");
+
+        User u1 = new User();
+        u1.setFirstName("Johnny");
+        u1.setLastName("B. Goode.");
+        u1.setDisplayName("JBG");
+        u1.setEmail("JBG@goody.com");
+        u1.setPassword("YouGuessedIt");
+        u1.setAdmin(true);
+
+        dbHandler.addUser(u1);
+
+        // todo finish seeding
+
+        /* End Database Seeding */
+
+
 
 
         setContentView(R.layout.activity_main);

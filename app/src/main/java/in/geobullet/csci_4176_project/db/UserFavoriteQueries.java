@@ -1,7 +1,6 @@
 package in.geobullet.csci_4176_project.db;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -16,15 +15,13 @@ import in.geobullet.csci_4176_project.db.Classes.UserFavorite;
 
 public class UserFavoriteQueries {
 
-    private DatabaseHandler dbHandler;
+    private SQLiteDatabase db;
 
-    public UserFavoriteQueries(Context c) {
-        dbHandler = new DatabaseHandler(c);
+    public UserFavoriteQueries(SQLiteDatabase db) {
+        this.db = db;
     }
 
     public void addUserFavorite(UserFavorite userFav) {
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
-
         ContentValues vals = new ContentValues();
 
         vals.put("UserId", userFav.getUserId());
@@ -32,7 +29,7 @@ public class UserFavoriteQueries {
 
         db.insert(DatabaseHandler.TABLE_USER_FAVORITE, null, vals);
 
-        db.close();
+        // (The calling class is responsible for closing the database)
     }
 
     public List<UserFavorite> getUserFavoritesByUserId(int userId) {
@@ -41,7 +38,6 @@ public class UserFavoriteQueries {
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_USER_FAVORITE +
                 " WHERE UserId = " + userId + ";";
 
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
@@ -59,7 +55,7 @@ public class UserFavoriteQueries {
             } while (cursor.moveToNext());
         }
 
-        db.close();
+        // (The calling class is responsible for closing the database)
 
         return favs;
     }

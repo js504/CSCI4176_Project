@@ -5,12 +5,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.List;
+
+import in.geobullet.csci_4176_project.db.Classes.Board;
+import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
+import in.geobullet.csci_4176_project.db.Classes.Poster;
+import in.geobullet.csci_4176_project.db.Classes.User;
+import in.geobullet.csci_4176_project.db.Classes.UserFavorite;
+
 /**
  * Created by Nick on 2017-03-04.
  */
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
+    private Context context;
     private static final String LOG = "DatabaseHandler";
 
     private static final int DATABASE_VERSION = 1;
@@ -88,16 +97,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-
-    public SQLiteDatabase getWritableDatabase() {
-        return this.getWritableDatabase();
+        this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(LOG, "Creating tables...");
+        Log.d(LOG, "Creating tables..");
 
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_BOARD);
@@ -120,4 +125,165 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         onCreate(db);
     }
+
+
+    /* Begin Board Poster Pair Queries */
+
+    public void addBoardPosterPair(BoardPosterPair bpp) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardPosterPairQueries bppq = new BoardPosterPairQueries(db);
+        bppq.addBoardPosterPair(bpp);
+
+        db.close();
+    }
+
+    public List<BoardPosterPair> getAllBoardPosterPairs() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardPosterPairQueries bppq = new BoardPosterPairQueries(db);
+        List<BoardPosterPair> bpps = bppq.getAllBoardPosterPairs();
+
+        db.close();
+
+        return bpps;
+    }
+
+    /* End Board Poster Pair Queries */
+
+
+
+    /* Begin Board Queries */
+
+    public void addBoard(Board board) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        bqs.addBoard(board);
+
+        db.close();
+    }
+
+    public Board getBoardById(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        Board b = bqs.getBoardById(id);
+
+        db.close();
+
+        return b;
+    }
+
+    /* End Board Queries */
+
+
+
+    /* Begin Poster Queries */
+
+    public void addPoster(Poster poster) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        PosterQueries pq = new PosterQueries(db);
+
+        pq.addPoster(poster);
+
+        db.close();
+    }
+
+    public Poster getPosterById(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        PosterQueries pq = new PosterQueries(db);
+
+        Poster p = pq.getPosterById(id);
+
+        db.close();
+
+        return p;
+    }
+
+    public List<Poster> getPostersByBoardId(int boardId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        PosterQueries pq = new PosterQueries(db);
+
+        List<Poster> posters = pq.getPostersByBoardId(boardId);
+
+        db.close();
+
+        return posters;
+    }
+
+    /* End Poster Queries */
+
+
+
+    /* Begin User Favorite Queries */
+
+    public void addUserFavorite(UserFavorite userFav) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserFavoriteQueries ufq = new UserFavoriteQueries(db);
+
+        ufq.addUserFavorite(userFav);
+
+        db.close();
+    }
+
+    public List<UserFavorite> getUserFavoritesByUserId(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserFavoriteQueries ufq = new UserFavoriteQueries(db);
+
+        List<UserFavorite> userFavs = ufq.getUserFavoritesByUserId(userId);
+
+        db.close();
+
+        return userFavs;
+    }
+
+    /* End User Favorite Queries */
+
+
+
+    /* Begin User Queries */
+
+    public void addUser(User u) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserQueries uq = new UserQueries(db);
+        uq.addUser(u);
+
+        db.close();
+    }
+
+    public User getUserById(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserQueries uq = new UserQueries(db);
+        User u = uq.getUserById(id);
+
+        db.close();
+
+        return u;
+    }
+
+    public User getUserByEmailPass(String email, String pass) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserQueries uq = new UserQueries(db);
+        User u = uq.getUserByEmailPass(email, pass);
+
+        db.close();
+
+        return u;
+    }
+
+    /* End User Queries */
+
+
+
 }

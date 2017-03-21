@@ -1,18 +1,19 @@
 package in.geobullet.csci_4176_project.db;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.format.DateFormat;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
+import in.geobullet.csci_4176_project.db.Classes.PosterType;
 
 /**
  * Created by Nick on 2017-03-15.
@@ -20,18 +21,13 @@ import in.geobullet.csci_4176_project.db.Classes.Poster;
 
 public class PosterQueries {
 
-    private DatabaseHandler dbHandler;
-    private Context context;
+    private SQLiteDatabase db;
 
-    public PosterQueries(Context c) {
-        this.context = c;
-        dbHandler = new DatabaseHandler(c);
+    public PosterQueries(SQLiteDatabase db) {
+        this.db = db;
     }
 
-
     public void addPoster(Poster poster) {
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
-
         ContentValues vals = new ContentValues();
 
         vals.put("Created", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getCreated()).toString());
@@ -50,13 +46,10 @@ public class PosterQueries {
 
         db.insert(DatabaseHandler.TABLE_POSTER, null, vals);
 
-        db.close();
+        // (The calling class is responsible for closing the database)
     }
 
     public Poster getPosterById(int id) {
-
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
-
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_POSTER +
                 " WHERE Id = " + id + ";";
 
@@ -82,21 +75,42 @@ public class PosterQueries {
                 int eTimeIdx = cursor.getColumnIndex("EndTime");
                 int photoNameIdx = cursor.getColumnIndex("PhotoName");
 
-//                p.setCreated(Date.valueOf(cursor.get));
-                p.setAddress(cursor.getString(addIdx));
+                p.setCreated(Date.valueOf(cursor.getString(createdIdx)));
+                p.setCreatedByUserId(cursor.getInt(cbuidIdx));
+                p.setTitle(cursor.getString(titleIdx));
 
+                int posterTypeVal = cursor.getInt(posterTypeIdx);
+
+                switch (posterTypeVal) {
+                    case 0:
+                        p.setPosterType(PosterType.Event);
+                        break;
+                    case 1:
+                        p.setPosterType(PosterType.Service);
+                        break;
+                }
+
+                p.setAddress(cursor.getString(addIdx));
+                p.setCity(cursor.getString(cityIdx));
+                p.setStateProv(cursor.getString(stateProvIdx));
+                p.setDetails(cursor.getString(detailsIdx));
+                p.setStartDate(Date.valueOf(cursor.getString(sDateIdx)));
+                p.setEndDate(Date.valueOf(cursor.getString(eDateIdx)));
+                p.setStartTime(Date.valueOf(cursor.getString(sTimeIdx)));
+                p.setEndTime(Date.valueOf(cursor.getString(eTimeIdx)));
+                p.setPhotoName(cursor.getString(photoNameIdx));
 
             } while (cursor.moveToNext());
         }
 
-        db.close();
+        // (The calling class is responsible for closing the database)
 
         return p;
     }
 
     public List<Poster> getPostersByBoardId(int boardId) {
 
-        BoardPosterPairQueries bppQueries = new BoardPosterPairQueries(this.context);
+        BoardPosterPairQueries bppQueries = new BoardPosterPairQueries(this.db);
 
         List<BoardPosterPair> allBpps = bppQueries.getAllBoardPosterPairs();
 
@@ -110,23 +124,21 @@ public class PosterQueries {
 
         String query = "SELECT * FROM Poster WHERE PosterId IN (" + StringUtils.join(posterIds, ",") + ");";
 
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
 
-
+                // todo finish
 
             } while (cursor.moveToNext());
         }
 
-        db.close();
+        // (The calling class is responsible for closing the database)
 
         return posters;
     }
 
-    // todo: getAllPostersForBoardId
-
+    
 
 }

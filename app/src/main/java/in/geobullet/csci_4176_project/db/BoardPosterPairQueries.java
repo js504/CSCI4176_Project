@@ -1,7 +1,6 @@
 package in.geobullet.csci_4176_project.db;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -16,15 +15,13 @@ import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
 
 public class BoardPosterPairQueries {
 
-    private DatabaseHandler dbHandler;
+    private SQLiteDatabase db;
 
-    public BoardPosterPairQueries(Context c) {
-        dbHandler = new DatabaseHandler(c);
+    public BoardPosterPairQueries(SQLiteDatabase db) {
+        this.db = db;
     }
 
     public void addBoardPosterPair(BoardPosterPair bpp) {
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
-
         ContentValues vals = new ContentValues();
 
         vals.put("BoardId", bpp.getBoardId());
@@ -32,13 +29,11 @@ public class BoardPosterPairQueries {
 
         db.insert(DatabaseHandler.TABLE_BOARD_POSTER_PAIR, null, vals);
 
-        db.close();
+        // (The calling class is responsible for closing the database)
     }
 
     public List<BoardPosterPair> getAllBoardPosterPairs() {
         List<BoardPosterPair> bpps = new ArrayList<>();
-
-        SQLiteDatabase db = this.dbHandler.getWritableDatabase();
 
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD_POSTER_PAIR + ";";
 
@@ -59,9 +54,9 @@ public class BoardPosterPairQueries {
             } while (cursor.moveToNext());
         }
 
-        db.close();
-
         return bpps;
+
+        // (The calling class is responsible for closing the database)
     }
 
 
