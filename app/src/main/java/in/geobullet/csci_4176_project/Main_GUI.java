@@ -7,10 +7,9 @@ import android.widget.HorizontalScrollView;
 
 import java.util.List;
 
-import in.geobullet.csci_4176_project.db.BoardQueries;
 import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.PosterQueries;
+import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
 public class Main_GUI extends AppCompatActivity {
 
@@ -21,24 +20,28 @@ public class Main_GUI extends AppCompatActivity {
 
         int BOARD_ID = 1;
 
-        BoardQueries boardQueries = new BoardQueries(this);
-        PosterQueries posterQueries = new PosterQueries(this);
+        final DatabaseHandler dbHandler = new DatabaseHandler(this);
 
-        Board board = boardQueries.getBoardById(BOARD_ID);
-        // use board to set page title, radius,
+        Board board = dbHandler.getBoardById(BOARD_ID);
 
-        List<Poster> postersForBoard1 = posterQueries.getPostersByBoardId(BOARD_ID);
+        if (board != null) {
 
-        HorizontalScrollView hScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
+            // todo: Use board to set page title, radius,
 
-        for (Poster p: postersForBoard1) {
-            //ImageView iv = new ImageView();
+            List<Poster> postersForBoard1 = dbHandler.getPostersByBoardId(BOARD_ID);
 
-            // something like this
-            //iv.setImage(p.getPhotoName());
+            HorizontalScrollView hScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
 
-            //hScrollView.addView(iv);
+            for (Poster p: postersForBoard1) {
+                //ImageView iv = new ImageView();
+
+                // something like this
+                //iv.setImage(p.getPhotoName());
+
+                //hScrollView.addView(iv);
+            }
         }
+
 
     }
 
