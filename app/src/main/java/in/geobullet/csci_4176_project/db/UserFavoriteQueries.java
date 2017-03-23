@@ -21,13 +21,13 @@ public class UserFavoriteQueries {
         this.db = db;
     }
 
-    public void addUserFavorite(UserFavorite userFav) {
+    public long addUserFavorite(UserFavorite userFav) {
         ContentValues vals = new ContentValues();
 
         vals.put("UserId", userFav.getUserId());
         vals.put("BoardPosterPairId", userFav.getBoardPosterPairId());
 
-        db.insert(DatabaseHandler.TABLE_USER_FAVORITE, null, vals);
+        return db.insert(DatabaseHandler.TABLE_USER_FAVORITE, null, vals);
 
         // (The calling class is responsible for closing the database)
     }

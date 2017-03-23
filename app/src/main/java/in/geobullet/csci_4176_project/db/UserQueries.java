@@ -19,9 +19,7 @@ public class UserQueries {
         this.db = db;
     }
 
-    public void addUser(User user) {
-        Log.d("UserQueries", "addUser: start");
-
+    public long addUser(User user) {
         ContentValues vals = new ContentValues();
 
         vals.put("FirstName", user.getFirstName());
@@ -31,9 +29,7 @@ public class UserQueries {
         vals.put("Password", user.getPassword());
         vals.put("IsAdmin", user.isAdmin());
 
-        db.insert(DatabaseHandler.TABLE_USER, null, vals);
-
-        Log.d("UserQueries", "addUser: end");
+        return db.insert(DatabaseHandler.TABLE_USER, null, vals);
 
         // (The calling class is responsible for closing the database)
     }

@@ -21,7 +21,7 @@ public class BoardQueries {
         this.db = db;
     }
 
-    public void addBoard(Board board) {
+    public long addBoard(Board board) {
         ContentValues vals = new ContentValues();
 
         vals.put("Created", DateFormat.format("yyyy-MM-dd HH:mm:ss", board.getCreated()).toString());
@@ -32,7 +32,7 @@ public class BoardQueries {
         vals.put("Longitude", board.getLongitude());
         vals.put("Latitude", board.getLatitude());
 
-        db.insert(DatabaseHandler.TABLE_BOARD, null, vals);
+        return db.insert(DatabaseHandler.TABLE_BOARD, null, vals);
 
         // (The calling class is responsible for closing the database)
     }
@@ -59,7 +59,15 @@ public class BoardQueries {
                 b.setCreated(Date.valueOf(cursor.getString(createdIdx)));
                 b.setCreatedByUserId(cursor.getInt(cbuidIdx));
                 b.setName(cursor.getString(nameIdx));
-                b.setExpirationDate(Date.valueOf(cursor.getString(expIdx)));
+
+                String expDate = cursor.getString(expIdx);
+
+                if (expDate != null && expDate.length() > 0) {
+                    b.setExpirationDate(Date.valueOf(cursor.getString(expIdx)));
+                } else {
+                    b.setExpirationDate(null);
+                }
+
                 b.setRadiusInMeters(cursor.getInt(radIdx));
                 b.setLongitude(cursor.getDouble(longIdx));
                 b.setLatitude(cursor.getDouble(latIdx));

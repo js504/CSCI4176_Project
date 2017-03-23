@@ -129,13 +129,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /* Begin Board Poster Pair Queries */
 
-    public void addBoardPosterPair(BoardPosterPair bpp) {
+    public long addBoardPosterPair(BoardPosterPair bpp) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         BoardPosterPairQueries bppq = new BoardPosterPairQueries(db);
-        bppq.addBoardPosterPair(bpp);
+        long id = bppq.addBoardPosterPair(bpp);
 
         db.close();
+
+        return id;
     }
 
     public List<BoardPosterPair> getAllBoardPosterPairs() {
@@ -155,14 +157,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /* Begin Board Queries */
 
-    public void addBoard(Board board) {
+    public long addBoard(Board board) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         BoardQueries bqs = new BoardQueries(db);
 
-        bqs.addBoard(board);
+        long id = bqs.addBoard(board);
 
         db.close();
+
+        return id;
     }
 
     public Board getBoardById(int id) {
@@ -183,14 +187,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /* Begin Poster Queries */
 
-    public void addPoster(Poster poster) {
+    public long addPoster(Poster poster) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         PosterQueries pq = new PosterQueries(db);
 
-        pq.addPoster(poster);
+        long id = pq.addPoster(poster);
 
         db.close();
+
+        return id;
     }
 
     public Poster getPosterById(int id) {
@@ -223,14 +229,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /* Begin User Favorite Queries */
 
-    public void addUserFavorite(UserFavorite userFav) {
+    public long addUserFavorite(UserFavorite userFav) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         UserFavoriteQueries ufq = new UserFavoriteQueries(db);
 
-        ufq.addUserFavorite(userFav);
+        long id = ufq.addUserFavorite(userFav);
 
         db.close();
+
+        return id;
     }
 
     public List<UserFavorite> getUserFavoritesByUserId(int userId) {
@@ -251,13 +259,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /* Begin User Queries */
 
-    public void addUser(User u) {
+    public long addUser(User u) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         UserQueries uq = new UserQueries(db);
-        uq.addUser(u);
+        long id = uq.addUser(u);
 
         db.close();
+
+        return id;
     }
 
     public User getUserById(int id) {

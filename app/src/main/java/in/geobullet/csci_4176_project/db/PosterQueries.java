@@ -27,7 +27,7 @@ public class PosterQueries {
         this.db = db;
     }
 
-    public void addPoster(Poster poster) {
+    public long addPoster(Poster poster) {
         ContentValues vals = new ContentValues();
 
         vals.put("Created", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getCreated()).toString());
@@ -38,13 +38,22 @@ public class PosterQueries {
         vals.put("City", poster.getCity());
         vals.put("StateProv", poster.getStateProv());
         vals.put("Details", poster.getDetails());
-        vals.put("StartDate", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getStartDate()).toString());
-        vals.put("EndDate", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getEndDate()).toString());
-        vals.put("StartTime", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getStartTime()).toString());
-        vals.put("EndTime", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getEndTime()).toString());
+
+        if (poster.getStartDate() != null) {
+            vals.put("StartDate", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getStartDate()).toString());
+        }
+        if (poster.getEndDate() != null) {
+            vals.put("EndDate", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getEndDate()).toString());
+        }
+        if (poster.getStartTime() != null) {
+            vals.put("StartTime", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getStartTime()).toString());
+        }
+        if (poster.getEndTime() != null) {
+            vals.put("EndTime", DateFormat.format("yyyy-MM-dd HH:mm:ss", poster.getEndTime()).toString());
+        }
         vals.put("PhotoName", poster.getPhotoName());
 
-        db.insert(DatabaseHandler.TABLE_POSTER, null, vals);
+        return db.insert(DatabaseHandler.TABLE_POSTER, null, vals);
 
         // (The calling class is responsible for closing the database)
     }
@@ -139,6 +148,6 @@ public class PosterQueries {
         return posters;
     }
 
-    
+
 
 }

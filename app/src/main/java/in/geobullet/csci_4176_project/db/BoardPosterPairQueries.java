@@ -21,13 +21,13 @@ public class BoardPosterPairQueries {
         this.db = db;
     }
 
-    public void addBoardPosterPair(BoardPosterPair bpp) {
+    public long addBoardPosterPair(BoardPosterPair bpp) {
         ContentValues vals = new ContentValues();
 
         vals.put("BoardId", bpp.getBoardId());
         vals.put("PosterId", bpp.getPosterId());
 
-        db.insert(DatabaseHandler.TABLE_BOARD_POSTER_PAIR, null, vals);
+        return db.insert(DatabaseHandler.TABLE_BOARD_POSTER_PAIR, null, vals);
 
         // (The calling class is responsible for closing the database)
     }
