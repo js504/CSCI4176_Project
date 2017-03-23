@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db.Classes;
+package in.geobullet.csci_4176_project.db.Utils;
 
 import java.util.Date;
 import java.util.Locale;

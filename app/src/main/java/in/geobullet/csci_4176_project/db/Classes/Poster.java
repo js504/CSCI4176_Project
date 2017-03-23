@@ -2,6 +2,8 @@ package in.geobullet.csci_4176_project.db.Classes;
 
 import java.util.Date;
 
+import in.geobullet.csci_4176_project.db.Utils.DateUtil;
+
 
 /* Class that corresponds to the Poster database table */
 

@@ -9,7 +9,7 @@ import android.util.Log;
 import java.text.ParseException;
 
 import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Classes.DateUtil;
+import in.geobullet.csci_4176_project.db.Utils.DateUtil;
 
 /**
  * Created by Nick on 2017-03-15.

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
-import in.geobullet.csci_4176_project.db.Classes.DateUtil;
+import in.geobullet.csci_4176_project.db.Utils.DateUtil;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.Classes.PosterType;
 
