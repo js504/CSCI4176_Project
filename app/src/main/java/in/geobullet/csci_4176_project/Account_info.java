@@ -22,13 +22,21 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
 public class Account_info extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static int[] prgmImages={R.drawable.poster_1,R.drawable.poster_2,R.drawable.poster_3,R.drawable.poster_4,R.drawable.poster_5,R.drawable.poster_6,R.drawable.poster_7,R.drawable.poster_8,R.drawable.poster_9};
+    public static String[] prgmNameList={"poster 1","poster 2","poster 3","poster 4","poster 5","poster 6","poster 7","poster 8","poster 9"};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,15 @@ public class Account_info extends AppCompatActivity
         last_name.setText(currentUser.getLastName());
         TextView email = (TextView) findViewById(R.id.edit_Email);
         email.setText(currentUser.getEmail());
+
+
+        //hardcoded poster items
+
+
+
+        ListView lv=(ListView) findViewById(R.id.listView);
+        lv.setAdapter(new CustomAdapter(this, prgmNameList,prgmImages));
+
 
 
         //menu component
