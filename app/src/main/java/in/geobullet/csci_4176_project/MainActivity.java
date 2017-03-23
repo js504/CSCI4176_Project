@@ -95,14 +95,11 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        //swtich the layout of the content
-        //ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_accountInfo) {
-            // Handle the camera action
             Intent i = new Intent(MainActivity.this, Login.class);
             startActivity(i);
 
@@ -110,18 +107,15 @@ public class MainActivity extends AppCompatActivity
 
             Intent i = new Intent(MainActivity.this, Main_GUI.class);
             startActivity(i);
-            //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_mapGUI) {
             Intent i = new Intent(MainActivity.this, MapsActivity.class);
             startActivity(i);
-            //vf.setDisplayedChild(1);
 
         } else if (id == R.id.create_poster) {
 
             Intent i = new Intent(MainActivity.this, CreateNewPoster.class);
             startActivity(i);
-            //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_manageBulletins) {
             Intent i = new Intent(MainActivity.this, Login.class);
