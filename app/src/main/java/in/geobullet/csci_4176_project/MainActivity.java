@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ViewFlipper;
 
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
@@ -39,6 +38,7 @@ public class MainActivity extends AppCompatActivity
         u1.setDisplayName("JBG");
         u1.setEmail("JBG@goody.com");
         u1.setPassword("YouGuessedIt");
+        u1.setId(1);
         u1.setAdmin(true);
 
         dbHandler.addUser(u1);
@@ -113,27 +113,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         //swtich the layout of the content
-        ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
+        //ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_accountInfo) {
             // Handle the camera action
-
-            //startActivity(new Intent(MainActivity.this,Main_GUI.class));
+            Intent i = new Intent(MainActivity.this, Login.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_MainGUI) {
 
             Intent i = new Intent(MainActivity.this, Main_GUI.class);
-            startService(i);
-            vf.setDisplayedChild(1);
+            startActivity(i);
+            //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_mapGUI) {
 
-//            Intent i = new Intent(MainActivity.this, MapsActivity.class);
-//            startService(i);
-            vf.setDisplayedChild(0);
+            //Intent i = new Intent(MainActivity.this, MapsActivity.class);
+            //startService(i);
+            //vf.setDisplayedChild(1);
 
         } else if (id == R.id.create_poster) {
 
@@ -142,7 +142,8 @@ public class MainActivity extends AppCompatActivity
             //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_manageBulletins) {
-
+            Intent i = new Intent(MainActivity.this, Login.class);
+            startActivity(i);
         } else if (id == R.id.create_nearByBulletins) {
 
         } else if (id == R.id.nav_searchEvents) {

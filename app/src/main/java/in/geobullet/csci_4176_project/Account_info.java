@@ -1,3 +1,9 @@
+/*
+*    earth image source: https://icons8.com/web-app/5561/globe
+*    pin image http://fabricmate.com/tackable-panels
+*
+*/
+
 package in.geobullet.csci_4176_project;
 
 import android.content.Intent;
@@ -13,52 +19,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.HorizontalScrollView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import java.util.List;
-
-import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
+import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
-public class Main_GUI extends AppCompatActivity
+public class Account_info extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main__gui);
+        setContentView(R.layout.activity_account_info);
+
+        //db user info
+        DatabaseHandler db = new DatabaseHandler(this);
+
+        User currentUser = new User();
+        currentUser = db.getUserById(1);
+
+        TextView username = (TextView) findViewById(R.id.editUsername);
+        username.setText(currentUser.getDisplayName());
+        TextView first_name = (TextView) findViewById(R.id.edit_firstname);
+        first_name.setText(currentUser.getFirstName());
+        TextView last_name = (TextView) findViewById(R.id.editLastname);
+        last_name.setText(currentUser.getLastName());
+        TextView email = (TextView) findViewById(R.id.edit_Email);
+        email.setText(currentUser.getEmail());
 
 
-        int BOARD_ID = 1;
-
-        final DatabaseHandler dbHandler = new DatabaseHandler(this);
-
-        Board board = dbHandler.getBoardById(BOARD_ID);
-
-        if (board != null) {
-
-            // todo: Use board to set page title, radius,
-
-            List<Poster> postersForBoard1 = dbHandler.getPostersByBoardId(BOARD_ID);
-
-            HorizontalScrollView hScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
-
-            for (Poster p : postersForBoard1) {
-                //ImageView iv = new ImageView();
-
-                // something like this
-                //iv.setImage(p.getPhotoName());
-
-                //hScrollView.addView(iv);
-            }
-        }
-
-
-
-        //add menu component
+        //menu component
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //display login username at toolbar
+        getSupportActionBar().setTitle("Login as: "+ currentUser.getDisplayName());
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +91,7 @@ public class Main_GUI extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_gui_right_top_settings, menu);
+        getMenuInflater().inflate(R.menu.login_right_top_settings, menu);
         return true;
     }
 
@@ -118,11 +117,14 @@ public class Main_GUI extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_accountInfo) {
-            Intent i = new Intent(Main_GUI.this, Login.class);
+            // Handle the camera action
+
+            //startActivity(new Intent(MainActivity.this,Main_GUI.class));
+
+        } else if (id == R.id.nav_MainGUI) {
+            Intent i = new Intent(Account_info.this, Main_GUI.class);
             finish();
             startActivity(i);
-        } else if (id == R.id.nav_MainGUI) {
-
 
         } else if (id == R.id.nav_mapGUI) {
 
@@ -132,7 +134,7 @@ public class Main_GUI extends AppCompatActivity
 
         } else if (id == R.id.create_poster) {
 
-            Intent i = new Intent(Main_GUI.this, CreateNewPoster.class);
+            Intent i = new Intent(Account_info.this, CreateNewPoster.class);
             startActivity(i);
             //vf.setDisplayedChild(2);
 
