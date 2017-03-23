@@ -3,7 +3,6 @@ package in.geobullet.csci_4176_project.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import in.geobullet.csci_4176_project.db.Classes.User;
 
@@ -47,6 +46,7 @@ public class UserQueries {
             do {
                 u = new User();
 
+                int idIdx = cursor.getColumnIndex("Id");
                 int fNameIdx = cursor.getColumnIndex("FirstName");
                 int lNameIdx = cursor.getColumnIndex("LastName");
                 int dNameIdx = cursor.getColumnIndex("DisplayName");
@@ -54,6 +54,7 @@ public class UserQueries {
                 int passIdx = cursor.getColumnIndex("Password");
                 int isAdminIdx = cursor.getColumnIndex("IsAdmin");
 
+                u.setId(cursor.getInt(idIdx));
                 u.setFirstName(cursor.getString(fNameIdx));
                 u.setLastName(cursor.getString(lNameIdx));
                 u.setDisplayName(cursor.getString(dNameIdx));

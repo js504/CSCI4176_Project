@@ -38,12 +38,68 @@ public class MainActivity extends AppCompatActivity
         u1.setDisplayName("JBG");
         u1.setEmail("JBG@goody.com");
         u1.setPassword("YouGuessedIt");
-        u1.setId(0);
         u1.setAdmin(true);
 
-        dbHandler.addUser(u1);
+        int user1Id = (int) dbHandler.addUser(u1);
 
-        Log.i("idmain",Integer.toString(u1.getId()));
+        u1.setId(user1Id);
+
+        Log.i("UserId:", Integer.toString(u1.getId()));
+
+        User currentUser = dbHandler.getUserById(user1Id);
+
+        Log.d("CurrentUser", currentUser.toString());
+
+//        Board b1 = new Board();
+//        b1.setCreated(new Date());
+//        b1.setCreatedByUserId(currentUser.getId());
+//        b1.setName("Local Bulletin 1");
+//        b1.setExpirationDate(null);
+//        b1.setRadiusInMeters(1000);
+//        b1.setLongitude(63.5917);
+//        b1.setLatitude(44.6366);
+//
+//        Log.d("Seeding", "Adding board..");
+//        int board1Id = (int) dbHandler.addBoard(b1);
+//        Log.d("Seeding", "Added board. Id: " + board1Id);
+//
+//        b1 = dbHandler.getBoardById(board1Id);
+//
+//        if (b1 != null) {
+//            Log.d("Seeding", "Queried board by id:");
+//            Log.d("Board that was added:", b1.toString());
+//        }
+//
+//        Poster p1 = new Poster();
+//        p1.setCreated(new Date());
+//        p1.setCreatedByUserId(currentUser.getId());
+//        p1.setTitle("A Tribute To Johnny Cash");
+//        p1.setPosterType(PosterType.Event);
+//        p1.setAddress("Strathspey Place");
+//        p1.setCity("Mabou");
+//        p1.setStateProv("NS");
+//        p1.setDetails("Who doesn't like Johnny Cash?");
+////        Calendar sDate = new GregorianCalendar(2017, Calendar.JUNE, 20);
+//        p1.setStartDate(null);
+//        p1.setEndDate(null);
+//        p1.setStartTime(null);
+//        p1.setEndTime(null);
+//        p1.setPhotoName("poster_1.jpg");
+//
+//        int poster1Id = (int) dbHandler.addPoster(p1);
+//
+//        Log.d("Seeding", "Added poster. Id: " + poster1Id);
+
+
+        // todo add the rest of the posters
+
+//        BoardPosterPair bpp1 = new BoardPosterPair();
+//        bpp1.setBoardId(board1Id);
+//        bpp1.setPosterId(poster1Id);
+//        int bpp1Id = (int) dbHandler.addBoardPosterPair(bpp1);
+//
+//        Log.d("Seeding", "Added board poster pair: Id: " + bpp1Id);
+
 
         // todo finish seeding
 
