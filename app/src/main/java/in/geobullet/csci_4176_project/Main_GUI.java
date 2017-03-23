@@ -40,11 +40,14 @@ public class Main_GUI extends AppCompatActivity
 
             // todo: Use board to set page title, radius,
 
-            List<Poster> postersForBoard1 = dbHandler.getPostersByBoardId(BOARD_ID);
+            List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(BOARD_ID);
 
             HorizontalScrollView hScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
 
             for (Poster p : postersForBoard1) {
+
+                // todo finish
+
                 //ImageView iv = new ImageView();
 
                 // something like this

@@ -160,7 +160,7 @@ public class Poster {
     public String toString() {
         return "Poster{" +
                 "id=" + id +
-                ", created=" + created +
+                ", created=" + DateUtil.formatDate(created) +
                 ", createdByUserId=" + createdByUserId +
                 ", title='" + title + '\'' +
                 ", posterType=" + posterType +
@@ -168,10 +168,10 @@ public class Poster {
                 ", city='" + city + '\'' +
                 ", stateProv='" + stateProv + '\'' +
                 ", details='" + details + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
+                ", startDate=" + DateUtil.formatDate(startDate) +
+                ", endDate=" + DateUtil.formatDate(endDate) +
+                ", startTime=" + DateUtil.formatTime(startTime) +
+                ", endTime=" + DateUtil.formatTime(endTime) +
                 ", photoName='" + photoName + '\'' +
                 '}';
     }
