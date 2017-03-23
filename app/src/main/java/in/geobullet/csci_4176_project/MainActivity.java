@@ -38,15 +38,16 @@ public class MainActivity extends AppCompatActivity
         u1.setDisplayName("JBG");
         u1.setEmail("JBG@goody.com");
         u1.setPassword("YouGuessedIt");
-        u1.setId(1);
+        u1.setId(0);
         u1.setAdmin(true);
 
         dbHandler.addUser(u1);
 
+        Log.i("idmain",Integer.toString(u1.getId()));
+
         // todo finish seeding
 
         /* End Database Seeding */
-
 
 
 

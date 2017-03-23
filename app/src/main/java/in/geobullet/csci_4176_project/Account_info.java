@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,22 +22,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
 public class Account_info extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //hardcoded poster items
     public static int[] prgmImages={R.drawable.poster_1,R.drawable.poster_2,R.drawable.poster_3,R.drawable.poster_4,R.drawable.poster_5,R.drawable.poster_6,R.drawable.poster_7,R.drawable.poster_8,R.drawable.poster_9};
     public static String[] prgmNameList={"poster 1","poster 2","poster 3","poster 4","poster 5","poster 6","poster 7","poster 8","poster 9"};
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +48,16 @@ public class Account_info extends AppCompatActivity
         setContentView(R.layout.activity_account_info);
 
         //db user info
-        DatabaseHandler db = new DatabaseHandler(this);
+        final DatabaseHandler db = new DatabaseHandler(this);
+        int id = 0;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            id = extras.getInt("user");
+            Log.i("id",Integer.toString(id));
+        }
+        User currentUser = db.getUserById(1);
 
-        User currentUser = new User();
-        currentUser = db.getUserById(1);
+
 
         TextView username = (TextView) findViewById(R.id.editUsername);
         username.setText(currentUser.getDisplayName());
@@ -59,14 +69,21 @@ public class Account_info extends AppCompatActivity
         email.setText(currentUser.getEmail());
 
 
-        //hardcoded poster items
-
-
-
         ListView lv=(ListView) findViewById(R.id.listView);
         lv.setAdapter(new CustomAdapter(this, prgmNameList,prgmImages));
 
-
+        //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(Account_info.this, CreateNewPoster.class);
+                //get the poster by its id
+                //Poster selected_poster = db.getPosterById(position);
+                //pass selected poster to new intent for user to edit
+                //intent.putExtra("posterID", (Serializable) selected_poster);
+                startActivity(intent);
+            }
+        });
 
         //menu component
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

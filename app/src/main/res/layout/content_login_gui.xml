@@ -60,36 +60,38 @@
                     android:text="Username: " />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/username_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/login_username"
                     android:layout_below="@+id/login_username"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:text="JBG@goody.com"/>
 
                 <TextView
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/editText"
-                    android:layout_below="@+id/editText"
+                    android:layout_alignStart="@+id/username_input"
+                    android:layout_below="@+id/username_input"
                     android:text="Password:" />
 
                 <EditText
-                    android:id="@+id/editText2"
+                    android:id="@+id/pwd_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/editText"
+                    android:layout_alignEnd="@+id/username_input"
                     android:layout_below="@+id/textView5"
                     android:ems="10"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="YouGuessedIt"/>
 
                 <Button
                     android:id="@+id/login_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/editText2"
+                    android:layout_below="@+id/pwd_input"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="18dp"
                     android:text="Login" />

@@ -5,6 +5,7 @@ package in.geobullet.csci_4176_project;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,13 +55,6 @@ public class CustomAdapter extends BaseAdapter{
         holder.img=(ImageView) listview.findViewById(R.id.imageView1);
         holder.tv.setText(posternames[position]);
         holder.img.setImageResource(posters[position]);
-        listview.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "You Clicked "+ posternames[position], Toast.LENGTH_LONG).show();
-                // TODO: 2017-03-22  edit poster here
-            }
-        });
         return listview;
     }
 
