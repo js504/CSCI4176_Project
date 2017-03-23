@@ -219,9 +219,8 @@ public class MainActivity extends AppCompatActivity
             //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_mapGUI) {
-
-            //Intent i = new Intent(MainActivity.this, MapsActivity.class);
-            //startService(i);
+            Intent i = new Intent(MainActivity.this, MapsActivity.class);
+            startActivity(i);
             //vf.setDisplayedChild(1);
 
         } else if (id == R.id.create_poster) {
