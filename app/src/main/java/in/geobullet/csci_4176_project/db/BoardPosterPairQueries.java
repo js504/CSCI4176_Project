@@ -21,15 +21,36 @@ public class BoardPosterPairQueries {
         this.db = db;
     }
 
-    public void addBoardPosterPair(BoardPosterPair bpp) {
+    public long addBoardPosterPair(BoardPosterPair bpp) {
         ContentValues vals = new ContentValues();
 
         vals.put("BoardId", bpp.getBoardId());
         vals.put("PosterId", bpp.getPosterId());
 
-        db.insert(DatabaseHandler.TABLE_BOARD_POSTER_PAIR, null, vals);
+        return db.insert(DatabaseHandler.TABLE_BOARD_POSTER_PAIR, null, vals);
 
         // (The calling class is responsible for closing the database)
+    }
+
+    public BoardPosterPair getBoardPosterPairById(int bppId) {
+        String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD_POSTER_PAIR + " WHERE Id = " + bppId + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        BoardPosterPair bpp = null;
+
+        if (cursor.moveToFirst()) {
+            do {
+                bpp = new BoardPosterPair();
+
+                this.setBoardPosterPairFields(cursor, bpp);
+
+            } while (cursor.moveToNext());
+        }
+
+        // (The calling class is responsible for closing the database)
+
+        return bpp;
     }
 
     public List<BoardPosterPair> getAllBoardPosterPairs() {
@@ -43,11 +64,7 @@ public class BoardPosterPairQueries {
             do {
                 BoardPosterPair bpp = new BoardPosterPair();
 
-                int boardIdIndex = cursor.getColumnIndex("BoardId");
-                int posterIdIndex = cursor.getColumnIndex("PosterId");
-
-                bpp.setBoardId(Integer.parseInt(cursor.getString(boardIdIndex)));
-                bpp.setPosterId(Integer.parseInt(cursor.getString(posterIdIndex)));
+                bpp = this.setBoardPosterPairFields(cursor, bpp);
 
                 bpps.add(bpp);
 
@@ -59,5 +76,20 @@ public class BoardPosterPairQueries {
         // (The calling class is responsible for closing the database)
     }
 
+    private BoardPosterPair setBoardPosterPairFields(Cursor cursor, BoardPosterPair bpp) {
+        if (bpp == null) {
+            bpp = new BoardPosterPair();
+        }
+
+        int idIdx = cursor.getColumnIndex("Id");
+        int boardIdIdx = cursor.getColumnIndex("BoardId");
+        int posterIdIdx = cursor.getColumnIndex("PosterId");
+
+        bpp.setId(cursor.getInt(idIdx));
+        bpp.setBoardId(cursor.getInt(boardIdIdx));
+        bpp.setPosterId(cursor.getInt(posterIdIdx));
+
+        return bpp;
+    }
 
 }

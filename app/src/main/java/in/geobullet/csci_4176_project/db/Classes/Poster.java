@@ -2,6 +2,8 @@ package in.geobullet.csci_4176_project.db.Classes;
 
 import java.util.Date;
 
+import in.geobullet.csci_4176_project.db.Utils.DateUtil;
+
 
 /* Class that corresponds to the Poster database table */
 
@@ -160,7 +162,7 @@ public class Poster {
     public String toString() {
         return "Poster{" +
                 "id=" + id +
-                ", created=" + created +
+                ", created=" + DateUtil.formatDate(created) +
                 ", createdByUserId=" + createdByUserId +
                 ", title='" + title + '\'' +
                 ", posterType=" + posterType +
@@ -168,10 +170,10 @@ public class Poster {
                 ", city='" + city + '\'' +
                 ", stateProv='" + stateProv + '\'' +
                 ", details='" + details + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
+                ", startDate=" + DateUtil.formatDate(startDate) +
+                ", endDate=" + DateUtil.formatDate(endDate) +
+                ", startTime=" + DateUtil.formatTime(startTime) +
+                ", endTime=" + DateUtil.formatTime(endTime) +
                 ", photoName='" + photoName + '\'' +
                 '}';
     }

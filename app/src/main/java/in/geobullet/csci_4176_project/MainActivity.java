@@ -15,12 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
+import in.geobullet.csci_4176_project.db.Utils.DBSeeder;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,50 +25,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        /* Begin Database Seeding */
-
-        Log.d("DBhandler", "Creating dbHandler..");
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
-        Log.d("DBhandler", "dbHandler created.");
 
-        User u1 = new User();
-        u1.setFirstName("Johnny");
-        u1.setLastName("B. Goode.");
-        u1.setDisplayName("JBG");
-        u1.setEmail("JBG@goody.com");
-        u1.setPassword("YouGuessedIt");
-        u1.setId(0);
-        u1.setAdmin(true);
-
-        dbHandler.addUser(u1);
-
-        //add boards for near by board
-        Board b1 = new Board();
-        Board b2 = new Board();
-
-        Date date = new Date();
-
-        b1.setId(0);
-        b1.setName("board1");
-        b1.setCreated(date);
-        b1.setCreatedByUserId(0);
-        b1.setExpirationDate(date);
-
-        b2.setId(1);
-        b2.setName("board2");
-        b2.setCreated(date);
-        b2.setCreatedByUserId(1);
-        b2.setExpirationDate(date);
-
-        dbHandler.addBoard(b1);
-        dbHandler.addBoard(b2);
-
-
-        // todo finish seeding
-
-        /* End Database Seeding */
-
+        Log.d("Seeding", "************************************ Begin Database Seeding *******************************************");
+        DBSeeder dbSeeder = new DBSeeder();
+        dbSeeder.seedDatabase(dbHandler);
+        Log.d("Seeding", "************************************ End Database Seeding *******************************************");
 
 
         setContentView(R.layout.activity_main);
@@ -155,9 +113,8 @@ public class MainActivity extends AppCompatActivity
             //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_mapGUI) {
-
-            //Intent i = new Intent(MainActivity.this, MapsActivity.class);
-            //startService(i);
+            Intent i = new Intent(MainActivity.this, MapsActivity.class);
+            startActivity(i);
             //vf.setDisplayedChild(1);
 
         } else if (id == R.id.create_poster) {

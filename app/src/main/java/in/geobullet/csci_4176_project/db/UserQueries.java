@@ -3,7 +3,6 @@ package in.geobullet.csci_4176_project.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import in.geobullet.csci_4176_project.db.Classes.User;
 
@@ -19,9 +18,7 @@ public class UserQueries {
         this.db = db;
     }
 
-    public void addUser(User user) {
-        Log.d("UserQueries", "addUser: start");
-
+    public long addUser(User user) {
         ContentValues vals = new ContentValues();
 
         vals.put("FirstName", user.getFirstName());
@@ -31,17 +28,15 @@ public class UserQueries {
         vals.put("Password", user.getPassword());
         vals.put("IsAdmin", user.isAdmin());
 
-        db.insert(DatabaseHandler.TABLE_USER, null, vals);
-
-        Log.d("UserQueries", "addUser: end");
+        return db.insert(DatabaseHandler.TABLE_USER, null, vals);
 
         // (The calling class is responsible for closing the database)
     }
 
 
-    public User getUserById(int id) {
+    public User getUserById(int userId) {
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_USER +
-                " WHERE Id = " + id + ";";
+                " WHERE Id = " + userId + ";";
 
         User u = null;
 
@@ -51,19 +46,7 @@ public class UserQueries {
             do {
                 u = new User();
 
-                int fNameIdx = cursor.getColumnIndex("FirstName");
-                int lNameIdx = cursor.getColumnIndex("LastName");
-                int dNameIdx = cursor.getColumnIndex("DisplayName");
-                int emailIdx = cursor.getColumnIndex("Email");
-                int passIdx = cursor.getColumnIndex("Password");
-                int isAdminIdx = cursor.getColumnIndex("IsAdmin");
-
-                u.setFirstName(cursor.getString(fNameIdx));
-                u.setLastName(cursor.getString(lNameIdx));
-                u.setDisplayName(cursor.getString(dNameIdx));
-                u.setEmail(cursor.getString(emailIdx));
-                u.setPassword(cursor.getString(passIdx));
-                u.setAdmin(cursor.getInt(isAdminIdx) == 1);
+                u = this.setUserFields(cursor, u);
 
             } while (cursor.moveToNext());
         }
@@ -87,19 +70,7 @@ public class UserQueries {
             do {
                 u = new User();
 
-                int fNameIdx = cursor.getColumnIndex("FirstName");
-                int lNameIdx = cursor.getColumnIndex("LastName");
-                int dNameIdx = cursor.getColumnIndex("DisplayName");
-                int emailIdx = cursor.getColumnIndex("Email");
-                int passIdx = cursor.getColumnIndex("Password");
-                int isAdminIdx = cursor.getColumnIndex("IsAdmin");
-
-                u.setFirstName(cursor.getString(fNameIdx));
-                u.setLastName(cursor.getString(lNameIdx));
-                u.setDisplayName(cursor.getString(dNameIdx));
-                u.setEmail(cursor.getString(emailIdx));
-                u.setPassword(cursor.getString(passIdx));
-                u.setAdmin(cursor.getInt(isAdminIdx) == 1);
+                u = this.setUserFields(cursor, u);
 
             } while (cursor.moveToNext());
         }
@@ -109,5 +80,28 @@ public class UserQueries {
         // (The calling class is responsible for closing the database)
     }
 
+    private User setUserFields(Cursor cursor, User u) {
+        if (u == null) {
+            u = new User();
+        }
+
+        int idIdx = cursor.getColumnIndex("Id");
+        int fNameIdx = cursor.getColumnIndex("FirstName");
+        int lNameIdx = cursor.getColumnIndex("LastName");
+        int dNameIdx = cursor.getColumnIndex("DisplayName");
+        int emailIdx = cursor.getColumnIndex("Email");
+        int passIdx = cursor.getColumnIndex("Password");
+        int isAdminIdx = cursor.getColumnIndex("IsAdmin");
+
+        u.setId(cursor.getInt(idIdx));
+        u.setFirstName(cursor.getString(fNameIdx));
+        u.setLastName(cursor.getString(lNameIdx));
+        u.setDisplayName(cursor.getString(dNameIdx));
+        u.setEmail(cursor.getString(emailIdx));
+        u.setPassword(cursor.getString(passIdx));
+        u.setAdmin(cursor.getInt(isAdminIdx) == 1);
+
+        return u;
+    }
 
 }

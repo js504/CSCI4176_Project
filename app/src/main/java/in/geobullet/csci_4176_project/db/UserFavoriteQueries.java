@@ -21,18 +21,18 @@ public class UserFavoriteQueries {
         this.db = db;
     }
 
-    public void addUserFavorite(UserFavorite userFav) {
+    public long addUserFavorite(UserFavorite userFav) {
         ContentValues vals = new ContentValues();
 
         vals.put("UserId", userFav.getUserId());
         vals.put("BoardPosterPairId", userFav.getBoardPosterPairId());
 
-        db.insert(DatabaseHandler.TABLE_USER_FAVORITE, null, vals);
+        return db.insert(DatabaseHandler.TABLE_USER_FAVORITE, null, vals);
 
         // (The calling class is responsible for closing the database)
     }
 
-    public List<UserFavorite> getUserFavoritesByUserId(int userId) {
+    public List<UserFavorite> getUserFavoritesForUser(int userId) {
         List<UserFavorite> favs = new ArrayList<UserFavorite>();
 
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_USER_FAVORITE +
@@ -44,11 +44,13 @@ public class UserFavoriteQueries {
             do {
                 UserFavorite fav = new UserFavorite();
 
-                int userIdIndex = cursor.getColumnIndex("UserId");
-                int bppIndex = cursor.getColumnIndex("BoardPosterPairId");
+                int idIdx = cursor.getColumnIndex("Id");
+                int userIdIdx = cursor.getColumnIndex("UserId");
+                int bppIdx = cursor.getColumnIndex("BoardPosterPairId");
 
-                fav.setUserId(Integer.parseInt(cursor.getString(userIdIndex)));
-                fav.setBoardPosterPairId(Integer.parseInt(cursor.getString(bppIndex)));
+                fav.setId(cursor.getInt(idIdx));
+                fav.setUserId(cursor.getInt(userIdIdx));
+                fav.setBoardPosterPairId(cursor.getInt(bppIdx));
 
                 favs.add(fav);
 
