@@ -19,11 +19,18 @@ public class CustomAdapter extends BaseAdapter{
     private String [] posternames;
     private Context context;
     private int [] posters;
+    private int flag=0;
     private static LayoutInflater inflater=null;
     public CustomAdapter(Account_info mainActivity, String[] posternames, int[] posters) {
         this.posternames =posternames;
         context=mainActivity;
         this.posters =posters;
+        inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+    public CustomAdapter(NearbyBoards mainActivity, String[] posternames) {
+        this.posternames =posternames;
+        flag = 1;
+        context=mainActivity;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -48,13 +55,15 @@ public class CustomAdapter extends BaseAdapter{
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Holder holder=new Holder();
+        Holder holder = new Holder();
         View listview;
         listview = inflater.inflate(R.layout.custom_poster_listview, null);
-        holder.tv=(TextView) listview.findViewById(R.id.textView1);
-        holder.img=(ImageView) listview.findViewById(R.id.imageView1);
+        holder.tv = (TextView) listview.findViewById(R.id.textView1);
+        holder.img = (ImageView) listview.findViewById(R.id.imageView1);
         holder.tv.setText(posternames[position]);
-        holder.img.setImageResource(posters[position]);
+        if (flag == 0){
+            holder.img.setImageResource(posters[position]);
+        }
         return listview;
     }
 

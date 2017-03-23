@@ -59,16 +59,19 @@ public class Login extends AppCompatActivity {
                 String email_input = email.getText().toString();
                 String pwd_input = pwd.getText().toString();
 
-                User usr = db.getUserByEmailPass(email_input,pwd_input);
+                User usr = null;
+                usr=db.getUserByEmailPass(email_input,pwd_input);
                 db.close();
 
-                if(!email_input.equals("")&& !pwd_input.equals("")) {
+                if(!email_input.equals("")&& !pwd_input.equals("") && usr != null) {
                     if (email_input.equals(usr.getEmail()) && pwd_input.equals(usr.getPassword())) {
                         Intent i = new Intent(Login.this, Account_info.class);
                         finish();
                         i.putExtra("user", usr.getId());
                         Log.i("idxx",Integer.toString(usr.getId()));
                         startActivity(i);
+                    }else {
+                        Toast.makeText(getBaseContext(), "Email or password not valid.", Toast.LENGTH_LONG).show();
                     }
                 }else {
                     Toast.makeText(getBaseContext(), "Email or password not valid.", Toast.LENGTH_LONG).show();

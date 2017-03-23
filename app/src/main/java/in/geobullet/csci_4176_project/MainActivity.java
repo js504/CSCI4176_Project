@@ -15,6 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.Calendar;
+import java.util.Date;
+
+import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
@@ -43,7 +47,27 @@ public class MainActivity extends AppCompatActivity
 
         dbHandler.addUser(u1);
 
-        Log.i("idmain",Integer.toString(u1.getId()));
+        //add boards for near by board
+        Board b1 = new Board();
+        Board b2 = new Board();
+
+        Date date = new Date();
+
+        b1.setId(0);
+        b1.setName("board1");
+        b1.setCreated(date);
+        b1.setCreatedByUserId(0);
+        b1.setExpirationDate(date);
+
+        b2.setId(1);
+        b2.setName("board2");
+        b2.setCreated(date);
+        b2.setCreatedByUserId(1);
+        b2.setExpirationDate(date);
+
+        dbHandler.addBoard(b1);
+        dbHandler.addBoard(b2);
+
 
         // todo finish seeding
 
@@ -146,7 +170,8 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(MainActivity.this, Login.class);
             startActivity(i);
         } else if (id == R.id.create_nearByBulletins) {
-
+            Intent i = new Intent(MainActivity.this, NearbyBoards.class);
+            startActivity(i);
         } else if (id == R.id.nav_searchEvents) {
 
         } else if (id == R.id.nav_manageEvents) {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,52 +14,57 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.HorizontalScrollView;
-
-import java.util.List;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
-public class Main_GUI extends AppCompatActivity
+public class NearbyBoards extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main__gui);
+        setContentView(R.layout.activity_nearby_boards);
 
 
-        int BOARD_ID = 0;
+        //// TODO: 2017-03-23 get boards work with database
 
-        final DatabaseHandler dbHandler = new DatabaseHandler(this);
+        /*
+        final DatabaseHandler db = new DatabaseHandler(this);
+        Board b1 = db.getBoardById(0);
+        Board b2 = db.getBoardById(1);
+        Log.i("board",b1.getName());
+        Log.i("board",b2.getName());
+        */
 
-        Board board = dbHandler.getBoardById(BOARD_ID);
+        String[] boardnames = new String[]{"board 1","board 2"};
 
-        if (board != null) {
+        //nearby board lists
+        ListView lv=(ListView) findViewById(R.id.listView2);
+        // TODO: 2017-03-23 display nearby boards
+        lv.setAdapter(new CustomAdapter(this,boardnames));
 
-            // todo: Use board to set page title, radius,
 
-            List<Poster> postersForBoard1 = dbHandler.getPostersByBoardId(BOARD_ID);
 
-            HorizontalScrollView hScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
-
-            for (Poster p : postersForBoard1) {
-                //ImageView iv = new ImageView();
-
-                // something like this
-                //iv.setImage(p.getPhotoName());
-
-                //hScrollView.addView(iv);
+        //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(NearbyBoards.this, CreateNewPoster.class);
+                //get the poster by its id
+                //Poster selected_poster = db.getPosterById(position);
+                //pass selected poster to new intent for user to edit
+                //intent.putExtra("posterID", (Serializable) selected_poster);
+                startActivity(intent);
             }
-        }
+        });
 
 
-
-        //add menu component
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Near by Boards");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +98,7 @@ public class Main_GUI extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_gui_right_top_settings, menu);
+        getMenuInflater().inflate(R.menu.nearby_boards_right_top_settings, menu);
         return true;
     }
 
@@ -118,11 +124,17 @@ public class Main_GUI extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_accountInfo) {
-            Intent i = new Intent(Main_GUI.this, Login.class);
+            // Handle the camera action
+            Intent i = new Intent(NearbyBoards.this, Login.class);
             finish();
             startActivity(i);
+
         } else if (id == R.id.nav_MainGUI) {
 
+            Intent i = new Intent(NearbyBoards.this, Main_GUI.class);
+            finish();
+            startActivity(i);
+            //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_mapGUI) {
 
@@ -132,7 +144,7 @@ public class Main_GUI extends AppCompatActivity
 
         } else if (id == R.id.create_poster) {
 
-            Intent i = new Intent(Main_GUI.this, CreateNewPoster.class);
+            Intent i = new Intent(NearbyBoards.this, CreateNewPoster.class);
             startActivity(i);
             //vf.setDisplayedChild(2);
 

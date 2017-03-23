@@ -40,7 +40,12 @@
             android:name=".Account_info"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Login"></activity>
+        <activity android:name=".Login" />
+        <activity
+            android:name=".NearbyBoards"
+            android:label="@string/title_activity_nearby_boards"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ManageBoards"></activity>
     </application>
 
 </manifest>
