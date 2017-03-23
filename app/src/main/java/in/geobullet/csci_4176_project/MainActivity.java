@@ -14,7 +14,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import java.util.Date;
 
+import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
@@ -50,26 +52,26 @@ public class MainActivity extends AppCompatActivity
 
         Log.d("CurrentUser", currentUser.toString());
 
-//        Board b1 = new Board();
-//        b1.setCreated(new Date());
-//        b1.setCreatedByUserId(currentUser.getId());
-//        b1.setName("Local Bulletin 1");
-//        b1.setExpirationDate(null);
-//        b1.setRadiusInMeters(1000);
-//        b1.setLongitude(63.5917);
-//        b1.setLatitude(44.6366);
-//
-//        Log.d("Seeding", "Adding board..");
-//        int board1Id = (int) dbHandler.addBoard(b1);
-//        Log.d("Seeding", "Added board. Id: " + board1Id);
-//
-//        b1 = dbHandler.getBoardById(board1Id);
-//
-//        if (b1 != null) {
-//            Log.d("Seeding", "Queried board by id:");
-//            Log.d("Board that was added:", b1.toString());
-//        }
-//
+        Board b1 = new Board();
+        b1.setCreated(new Date(2017, 3, 23));
+        b1.setCreatedByUserId(currentUser.getId());
+        b1.setName("Local Bulletin 1");
+        b1.setExpirationDate(null);
+        b1.setRadiusInMeters(1000);
+        b1.setLongitude(63.5917);
+        b1.setLatitude(44.6366);
+
+        Log.d("Seeding", "Adding board..");
+        int board1Id = (int) dbHandler.addBoard(b1);
+        Log.d("Seeding", "Added board. Id: " + board1Id);
+
+        b1 = dbHandler.getBoardById(board1Id);
+
+        if (b1 != null) {
+            Log.d("Seeding", "Queried board by id:");
+            Log.d("Board that was added:", b1.toString());
+        }
+
 //        Poster p1 = new Poster();
 //        p1.setCreated(new Date());
 //        p1.setCreatedByUserId(currentUser.getId());
