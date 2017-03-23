@@ -151,9 +151,6 @@ public class Account_info extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_accountInfo) {
-            // Handle the camera action
-
-            //startActivity(new Intent(MainActivity.this,Main_GUI.class));
 
         } else if (id == R.id.nav_MainGUI) {
             Intent i = new Intent(Account_info.this, Main_GUI.class);
@@ -161,21 +158,19 @@ public class Account_info extends AppCompatActivity
             startActivity(i);
 
         } else if (id == R.id.nav_mapGUI) {
-
-            //Intent i = new Intent(MainActivity.this, MapsActivity.class);
-            //startService(i);
-            //vf.setDisplayedChild(1);
-
+            Intent i = new Intent(Account_info.this, MapsActivity.class);
+            finish();
+            startActivity(i);
         } else if (id == R.id.create_poster) {
-
             Intent i = new Intent(Account_info.this, CreateNewPoster.class);
             startActivity(i);
-            //vf.setDisplayedChild(2);
-
         } else if (id == R.id.nav_manageBulletins) {
 
         } else if (id == R.id.create_nearByBulletins) {
-
+            //nearby boards
+            Intent i = new Intent(Account_info.this, NearbyBoards.class);
+            finish();
+            startActivity(i);
         } else if (id == R.id.nav_searchEvents) {
 
         } else if (id == R.id.nav_manageEvents) {

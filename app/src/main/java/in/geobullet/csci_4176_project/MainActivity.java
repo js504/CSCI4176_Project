@@ -100,27 +100,24 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_accountInfo) {
+            //Login
             Intent i = new Intent(MainActivity.this, Login.class);
             startActivity(i);
-
         } else if (id == R.id.nav_MainGUI) {
-
+            //main GUI
             Intent i = new Intent(MainActivity.this, Main_GUI.class);
             startActivity(i);
-
         } else if (id == R.id.nav_mapGUI) {
+            //map GUI
             Intent i = new Intent(MainActivity.this, MapsActivity.class);
             startActivity(i);
-
         } else if (id == R.id.create_poster) {
-
+            //create poster
             Intent i = new Intent(MainActivity.this, CreateNewPoster.class);
             startActivity(i);
-
         } else if (id == R.id.nav_manageBulletins) {
-            Intent i = new Intent(MainActivity.this, Login.class);
-            startActivity(i);
         } else if (id == R.id.create_nearByBulletins) {
+            //nearby boards
             Intent i = new Intent(MainActivity.this, NearbyBoards.class);
             startActivity(i);
         } else if (id == R.id.nav_searchEvents) {

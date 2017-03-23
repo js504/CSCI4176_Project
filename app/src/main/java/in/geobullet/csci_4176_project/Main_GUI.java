@@ -126,23 +126,18 @@ public class Main_GUI extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.nav_MainGUI) {
 
-
         } else if (id == R.id.nav_mapGUI) {
-
-            //Intent i = new Intent(MainActivity.this, MapsActivity.class);
-            //startService(i);
-            //vf.setDisplayedChild(1);
-
+            Intent i = new Intent(Main_GUI.this, MapsActivity.class);
+            startActivity(i);
         } else if (id == R.id.create_poster) {
-
             Intent i = new Intent(Main_GUI.this, CreateNewPoster.class);
             startActivity(i);
-            //vf.setDisplayedChild(2);
-
         } else if (id == R.id.nav_manageBulletins) {
 
         } else if (id == R.id.create_nearByBulletins) {
-
+            //nearby boards
+            Intent i = new Intent(Main_GUI.this, NearbyBoards.class);
+            startActivity(i);
         } else if (id == R.id.nav_searchEvents) {
 
         } else if (id == R.id.nav_manageEvents) {
