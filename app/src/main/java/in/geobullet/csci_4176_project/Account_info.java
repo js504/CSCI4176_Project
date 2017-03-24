@@ -9,17 +9,17 @@ package in.geobullet.csci_4176_project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,24 +41,28 @@ public class Account_info extends AppCompatActivity
 
         //db user info
         final DatabaseHandler db = new DatabaseHandler(this);
+
         int id = 0;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             id = extras.getInt("user");
             Log.i("id",Integer.toString(id));
         }
-        User currentUser = db.getUserById(1);
-
-
 
         TextView username = (TextView) findViewById(R.id.editUsername);
-        username.setText(currentUser.getDisplayName());
         TextView first_name = (TextView) findViewById(R.id.edit_firstname);
-        first_name.setText(currentUser.getFirstName());
         TextView last_name = (TextView) findViewById(R.id.editLastname);
-        last_name.setText(currentUser.getLastName());
         TextView email = (TextView) findViewById(R.id.edit_Email);
-        email.setText(currentUser.getEmail());
+
+
+        User currentUser = SessionData.currentUser;
+
+        if (currentUser != null) {
+            username.setText(currentUser.getDisplayName());
+            first_name.setText(currentUser.getFirstName());
+            last_name.setText(currentUser.getLastName());
+            email.setText(currentUser.getEmail());
+        }
 
 
         ListView lv=(ListView) findViewById(R.id.listView);
@@ -81,7 +85,7 @@ public class Account_info extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //display login username at toolbar
-        getSupportActionBar().setTitle("Login as: "+ currentUser.getDisplayName());
+        getSupportActionBar().setTitle("Login as: " + (currentUser == null ? "" : currentUser.getDisplayName()));
 
 
 
