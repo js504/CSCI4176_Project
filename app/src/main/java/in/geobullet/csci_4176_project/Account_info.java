@@ -20,18 +20,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
