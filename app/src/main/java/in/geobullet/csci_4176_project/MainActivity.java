@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
+        dbHandler.dropAndRecreateTables();
 
         Log.d("Seeding", "************************************ Begin Database Seeding *******************************************");
         DBSeeder dbSeeder = new DBSeeder();

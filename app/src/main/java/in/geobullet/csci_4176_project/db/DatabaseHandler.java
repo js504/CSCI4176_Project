@@ -126,6 +126,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void dropAndRecreateTables() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String dropStmt = "DROP TABLE IF EXISTS ";
+
+        db.execSQL(dropStmt + TABLE_USER);
+        db.execSQL(dropStmt + TABLE_BOARD);
+        db.execSQL(dropStmt + TABLE_POSTER);
+        db.execSQL(dropStmt + TABLE_BOARD_POSTER_PAIR);
+        db.execSQL(dropStmt + TABLE_USER_FAVORITE);
+
+        onCreate(db);
+    }
 
     /* Begin Board Poster Pair Queries */
 
