@@ -2,7 +2,9 @@ package in.geobullet.csci_4176_project.db.Utils;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
@@ -55,57 +57,80 @@ public class DBSeeder {
         Log.d("Seeding", "Added board: " + b1.toString());
 
 
-        Poster p1 = new Poster();
-
-        Calendar posterCal1 = Calendar.getInstance();
-        p1.setCreated(posterCal1.getTime());
-        p1.setCreatedByUserId(currentUser.getId());
-        p1.setTitle("A Tribute To Johnny Cash");
-        p1.setPosterType(PosterType.Event);
-        p1.setAddress("Strathspey Place");
-        p1.setCity("Mabou");
-        p1.setStateProv("NS");
-        p1.setDetails("Who doesn't like Johnny Cash?");
-
-        Calendar startCal1 = Calendar.getInstance();
-        startCal1.set(Calendar.YEAR, 2017);
-        startCal1.set(Calendar.MONTH, Calendar.JUNE);
-        startCal1.set(Calendar.DATE, 20);
-        startCal1.set(Calendar.HOUR_OF_DAY, 19); // 7:00 pm
-        startCal1.set(Calendar.MINUTE, 0);
-        startCal1.set(Calendar.SECOND, 0);
-
-        Calendar endCal1 = (Calendar) startCal1.clone();
-        endCal1.set(Calendar.HOUR_OF_DAY, 22); // 10:00 pm
-        endCal1.set(Calendar.MINUTE, 0);
-        endCal1.set(Calendar.SECOND, 0);
-
-        p1.setStartDate(startCal1.getTime());
-        p1.setEndDate(endCal1.getTime());
-
-        p1.setStartTime(startCal1.getTime());
-        p1.setEndTime(endCal1.getTime());
-
-        p1.setPhotoName("poster_1.jpg");
-
-        int poster1Id = dbHandler.addPoster(p1);
-
-        p1 = dbHandler.getPosterById(poster1Id);
-
-        Log.d("Seeding", "Added poster 1: " + p1.toString());
-
-        // todo add the rest of the posters
+        List<Poster> allPosters = new ArrayList<>();
 
 
-        BoardPosterPair bpp1 = new BoardPosterPair();
-        bpp1.setBoardId(board1Id);
-        bpp1.setPosterId(poster1Id);
+        /*********** Begin add all posters ****************/
 
-        int bpp1Id = dbHandler.addBoardPosterPair(bpp1);
+        // todo: [set the title, details etc of the posters individually.
+        // todo: Put all the titles in an array, details in an array, then grab them
+        // todo: by index and set them here to reduce code duplication]
 
-        bpp1 = dbHandler.getBoardPosterPairById(bpp1Id);
+        for (int i = 1; i <= 15; i++) {
+            Poster poster = new Poster();
 
-        Log.d("Seeding", "Added board poster pair: " + bpp1.toString());
+            Calendar pCal1 = Calendar.getInstance();
+            poster.setCreated(pCal1.getTime());
+            poster.setCreatedByUserId(currentUser.getId());
+
+            poster.setTitle(""); // todo
+            poster.setPosterType(PosterType.Event); // todo
+            poster.setAddress(""); // todo
+            poster.setCity(""); // todo
+            poster.setStateProv(""); // todo
+            poster.setDetails(""); // todo
+
+            Calendar startDateCal1 = Calendar.getInstance();
+            startDateCal1.set(Calendar.YEAR, 2017); // todo
+            startDateCal1.set(Calendar.MONTH, Calendar.JUNE); // todo
+            startDateCal1.set(Calendar.DATE, 20); // todo
+            startDateCal1.set(Calendar.HOUR_OF_DAY, 19); // 7:00 pm // todo
+            startDateCal1.set(Calendar.MINUTE, 0); // todo
+            startDateCal1.set(Calendar.SECOND, 0);
+
+            Calendar endDateCal1 = (Calendar) startDateCal1.clone();
+            endDateCal1.set(Calendar.HOUR_OF_DAY, 22); // 10:00 pm // todo
+            endDateCal1.set(Calendar.MINUTE, 0); // todo
+            endDateCal1.set(Calendar.SECOND, 0);
+
+            poster.setStartDate(startDateCal1.getTime());
+            poster.setEndDate(endDateCal1.getTime());
+
+            poster.setStartTime(startDateCal1.getTime());
+            poster.setEndTime(endDateCal1.getTime());
+
+            poster.setPhotoName("poster_" + i + ".jpg");
+
+            int posterId = dbHandler.addPoster(poster);
+
+            poster = dbHandler.getPosterById(posterId);
+
+            Log.d("Seeding", "Added poster " + i + ": " + poster.toString());
+
+            allPosters.add(poster);
+        }
+
+        /*********** End add all posters ****************/
+
+
+        /*********** Begin all Board Poster Pairs (add all postesr to board 1) ************/
+
+        for (Poster p: allPosters) {
+
+            BoardPosterPair bpp = new BoardPosterPair();
+
+            bpp.setBoardId(board1Id);
+            bpp.setPosterId(p.getId());
+
+            int bppId = dbHandler.addBoardPosterPair(bpp);
+
+            bpp = dbHandler.getBoardPosterPairById(bppId);
+
+            Log.d("Seeding", "Added board poster pair: " + bpp.toString());
+        }
+
+        /*********** End all Board Poster Pairs ************/
+
 
 
         // todo finish seeding
