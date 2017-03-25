@@ -195,6 +195,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return id;
     }
 
+    public boolean updateBoard(Board board) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        boolean success = bqs.updateBoard(board);
+
+        db.close();
+
+        return success;
+    }
+
     public Board getBoardById(int boardId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -230,6 +242,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return id;
+    }
+
+    public boolean updatePoster(Poster poster) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        PosterQueries pq = new PosterQueries(db);
+
+        boolean success = pq.updatePoster(poster);
+
+        db.close();
+
+        return success;
     }
 
     public Poster getPosterById(int posterId) {
@@ -313,6 +337,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return id;
+    }
+
+    public boolean updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserQueries uq = new UserQueries(db);
+        boolean success = uq.updateUser(user);
+
+        db.close();
+
+        return success;
     }
 
     public User getUserById(int id) {

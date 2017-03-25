@@ -58,9 +58,48 @@ public class PosterQueries {
         }
         vals.put("PhotoName", poster.getPhotoName());
 
+        // (The calling class is responsible for closing the database)
+
         return db.insert(DatabaseHandler.TABLE_POSTER, null, vals);
+    }
+
+    public boolean updatePoster(Poster poster) {
+
+        ContentValues vals = new ContentValues();
+
+        vals.put("Id", poster.getId());
+
+        if (poster.getCreated() != null) {
+            vals.put("Created", DateFormat.format(DateUtil.DATE_FORMAT, poster.getCreated()).toString());
+        }
+
+        vals.put("CreatedByUserId", poster.getCreatedByUserId());
+        vals.put("Title", poster.getTitle());
+        vals.put("PosterType", poster.getPosterType().toString());
+        vals.put("Address", poster.getAddress());
+        vals.put("City", poster.getCity());
+        vals.put("StateProv", poster.getStateProv());
+        vals.put("Details", poster.getDetails());
+
+        if (poster.getStartDate() != null) {
+            vals.put("StartDate", DateFormat.format(DateUtil.DATE_FORMAT, poster.getStartDate()).toString());
+        }
+        if (poster.getEndDate() != null) {
+            vals.put("EndDate", DateFormat.format(DateUtil.DATE_FORMAT, poster.getEndDate()).toString());
+        }
+        if (poster.getStartTime() != null) {
+            vals.put("StartTime", DateFormat.format(DateUtil.DATE_FORMAT, poster.getStartTime()).toString());
+        }
+        if (poster.getEndTime() != null) {
+            vals.put("EndTime", DateFormat.format(DateUtil.DATE_FORMAT, poster.getEndTime()).toString());
+        }
+        vals.put("PhotoName", poster.getPhotoName());
+
+        int numRowsAffected = db.update(DatabaseHandler.TABLE_POSTER, vals, "Id = " + poster.getId(), null);
 
         // (The calling class is responsible for closing the database)
+
+        return numRowsAffected == 1;
     }
 
     public Poster getPosterById(int posterId) {

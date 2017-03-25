@@ -33,6 +33,24 @@ public class UserQueries {
         // (The calling class is responsible for closing the database)
     }
 
+    public boolean updateUser(User user) {
+        ContentValues vals = new ContentValues();
+
+        vals.put("Id", user.getId());
+        vals.put("FirstName", user.getFirstName());
+        vals.put("LastName", user.getLastName());
+        vals.put("DisplayName", user.getDisplayName());
+        vals.put("Email", user.getEmail());
+        vals.put("Password", user.getPassword());
+        vals.put("IsAdmin", user.isAdmin());
+
+        int numRowsAffected = db.update(DatabaseHandler.TABLE_USER, vals, "Id = " + user.getId(), null);
+
+        // (The calling class is responsible for closing the database)
+
+        return numRowsAffected == 1;
+    }
+
 
     public User getUserById(int userId) {
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_USER +

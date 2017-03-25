@@ -46,6 +46,39 @@ public class BoardQueries {
         // (The calling class is responsible for closing the database)
     }
 
+    /**
+     *
+     * @param board
+     * @return boolean: true = succeeded, false = failed
+     */
+    public boolean updateBoard(Board board) {
+
+        ContentValues vals = new ContentValues();
+
+        vals.put("Id", board.getId());
+
+        if (board.getCreated() != null) {
+            vals.put("Created", DateFormat.format(DateUtil.DATE_FORMAT, board.getCreated()).toString());
+        }
+
+        vals.put("CreatedByUserId", board.getCreatedByUserId());
+        vals.put("Name", board.getName());
+
+        if (board.getExpirationDate() != null) {
+            vals.put("ExpirationDate", DateFormat.format(DateUtil.DATE_FORMAT, board.getExpirationDate()).toString());
+        }
+
+        vals.put("RadiusInMeters", board.getRadiusInMeters());
+        vals.put("Longitude", board.getLongitude());
+        vals.put("Latitude", board.getLatitude());
+
+        int numRowsAffected = db.update(DatabaseHandler.TABLE_BOARD, vals, "Id = " + board.getId(), null);
+
+        // (The calling class is responsible for closing the database)
+
+        return numRowsAffected == 1;
+    }
+
     public Board getBoardById(int boardId) {
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD + " WHERE Id = " + boardId + ";";
 
