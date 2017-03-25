@@ -26,51 +26,18 @@ public class BoardQueries {
     public long addBoard(Board board) {
         ContentValues vals = new ContentValues();
 
-        if (board.getCreated() != null) {
-            vals.put("Created", DateFormat.format(DateUtil.DATE_FORMAT, board.getCreated()).toString());
-        }
-
-        vals.put("CreatedByUserId", board.getCreatedByUserId());
-        vals.put("Name", board.getName());
-
-        if (board.getExpirationDate() != null) {
-            vals.put("ExpirationDate", DateFormat.format(DateUtil.DATE_FORMAT, board.getExpirationDate()).toString());
-        }
-
-        vals.put("RadiusInMeters", board.getRadiusInMeters());
-        vals.put("Longitude", board.getLongitude());
-        vals.put("Latitude", board.getLatitude());
+        vals = this.setContentValues(vals, board);
 
         return db.insert(DatabaseHandler.TABLE_BOARD, null, vals);
 
         // (The calling class is responsible for closing the database)
     }
 
-    /**
-     *
-     * @param board
-     * @return boolean: true = succeeded, false = failed
-     */
     public boolean updateBoard(Board board) {
 
         ContentValues vals = new ContentValues();
 
-        vals.put("Id", board.getId());
-
-        if (board.getCreated() != null) {
-            vals.put("Created", DateFormat.format(DateUtil.DATE_FORMAT, board.getCreated()).toString());
-        }
-
-        vals.put("CreatedByUserId", board.getCreatedByUserId());
-        vals.put("Name", board.getName());
-
-        if (board.getExpirationDate() != null) {
-            vals.put("ExpirationDate", DateFormat.format(DateUtil.DATE_FORMAT, board.getExpirationDate()).toString());
-        }
-
-        vals.put("RadiusInMeters", board.getRadiusInMeters());
-        vals.put("Longitude", board.getLongitude());
-        vals.put("Latitude", board.getLatitude());
+        vals = this.setContentValues(vals, board);
 
         int numRowsAffected = db.update(DatabaseHandler.TABLE_BOARD, vals, "Id = " + board.getId(), null);
 
@@ -96,6 +63,26 @@ public class BoardQueries {
         // (The calling class is responsible for closing the database)
 
         return b;
+    }
+
+    private ContentValues setContentValues(ContentValues vals, Board board) {
+
+        if (board.getCreated() != null) {
+            vals.put("Created", DateFormat.format(DateUtil.DATE_FORMAT, board.getCreated()).toString());
+        }
+
+        vals.put("CreatedByUserId", board.getCreatedByUserId());
+        vals.put("Name", board.getName());
+
+        if (board.getExpirationDate() != null) {
+            vals.put("ExpirationDate", DateFormat.format(DateUtil.DATE_FORMAT, board.getExpirationDate()).toString());
+        }
+
+        vals.put("RadiusInMeters", board.getRadiusInMeters());
+        vals.put("Longitude", board.getLongitude());
+        vals.put("Latitude", board.getLatitude());
+
+        return vals;
     }
 
     private Board setBoardFields(Cursor cursor, Board b) {

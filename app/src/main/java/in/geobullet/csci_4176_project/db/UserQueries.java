@@ -21,12 +21,7 @@ public class UserQueries {
     public long addUser(User user) {
         ContentValues vals = new ContentValues();
 
-        vals.put("FirstName", user.getFirstName());
-        vals.put("LastName", user.getLastName());
-        vals.put("DisplayName", user.getDisplayName());
-        vals.put("Email", user.getEmail());
-        vals.put("Password", user.getPassword());
-        vals.put("IsAdmin", user.isAdmin());
+        vals = this.setContentValues(vals, user);
 
         return db.insert(DatabaseHandler.TABLE_USER, null, vals);
 
@@ -36,13 +31,7 @@ public class UserQueries {
     public boolean updateUser(User user) {
         ContentValues vals = new ContentValues();
 
-        vals.put("Id", user.getId());
-        vals.put("FirstName", user.getFirstName());
-        vals.put("LastName", user.getLastName());
-        vals.put("DisplayName", user.getDisplayName());
-        vals.put("Email", user.getEmail());
-        vals.put("Password", user.getPassword());
-        vals.put("IsAdmin", user.isAdmin());
+        vals = this.setContentValues(vals, user);
 
         int numRowsAffected = db.update(DatabaseHandler.TABLE_USER, vals, "Id = " + user.getId(), null);
 
@@ -96,6 +85,18 @@ public class UserQueries {
         return u;
 
         // (The calling class is responsible for closing the database)
+    }
+
+    private ContentValues setContentValues(ContentValues vals, User user) {
+
+        vals.put("FirstName", user.getFirstName());
+        vals.put("LastName", user.getLastName());
+        vals.put("DisplayName", user.getDisplayName());
+        vals.put("Email", user.getEmail());
+        vals.put("Password", user.getPassword());
+        vals.put("IsAdmin", user.isAdmin());
+
+        return vals;
     }
 
     private User setUserFields(Cursor cursor, User u) {

@@ -32,31 +32,7 @@ public class PosterQueries {
     public long addPoster(Poster poster) {
         ContentValues vals = new ContentValues();
 
-        if (poster.getCreated() != null) {
-            vals.put("Created", DateFormat.format(DateUtil.DATE_FORMAT, poster.getCreated()).toString());
-        }
-
-        vals.put("CreatedByUserId", poster.getCreatedByUserId());
-        vals.put("Title", poster.getTitle());
-        vals.put("PosterType", poster.getPosterType().toString());
-        vals.put("Address", poster.getAddress());
-        vals.put("City", poster.getCity());
-        vals.put("StateProv", poster.getStateProv());
-        vals.put("Details", poster.getDetails());
-
-        if (poster.getStartDate() != null) {
-            vals.put("StartDate", DateFormat.format(DateUtil.DATE_FORMAT, poster.getStartDate()).toString());
-        }
-        if (poster.getEndDate() != null) {
-            vals.put("EndDate", DateFormat.format(DateUtil.DATE_FORMAT, poster.getEndDate()).toString());
-        }
-        if (poster.getStartTime() != null) {
-            vals.put("StartTime", DateFormat.format(DateUtil.DATE_FORMAT, poster.getStartTime()).toString());
-        }
-        if (poster.getEndTime() != null) {
-            vals.put("EndTime", DateFormat.format(DateUtil.DATE_FORMAT, poster.getEndTime()).toString());
-        }
-        vals.put("PhotoName", poster.getPhotoName());
+        vals = this.setContentValues(vals, poster);
 
         // (The calling class is responsible for closing the database)
 
@@ -67,33 +43,7 @@ public class PosterQueries {
 
         ContentValues vals = new ContentValues();
 
-        vals.put("Id", poster.getId());
-
-        if (poster.getCreated() != null) {
-            vals.put("Created", DateFormat.format(DateUtil.DATE_FORMAT, poster.getCreated()).toString());
-        }
-
-        vals.put("CreatedByUserId", poster.getCreatedByUserId());
-        vals.put("Title", poster.getTitle());
-        vals.put("PosterType", poster.getPosterType().toString());
-        vals.put("Address", poster.getAddress());
-        vals.put("City", poster.getCity());
-        vals.put("StateProv", poster.getStateProv());
-        vals.put("Details", poster.getDetails());
-
-        if (poster.getStartDate() != null) {
-            vals.put("StartDate", DateFormat.format(DateUtil.DATE_FORMAT, poster.getStartDate()).toString());
-        }
-        if (poster.getEndDate() != null) {
-            vals.put("EndDate", DateFormat.format(DateUtil.DATE_FORMAT, poster.getEndDate()).toString());
-        }
-        if (poster.getStartTime() != null) {
-            vals.put("StartTime", DateFormat.format(DateUtil.DATE_FORMAT, poster.getStartTime()).toString());
-        }
-        if (poster.getEndTime() != null) {
-            vals.put("EndTime", DateFormat.format(DateUtil.DATE_FORMAT, poster.getEndTime()).toString());
-        }
-        vals.put("PhotoName", poster.getPhotoName());
+        vals = this.setContentValues(vals, poster);
 
         int numRowsAffected = db.update(DatabaseHandler.TABLE_POSTER, vals, "Id = " + poster.getId(), null);
 
@@ -182,6 +132,36 @@ public class PosterQueries {
         return posters;
     }
 
+    private ContentValues setContentValues(ContentValues vals, Poster poster) {
+
+        if (poster.getCreated() != null) {
+            vals.put("Created", DateFormat.format(DateUtil.DATE_FORMAT, poster.getCreated()).toString());
+        }
+
+        vals.put("CreatedByUserId", poster.getCreatedByUserId());
+        vals.put("Title", poster.getTitle());
+        vals.put("PosterType", poster.getPosterType().toString());
+        vals.put("Address", poster.getAddress());
+        vals.put("City", poster.getCity());
+        vals.put("StateProv", poster.getStateProv());
+        vals.put("Details", poster.getDetails());
+
+        if (poster.getStartDate() != null) {
+            vals.put("StartDate", DateFormat.format(DateUtil.DATE_FORMAT, poster.getStartDate()).toString());
+        }
+        if (poster.getEndDate() != null) {
+            vals.put("EndDate", DateFormat.format(DateUtil.DATE_FORMAT, poster.getEndDate()).toString());
+        }
+        if (poster.getStartTime() != null) {
+            vals.put("StartTime", DateFormat.format(DateUtil.DATE_FORMAT, poster.getStartTime()).toString());
+        }
+        if (poster.getEndTime() != null) {
+            vals.put("EndTime", DateFormat.format(DateUtil.DATE_FORMAT, poster.getEndTime()).toString());
+        }
+        vals.put("PhotoName", poster.getPhotoName());
+
+        return vals;
+    }
 
     private Poster setPosterFields(Cursor cursor, Poster p) {
         if (p == null) {
