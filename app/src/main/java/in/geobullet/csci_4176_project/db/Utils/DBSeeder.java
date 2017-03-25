@@ -227,7 +227,7 @@ public class DBSeeder {
             poster.setStartTime(startDateCal1.getTime());
             poster.setEndTime(endDateCal1.getTime());
 
-            poster.setPhotoName("poster_" + i + ".jpg");
+            poster.setPhotoName("poster_" + (i + 1) + ".jpg");
 
             int posterId = dbHandler.addPoster(poster);
 
