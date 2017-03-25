@@ -60,37 +60,165 @@ public class DBSeeder {
         List<Poster> allPosters = new ArrayList<>();
 
 
+
         /*********** Begin add all posters ****************/
 
-        // todo: [set the title, details etc of the posters individually.
-        // todo: Put all the titles in an array, details in an array, then grab them
-        // todo: by index and set them here to reduce code duplication]
+        // todo fill in
+        String[] posterTitles = {
+                "", "", "", "",
+                "", "", "", "",
+                "", "", "", "",
+                "", "", ""
+        };
 
-        for (int i = 1; i <= 15; i++) {
+        // todo set to Event or Service
+        PosterType[] posterTypes = {
+                PosterType.Event, PosterType.Event, PosterType.Event, PosterType.Event,
+                PosterType.Event, PosterType.Event, PosterType.Event, PosterType.Event,
+                PosterType.Event, PosterType.Event, PosterType.Event, PosterType.Event,
+                PosterType.Event, PosterType.Event, PosterType.Event
+        };
+
+        // todo fill in
+        String[] posterAddresses = {
+                "", "", "", "",
+                "", "", "", "",
+                "", "", "", "",
+                "", "", ""
+        };
+
+        // todo fill in
+        String[] posterCities = {
+                "", "", "", "",
+                "", "", "", "",
+                "", "", "", "",
+                "", "", ""
+        };
+
+        // todo fill in
+        String[] posterStateProvs = {
+                "", "", "", "",
+                "", "", "", "",
+                "", "", "", "",
+                "", "", ""
+        };
+
+        // todo fill in
+        String[] posterDetails = {
+                "", "", "", "",
+                "", "", "", "",
+                "", "", "", "",
+                "", "", ""
+        };
+
+        // todo fill in
+        int[] posterStartDateYears = {
+                2017, 2017, 2017, 2017,
+                2017, 2017, 2017, 2017,
+                2017, 2017, 2017, 2017,
+                2017, 2017, 2017
+        };
+
+        // todo fill in
+        int[] posterStartDateMonths = {
+                Calendar.JUNE, Calendar.JUNE, Calendar.JUNE, Calendar.JUNE,
+                Calendar.JUNE, Calendar.JUNE, Calendar.JUNE, Calendar.JUNE,
+                Calendar.JUNE, Calendar.JUNE, Calendar.JUNE, Calendar.JUNE,
+                Calendar.JUNE, Calendar.JUNE, Calendar.JUNE
+        };
+
+        // todo set (1-31)
+        int[] posterStartDateDays = {
+                20, 20, 20, 20,
+                20, 20, 20, 20,
+                20, 20, 20, 20,
+                20, 20, 20
+        };
+
+        // todo set (1-24)
+        int[] posterStartDateHours = {
+                19, 19, 19, 19,
+                19, 19, 19, 19,
+                19, 19, 19, 19,
+                19, 19, 19
+        };
+
+        // todo set (0-59)
+        int[] posterStartDateMinutes = {
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0
+        };
+
+        // todo set
+        int[] posterEndDateYears = {
+                2017, 2017, 2017, 2017,
+                2017, 2017, 2017, 2017,
+                2017, 2017, 2017, 2017,
+                2017, 2017, 2017
+        };
+
+        // todo set
+        int[] posterEndDateMonths = {
+                Calendar.JUNE, Calendar.JUNE, Calendar.JUNE, Calendar.JUNE,
+                Calendar.JUNE, Calendar.JUNE, Calendar.JUNE, Calendar.JUNE,
+                Calendar.JUNE, Calendar.JUNE, Calendar.JUNE, Calendar.JUNE,
+                Calendar.JUNE, Calendar.JUNE, Calendar.JUNE
+        };
+
+        // todo set (1-31)
+        int[] posterEndDateDays = {
+                20, 20, 20, 20,
+                20, 20, 20, 20,
+                20, 20, 20, 20,
+                20, 20, 20
+        };
+
+        // todo set (1-24)
+        int[] posterEndDateHours = {
+                22, 22, 22, 22,
+                22, 22, 22, 22,
+                22, 22, 22, 22,
+                22, 22, 22
+        };
+
+        // todo set (0-59)
+        int[] posterEndDateMinutes = {
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0
+        };
+
+        for (int i = 0; i < 15; i++) {
             Poster poster = new Poster();
 
             Calendar pCal1 = Calendar.getInstance();
             poster.setCreated(pCal1.getTime());
             poster.setCreatedByUserId(currentUser.getId());
 
-            poster.setTitle(""); // todo
-            poster.setPosterType(PosterType.Event); // todo
-            poster.setAddress(""); // todo
-            poster.setCity(""); // todo
-            poster.setStateProv(""); // todo
-            poster.setDetails(""); // todo
+            poster.setTitle(posterTitles[i]);
+            poster.setPosterType(posterTypes[i]);
+            poster.setAddress(posterAddresses[i]);
+            poster.setCity(posterCities[i]);
+            poster.setStateProv(posterStateProvs[i]);
+            poster.setDetails(posterDetails[i]);
 
             Calendar startDateCal1 = Calendar.getInstance();
-            startDateCal1.set(Calendar.YEAR, 2017); // todo
-            startDateCal1.set(Calendar.MONTH, Calendar.JUNE); // todo
-            startDateCal1.set(Calendar.DATE, 20); // todo
-            startDateCal1.set(Calendar.HOUR_OF_DAY, 19); // 7:00 pm // todo
-            startDateCal1.set(Calendar.MINUTE, 0); // todo
+            startDateCal1.set(Calendar.YEAR, posterStartDateYears[i]);
+            startDateCal1.set(Calendar.MONTH, posterStartDateMonths[i]);
+            startDateCal1.set(Calendar.DATE, posterStartDateDays[i]);
+            startDateCal1.set(Calendar.HOUR_OF_DAY, posterStartDateHours[i]);
+            startDateCal1.set(Calendar.MINUTE, posterStartDateMinutes[i]);
             startDateCal1.set(Calendar.SECOND, 0);
 
-            Calendar endDateCal1 = (Calendar) startDateCal1.clone();
-            endDateCal1.set(Calendar.HOUR_OF_DAY, 22); // 10:00 pm // todo
-            endDateCal1.set(Calendar.MINUTE, 0); // todo
+            Calendar endDateCal1 = Calendar.getInstance();
+            endDateCal1.set(Calendar.YEAR, posterEndDateYears[i]);
+            endDateCal1.set(Calendar.MONTH, posterEndDateMonths[i]);
+            endDateCal1.set(Calendar.DATE, posterEndDateDays[i]);
+            endDateCal1.set(Calendar.HOUR_OF_DAY, posterEndDateHours[i]);
+            endDateCal1.set(Calendar.MINUTE, posterEndDateMinutes[i]);
             endDateCal1.set(Calendar.SECOND, 0);
 
             poster.setStartDate(startDateCal1.getTime());
@@ -105,7 +233,7 @@ public class DBSeeder {
 
             poster = dbHandler.getPosterById(posterId);
 
-            Log.d("Seeding", "Added poster " + i + ": " + poster.toString());
+            Log.d("Seeding", "Added poster " + (i + 1) + ": " + poster.toString());
 
             allPosters.add(poster);
         }
@@ -113,7 +241,7 @@ public class DBSeeder {
         /*********** End add all posters ****************/
 
 
-        /*********** Begin all Board Poster Pairs (add all postesr to board 1) ************/
+        /*********** Begin all Board Poster Pairs (add all posters to board 1) ************/
 
         for (Poster p: allPosters) {
 
