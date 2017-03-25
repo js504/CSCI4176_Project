@@ -257,11 +257,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public List<Poster> getPostersForUser(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        // todo finish
+        PosterQueries pq = new PosterQueries(db);
 
+        List<Poster> posters = pq.getPostersForUser(userId);
 
-        return null;
+        db.close();
+
+        return posters;
     }
 
     /* End Poster Queries */
