@@ -56,7 +56,6 @@ public class BoardQueries {
         if (cursor.moveToFirst()) {
             do {
                 b = this.setBoardFields(cursor, b);
-
             } while (cursor.moveToNext());
         }
 
