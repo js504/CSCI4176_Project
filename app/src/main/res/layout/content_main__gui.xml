@@ -86,6 +86,14 @@
                 android:src="@drawable/poster_8"/>
 
             <ImageView
+                android:id="@+id/poster_9"
+                android:layout_width="124dp"
+                android:layout_height="144dp"
+                android:layout_marginTop="330dp"
+                android:layout_marginLeft="130dp"
+                android:src="@drawable/poster_9"/>
+
+            <ImageView
                 android:id="@+id/poster_10"
                 android:layout_width="124dp"
                 android:layout_height="144dp"
