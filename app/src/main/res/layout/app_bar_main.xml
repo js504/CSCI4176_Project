@@ -24,7 +24,7 @@
 
 
         <include
-            layout="@layout/content_main"
+            layout="@layout/activity_maps"
             android:id="@+id/content_main"/>
 
 

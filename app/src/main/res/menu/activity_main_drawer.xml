@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_menu">
 
     <group android:checkableBehavior="single">
         <item
@@ -24,10 +25,6 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Manage Bulletins" />
         <item
-            android:id="@+id/create_nearByBulletins"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Nearby Bulletins" />
-        <item
             android:id="@+id/nav_searchEvents"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Search Events" />
@@ -37,24 +34,14 @@
             android:title="Manage Events" />
     </group>
 
-    <item android:title="More Cool Stuff">
+    <item android:title="Admin Tools"
+        android:id="@+id/admin_tools_menu">
         <menu>
-            <item
-                android:id="@+id/nav_createEvents"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Create New Event" />
-            <item
-                android:id="@+id/nav_addEvent"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Add one of My Event" />
             <item
                 android:id="@+id/nav_delBulletinBoards"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Delete Bulletin Boards" />
-            <item
-                android:id="@+id/nav_achievement"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Achievements" />
+
         </menu>
     </item>
 

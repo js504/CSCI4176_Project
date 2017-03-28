@@ -24,11 +24,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import in.geobullet.csci_4176_project.Utils.NavViewListener;
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
-public class Account_info extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Account_info extends AppCompatActivity {
 
     //hardcoded poster items
     public static int[] prgmImages={R.drawable.poster_1,R.drawable.poster_2,R.drawable.poster_3,R.drawable.poster_4,R.drawable.poster_5,R.drawable.poster_6,R.drawable.poster_7,R.drawable.poster_8,R.drawable.poster_9};
@@ -104,8 +104,12 @@ public class Account_info extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
@@ -116,6 +120,13 @@ public class Account_info extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+
     }
 
     @Override
@@ -140,54 +151,4 @@ public class Account_info extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_accountInfo) {
-            // Handle the camera action
-
-            //startActivity(new Intent(MainActivity.this,Main_GUI.class));
-
-        } else if (id == R.id.nav_MainGUI) {
-            Intent i = new Intent(Account_info.this, Main_GUI.class);
-            finish();
-            startActivity(i);
-
-        } else if (id == R.id.nav_mapGUI) {
-
-            //Intent i = new Intent(MainActivity.this, MapsActivity.class);
-            //startService(i);
-            //vf.setDisplayedChild(1);
-
-        } else if (id == R.id.create_poster) {
-
-            Intent i = new Intent(Account_info.this, CreateNewPoster.class);
-            startActivity(i);
-            //vf.setDisplayedChild(2);
-
-        } else if (id == R.id.nav_manageBulletins) {
-
-        } else if (id == R.id.create_nearByBulletins) {
-
-        } else if (id == R.id.nav_searchEvents) {
-
-        } else if (id == R.id.nav_manageEvents) {
-
-        } else if (id == R.id.nav_createEvents) {
-
-        } else if (id == R.id.nav_addEvent) {
-
-        } else if (id == R.id.nav_delBulletinBoards) {
-
-        } else if (id == R.id.nav_achievement) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }

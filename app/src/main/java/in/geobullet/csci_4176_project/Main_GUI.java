@@ -14,8 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class Main_GUI extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import in.geobullet.csci_4176_project.Utils.NavViewListener;
+
+public class Main_GUI extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +72,15 @@ public class Main_GUI extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+        //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -107,51 +114,4 @@ public class Main_GUI extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_accountInfo) {
-            Intent i = new Intent(Main_GUI.this, Login.class);
-            finish();
-            startActivity(i);
-        } else if (id == R.id.nav_MainGUI) {
-
-
-        } else if (id == R.id.nav_mapGUI) {
-
-            //Intent i = new Intent(MainActivity.this, MapsActivity.class);
-            //startService(i);
-            //vf.setDisplayedChild(1);
-
-        } else if (id == R.id.create_poster) {
-
-            Intent i = new Intent(Main_GUI.this, CreateNewPoster.class);
-            startActivity(i);
-            //vf.setDisplayedChild(2);
-
-        } else if (id == R.id.nav_manageBulletins) {
-
-        } else if (id == R.id.create_nearByBulletins) {
-
-        } else if (id == R.id.nav_searchEvents) {
-
-        } else if (id == R.id.nav_manageEvents) {
-
-        } else if (id == R.id.nav_createEvents) {
-
-        } else if (id == R.id.nav_addEvent) {
-
-        } else if (id == R.id.nav_delBulletinBoards) {
-
-        } else if (id == R.id.nav_achievement) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }

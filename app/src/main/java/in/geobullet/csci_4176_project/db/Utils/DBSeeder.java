@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import in.geobullet.csci_4176_project.MainActivity;
+import in.geobullet.csci_4176_project.SessionData;
 import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
@@ -52,6 +54,7 @@ public class DBSeeder {
         b1.setLatitude(44.64876);
 
         int board1Id = dbHandler.addBoard(b1);
+        SessionData.boardId = board1Id;
 
         b1 = dbHandler.getBoardById(board1Id);
 
