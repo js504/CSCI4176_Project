@@ -6,6 +6,7 @@
 
 package in.geobullet.csci_4176_project;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,10 +22,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
+import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
@@ -49,24 +55,56 @@ public class Account_info extends AppCompatActivity {
             Log.i("id",Integer.toString(id));
         }
 
-        TextView username = (TextView) findViewById(R.id.editUsername);
-        TextView first_name = (TextView) findViewById(R.id.edit_firstname);
-        TextView last_name = (TextView) findViewById(R.id.editLastname);
-        TextView email = (TextView) findViewById(R.id.edit_Email);
+
+        final TextView username = (TextView) findViewById(R.id.editUsername);
+        final TextView first_name = (TextView) findViewById(R.id.edit_firstname);
+        final TextView last_name = (TextView) findViewById(R.id.editLastname);
+        final TextView email = (TextView) findViewById(R.id.edit_Email);
+        final TextView oldpwd = (TextView) findViewById(R.id.editOldpwd);
+        final TextView newpwd = (TextView) findViewById(R.id.edit_Newpwd);
 
 
-        User currentUser = SessionData.currentUser;
-
+        final User currentUser = SessionData.currentUser;
+        List<Poster> userPoster = null;
         if (currentUser != null) {
             username.setText(currentUser.getDisplayName());
             first_name.setText(currentUser.getFirstName());
             last_name.setText(currentUser.getLastName());
             email.setText(currentUser.getEmail());
+            userPoster = db.getPostersForUser(currentUser.getId());
         }
 
 
+        //button to update the user's information
+        Button submit_button = (Button) findViewById(R.id.submit_changes);
+        submit_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                assert currentUser != null;
+                if(oldpwd.getText().toString().equals(currentUser.getPassword())) {
+                    currentUser.setDisplayName(username.getText().toString());
+                    currentUser.setFirstName(first_name.getText().toString());
+                    currentUser.setLastName(last_name.getText().toString());
+                    currentUser.setEmail(email.getText().toString());
+                    currentUser.setPassword(newpwd.getText().toString());
+
+                    db.updateUser(currentUser);
+                    Intent intent = new Intent(Account_info.this, Account_info.class);
+                    finish();
+                    startActivity(intent);
+                }
+                else{
+                    //showing toast message alert user that the original password not match when trying to change user information
+                    Context context = getApplicationContext();
+                    CharSequence text = "Original password not valid!";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            }
+        });
+
         ListView lv=(ListView) findViewById(R.id.listView);
-        lv.setAdapter(new CustomAdapter(this, prgmNameList,prgmImages));
+        lv.setAdapter(new CustomAdapter(this, userPoster));
 
         //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,6 +118,10 @@ public class Account_info extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
+
 
         //menu component
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
