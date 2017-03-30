@@ -13,8 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import java.util.List;
 
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
+import in.geobullet.csci_4176_project.db.Classes.Board;
+import in.geobullet.csci_4176_project.db.Classes.Poster;
+import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
 public class Main_GUI extends AppCompatActivity{
 
@@ -22,9 +29,32 @@ public class Main_GUI extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__gui);
+        final DatabaseHandler dbHandler = new DatabaseHandler(this);
 
+        int BOARD_ID = 1;
+        int left_margin_index = 1;
 
-//        int BOARD_ID = 1;
+        Board board = dbHandler.getBoardById(BOARD_ID);
+
+        if (board != null) {
+
+            // todo: Use board to set page title, radius,
+
+           List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(BOARD_ID);
+
+            for (Poster p : postersForBoard1) {
+
+                ImageView iv = new ImageView(this);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 160);
+
+                layoutParams.setMargins(left_margin_index*50, 100, 0, 0);
+                iv.setLayoutParams(layoutParams);
+
+                //top_margin_index++;
+                left_margin_index++;
+            }
+        }
 //
 //        final DatabaseHandler dbHandler = new DatabaseHandler(this);
 //
