@@ -16,8 +16,10 @@
         android:layout_width="336dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp">
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -42,8 +44,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="yourusername"
-                android:layout_below="@+id/displayname"
-                android:layout_alignEnd="@+id/button2" />
+                android:layout_below="@+id/displayname"/>
 
             <TextView
                 android:id="@+id/firstname"
@@ -51,8 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="First Name: "
                 android:textSize="20sp"
-                android:layout_below="@+id/editUsername"
-                android:layout_alignStart="@+id/button2" />
+                android:layout_below="@+id/editUsername"/>
 
             <EditText
                 android:id="@+id/edit_firstname"

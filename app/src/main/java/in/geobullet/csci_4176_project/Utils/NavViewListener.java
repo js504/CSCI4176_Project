@@ -10,9 +10,11 @@ import android.view.MenuItem;
 import in.geobullet.csci_4176_project.Account_info;
 import in.geobullet.csci_4176_project.CreateNewPoster;
 import in.geobullet.csci_4176_project.Login;
+import in.geobullet.csci_4176_project.MainActivity;
 import in.geobullet.csci_4176_project.Main_GUI;
 import in.geobullet.csci_4176_project.Manage_Bulletins;
 import in.geobullet.csci_4176_project.MapsActivity;
+import in.geobullet.csci_4176_project.Nearby_bulletin_boards;
 import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.SessionData;
 
@@ -32,8 +34,6 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        //swtich the layout of the content
-        //ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -57,28 +57,30 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
 
             Intent i = new Intent(context, Main_GUI.class);
             context.startActivity(i);
-            //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_mapGUI) {
             Intent i = new Intent(context, MapsActivity.class);
             context.startActivity(i);
-            //vf.setDisplayedChild(1);
 
         } else if (id == R.id.create_poster) {
 
             Intent i = new Intent(context, CreateNewPoster.class);
             context.startActivity(i);
-            //vf.setDisplayedChild(2);
 
-        } else if (id == R.id.nav_manageBulletins) {
+        } else if (id == R.id.manage_my_bulletin_boards) {
+
             Intent i = new Intent(context, Manage_Bulletins.class);
             context.startActivity(i);
+
         } else if (id == R.id.nav_searchEvents) {
 
-        } else if (id == R.id.nav_manageEvents) {
+        } else if (id == R.id.nav_delBulletinBoards) {
 
-        }  else if (id == R.id.nav_delBulletinBoards) {
-
+        }else if (id == R.id.nav_nearby_bulletin_boards) {
+            if( !(context instanceof MainActivity)) {
+                Intent i = new Intent(context, Nearby_bulletin_boards.class);
+                context.startActivity(i);
+            }
         }
 
         return true;

@@ -144,19 +144,19 @@ public class MainActivity extends AppCompatActivity {
                         menuItem.setVisible(false);
                     }
 
-                    menuItem = navMenu.findItem(R.id.nav_manageBulletins);
-                    if(menuItem != null){
-                        menuItem.setVisible(false);
-                    }
-
-                    menuItem = navMenu.findItem(R.id.nav_manageEvents);
-                    if(menuItem != null){
-                        menuItem.setVisible(false);
-                    }
-
                     menuItem = navMenu.findItem(R.id.admin_tools_menu);
                     if(menuItem != null){
                         menuItem.setVisible(false);
+                    }
+
+                    menuItem = navMenu.findItem(R.id.manage_my_posters);
+                    if(menuItem != null){
+                        menuItem.setVisible(false);
+                    }
+
+                    menuItem = navMenu.findItem(R.id.nav_accountInfo);
+                    if(menuItem != null){
+                        menuItem.setTitle("Log in");
                     }
                 }
             }
@@ -181,12 +181,7 @@ public class MainActivity extends AppCompatActivity {
                         menuItem.setVisible(true);
                     }
 
-                    menuItem = navMenu.findItem(R.id.nav_manageBulletins);
-                    if(menuItem != null){
-                        menuItem.setVisible(true);
-                    }
-
-                    menuItem = navMenu.findItem(R.id.nav_manageEvents);
+                    menuItem = navMenu.findItem(R.id.manage_my_posters);
                     if(menuItem != null){
                         menuItem.setVisible(true);
                     }

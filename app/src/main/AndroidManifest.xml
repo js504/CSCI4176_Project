@@ -43,7 +43,8 @@
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Login" />
-        <activity android:name=".Manage_Bulletins"></activity>
+        <activity android:name=".Manage_Bulletins" />
+        <activity android:name=".Nearby_bulletin_boards"></activity>
     </application>
 
 </manifest>

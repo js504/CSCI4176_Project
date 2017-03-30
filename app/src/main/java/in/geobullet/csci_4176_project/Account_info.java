@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterPoster;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.Classes.User;
@@ -62,7 +63,6 @@ public class Account_info extends AppCompatActivity {
         final TextView email = (TextView) findViewById(R.id.edit_Email);
         final TextView oldpwd = (TextView) findViewById(R.id.editOldpwd);
         final TextView newpwd = (TextView) findViewById(R.id.edit_Newpwd);
-
 
         final User currentUser = SessionData.currentUser;
         List<Poster> userPoster = null;
@@ -104,7 +104,7 @@ public class Account_info extends AppCompatActivity {
         });
 
         ListView lv=(ListView) findViewById(R.id.listView);
-        lv.setAdapter(new CustomAdapter(this, userPoster));
+        lv.setAdapter(new CustomAdapterPoster(this, userPoster));
 
         //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -149,6 +149,12 @@ public class Account_info extends AppCompatActivity {
         //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+
+        //update header information about user
+        View hView =  navigationView.getHeaderView(0);
+        TextView welcome_menu = (TextView)hView.findViewById(R.id.nav_welcome);
+        welcome_menu.setText("Welcome: " + SessionData.currentUser.getFirstName() +" "+ SessionData.currentUser.getLastName());
+
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

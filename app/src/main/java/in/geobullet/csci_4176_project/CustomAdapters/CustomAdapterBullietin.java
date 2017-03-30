@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project;
+package in.geobullet.csci_4176_project.CustomAdapters;
 
 /**
  * Created by tianyewang on 2017-03-22.
@@ -15,15 +15,19 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import in.geobullet.csci_4176_project.Manage_Bulletins;
+import in.geobullet.csci_4176_project.R;
+import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
 
 
-public class CustomAdapter extends BaseAdapter{
+public class CustomAdapterBullietin extends BaseAdapter{
     private String [] posternames;
     private Context context;
     private List<Poster> posters;
+    private List<Board> board;
     private static LayoutInflater inflater=null;
-    public CustomAdapter(Account_info mainActivity, List<Poster> posters) {
+    public CustomAdapterBullietin(Manage_Bulletins mainActivity, List<Poster> posters) {
         this.posternames =posternames;
         context=mainActivity;
         this.posters =posters;
@@ -53,11 +57,10 @@ public class CustomAdapter extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent) {
         Holder holder=new Holder();
         View listview;
-        listview = inflater.inflate(R.layout.custom_poster_listview, null);
-        holder.tv=(TextView) listview.findViewById(R.id.textView1);
-        holder.img=(ImageView) listview.findViewById(R.id.imageView1);
+        listview = inflater.inflate(R.layout.custom_board_listview, null);
+        holder.tv=(TextView) listview.findViewById(R.id.boardtext);
+        holder.img=(ImageView) listview.findViewById(R.id.boardimage);
         holder.tv.setText(posters.get(position).getTitle());
-
         String name =posters.get(position).getIconName();
         name = name.substring(0, name.lastIndexOf("."));
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
