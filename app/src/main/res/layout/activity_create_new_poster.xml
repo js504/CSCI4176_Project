@@ -239,18 +239,27 @@
                 android:contentDescription="@string/poster_preview_desc"
                 />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_poster_error_msg"
+                android:visibility="gone"
+                android:textColor="@color/errorText"
+                android:layout_below="@id/poster_preview"
+                />
+
+
             <Button
                 android:layout_marginTop="25dp"
                 android:layout_width="300dp"
                 android:layout_height="75dp"
                 android:id="@+id/submit_poster_button"
                 android:text="@string/submit_poster"
-                android:layout_below="@id/poster_preview_label"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_below="@id/add_poster_error_msg"
+                android:onClick="addPosterOnClick"
                 />
-
-
 
         </RelativeLayout>
     </ScrollView>

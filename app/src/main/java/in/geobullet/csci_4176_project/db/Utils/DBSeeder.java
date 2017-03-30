@@ -56,6 +56,8 @@ public class DBSeeder {
         b1.setCreatedByUserId(u1.getId());
 
         int board1Id = dbHandler.addBoard(b1);
+
+        //Added boardId to SessionData class
         SessionData.boardId = board1Id;
 
         b1 = dbHandler.getBoardById(board1Id);
