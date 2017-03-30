@@ -159,6 +159,7 @@ public class Poster {
 
     public void setPhotoName(String photoName) {
         this.photoName = photoName;
+        iconName = photoName.substring(0, photoName.lastIndexOf(".")) +"_icon.png";
     }
 
     @Override
