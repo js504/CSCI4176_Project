@@ -58,7 +58,7 @@ public class CustomAdapter extends BaseAdapter{
         holder.img=(ImageView) listview.findViewById(R.id.imageView1);
         holder.tv.setText(posters.get(position).getTitle());
 
-        String name =posters.get(position).getPhotoName();
+        String name =posters.get(position).getIconName();
         name = name.substring(0, name.lastIndexOf("."));
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
         Log.i("name", Integer.toString(id));

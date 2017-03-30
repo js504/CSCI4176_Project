@@ -23,6 +23,7 @@ public class Poster {
     private Date startTime;
     private Date endTime;
     private String photoName;
+    private String iconName;
 
     public Poster() {
 
@@ -44,6 +45,8 @@ public class Poster {
         this.startTime = startTime;
         this.endTime = endTime;
         this.photoName = photoName;
+        iconName = photoName.substring(0, photoName.lastIndexOf(".")) +"_icon.png";
+
     }
 
     public int getId() {
@@ -156,6 +159,8 @@ public class Poster {
 
     public void setPhotoName(String photoName) {
         this.photoName = photoName;
+        iconName = photoName.substring(0, photoName.lastIndexOf(".")) +"_icon.png";
+
     }
 
     @Override
@@ -176,6 +181,14 @@ public class Poster {
                 ", endTime=" + DateUtil.formatTime(endTime) +
                 ", photoName='" + photoName + '\'' +
                 '}';
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
     }
 }
 

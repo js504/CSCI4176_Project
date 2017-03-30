@@ -52,6 +52,8 @@ public class DBSeeder {
         b1.setRadiusInMeters(1000);
         b1.setLongitude(-63.57523);
         b1.setLatitude(44.64876);
+        //add this to display board created by user ID
+        b1.setCreatedByUserId(u1.getId());
 
         int board1Id = dbHandler.addBoard(b1);
         SessionData.boardId = board1Id;

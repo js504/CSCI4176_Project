@@ -11,6 +11,7 @@ import in.geobullet.csci_4176_project.Account_info;
 import in.geobullet.csci_4176_project.CreateNewPoster;
 import in.geobullet.csci_4176_project.Login;
 import in.geobullet.csci_4176_project.Main_GUI;
+import in.geobullet.csci_4176_project.Manage_Bulletins;
 import in.geobullet.csci_4176_project.MapsActivity;
 import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.SessionData;
@@ -70,7 +71,7 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
             //vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_manageBulletins) {
-            Intent i = new Intent(context, Login.class);
+            Intent i = new Intent(context, Manage_Bulletins.class);
             context.startActivity(i);
         } else if (id == R.id.nav_searchEvents) {
 

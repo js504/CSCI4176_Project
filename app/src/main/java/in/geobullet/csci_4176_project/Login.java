@@ -65,7 +65,6 @@ public class Login extends AppCompatActivity {
                         finish();
 
                         i.putExtra("user", usr.getId());
-                        Log.i("idxx",Integer.toString(usr.getId()));
                         SessionData.currentUser = usr;
 
                         startActivity(i);

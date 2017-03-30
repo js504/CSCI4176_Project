@@ -37,7 +37,7 @@ import in.geobullet.csci_4176_project.db.DatabaseHandler;
 public class Account_info extends AppCompatActivity {
 
     //hardcoded poster items
-    public static int[] prgmImages={R.drawable.poster_1,R.drawable.poster_2,R.drawable.poster_3,R.drawable.poster_4,R.drawable.poster_5,R.drawable.poster_6,R.drawable.poster_7,R.drawable.poster_8,R.drawable.poster_9};
+    public static int[] prgmImages={R.drawable.poster_1_icon,R.drawable.poster_2_icon,R.drawable.poster_3_icon,R.drawable.poster_4_icon,R.drawable.poster_5_icon,R.drawable.poster_6_icon,R.drawable.poster_7_icon,R.drawable.poster_8_icon,R.drawable.poster_9_icon};
     public static String[] prgmNameList={"poster 1","poster 2","poster 3","poster 4","poster 5","poster 6","poster 7","poster 8","poster 9"};
 
     @Override

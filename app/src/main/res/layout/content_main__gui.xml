@@ -24,7 +24,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/poster_1"/>
+                android:src="@drawable/poster_1_icon"/>
 
 
             <ImageView
@@ -33,7 +33,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="60dp"
                 android:layout_marginLeft="100dp"
-                android:src="@drawable/poster_2"/>
+                android:src="@drawable/poster_2_icon"/>
 
 
             <ImageView
@@ -42,7 +42,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="200dp"
                 android:layout_marginLeft="100dp"
-                android:src="@drawable/poster_3"/>
+                android:src="@drawable/poster_3_icon"/>
 
 
             <ImageView
@@ -51,7 +51,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="150dp"
                 android:layout_marginLeft="210dp"
-                android:src="@drawable/poster_4"/>
+                android:src="@drawable/poster_4_icon"/>
 
             <ImageView
                 android:id="@+id/poster_5"
@@ -59,7 +59,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginLeft="200dp"
-                android:src="@drawable/poster_5"/>
+                android:src="@drawable/poster_5_icon"/>
 
             <ImageView
                 android:id="@+id/poster_6"
@@ -67,7 +67,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="250dp"
                 android:layout_marginLeft="0dp"
-                android:src="@drawable/poster_6"/>
+                android:src="@drawable/poster_6_icon"/>
 
             <ImageView
                 android:id="@+id/poster_7"
@@ -75,7 +75,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="310dp"
                 android:layout_marginLeft="100dp"
-                android:src="@drawable/poster_7"/>
+                android:src="@drawable/poster_7_icon"/>
 
             <ImageView
                 android:id="@+id/poster_8"
@@ -83,7 +83,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="310dp"
                 android:layout_marginLeft="310dp"
-                android:src="@drawable/poster_8"/>
+                android:src="@drawable/poster_8_icon"/>
 
             <ImageView
                 android:id="@+id/poster_9"
@@ -91,7 +91,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="330dp"
                 android:layout_marginLeft="130dp"
-                android:src="@drawable/poster_9"/>
+                android:src="@drawable/poster_9_icon"/>
 
             <ImageView
                 android:id="@+id/poster_10"
@@ -99,7 +99,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="300dp"
                 android:layout_marginLeft="200dp"
-                android:src="@drawable/poster_10"/>
+                android:src="@drawable/poster_10_icon"/>
 
             <ImageView
                 android:id="@+id/poster_11"
@@ -107,7 +107,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="150dp"
                 android:layout_marginLeft="320dp"
-                android:src="@drawable/poster_11"/>
+                android:src="@drawable/poster_11_icon"/>
 
             <ImageView
                 android:id="@+id/poster_12"
@@ -115,7 +115,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="300dp"
-                android:src="@drawable/poster_12"/>
+                android:src="@drawable/poster_12_icon"/>
 
             <ImageView
                 android:id="@+id/poster_13"
@@ -123,7 +123,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="200dp"
                 android:layout_marginLeft="400dp"
-                android:src="@drawable/poster_13"/>
+                android:src="@drawable/poster_13_icon"/>
 
             <ImageView
                 android:id="@+id/poster_14"
@@ -131,7 +131,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="300dp"
                 android:layout_marginLeft="400dp"
-                android:src="@drawable/poster_14"/>
+                android:src="@drawable/poster_14_icon"/>
 
             <ImageView
                 android:id="@+id/poster_15"
@@ -139,7 +139,7 @@
                 android:layout_height="144dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="400dp"
-                android:src="@drawable/poster_15"/>
+                android:src="@drawable/poster_15_icon"/>
 
         </RelativeLayout>
     </HorizontalScrollView>
