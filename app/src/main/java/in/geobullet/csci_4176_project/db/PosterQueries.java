@@ -88,7 +88,9 @@ public class PosterQueries {
 
         List<Poster> posters = new ArrayList<>();
 
-        String query = "SELECT * FROM Poster WHERE PosterId IN (" + StringUtils.join(posterIds, ",") + ");";
+        String query = "SELECT * FROM Poster WHERE Id IN (" + StringUtils.join(posterIds, ",") + ");";
+
+        Log.d("Poster QUERY", query);
 
         Cursor cursor = db.rawQuery(query, null);
 

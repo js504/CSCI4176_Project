@@ -7,6 +7,8 @@ import android.text.format.DateFormat;
 import android.util.Log;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Utils.DateUtil;
@@ -46,6 +48,24 @@ public class BoardQueries {
         return numRowsAffected == 1;
     }
 
+    public List<Board> getAllBoards() {
+        String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD + " ORDER BY Name ASC;";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        List<Board> boards = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                Board b = null;
+                b = this.setBoardFields(cursor, b);
+                boards.add(b);
+            } while (cursor.moveToNext());
+        }
+
+        return boards;
+    }
+
     public Board getBoardById(int boardId) {
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD + " WHERE Id = " + boardId + ";";
 
@@ -62,6 +82,25 @@ public class BoardQueries {
         // (The calling class is responsible for closing the database)
 
         return b;
+    }
+
+    public List<Board> getAllBoardsForUser(int userId) {
+        String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD + " WHERE CreatedByUserId=" + userId +
+                " ORDER BY Name ASC;";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        List<Board> boards = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                Board b = null;
+                b = this.setBoardFields(cursor, b);
+                boards.add(b);
+            } while (cursor.moveToNext());
+        }
+
+        return boards;
     }
 
     private ContentValues setContentValues(ContentValues vals, Board board) {

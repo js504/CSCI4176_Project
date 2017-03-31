@@ -207,6 +207,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return success;
     }
 
+    public List<Board> getAllBoards() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        List<Board> boards = bqs.getAllBoards();
+
+        db.close();
+
+        return boards;
+    }
+
+    public List<Board> getAllBoardsForUser(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        List<Board> boards = bqs.getAllBoardsForUser(userId);
+
+        db.close();
+
+        return boards;
+    }
+
     public Board getBoardById(int boardId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
