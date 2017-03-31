@@ -13,6 +13,7 @@ import in.geobullet.csci_4176_project.Login;
 import in.geobullet.csci_4176_project.MainActivity;
 import in.geobullet.csci_4176_project.Main_GUI;
 import in.geobullet.csci_4176_project.Manage_Bulletins;
+import in.geobullet.csci_4176_project.Manage_Posters;
 import in.geobullet.csci_4176_project.MapsActivity;
 import in.geobullet.csci_4176_project.Nearby_bulletin_boards;
 import in.geobullet.csci_4176_project.R;
@@ -62,11 +63,6 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
             Intent i = new Intent(context, MapsActivity.class);
             context.startActivity(i);
 
-        } else if (id == R.id.create_poster) {
-
-            Intent i = new Intent(context, CreateNewPoster.class);
-            context.startActivity(i);
-
         } else if (id == R.id.manage_my_bulletin_boards) {
 
             Intent i = new Intent(context, Manage_Bulletins.class);
@@ -76,11 +72,14 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
 
         } else if (id == R.id.nav_delBulletinBoards) {
 
-        }else if (id == R.id.nav_nearby_bulletin_boards) {
+        } else if (id == R.id.nav_nearby_bulletin_boards) {
             if( !(context instanceof MainActivity)) {
                 Intent i = new Intent(context, Nearby_bulletin_boards.class);
                 context.startActivity(i);
             }
+        }else if (id == R.id.manage_my_posters) {
+            Intent i = new Intent(context, Manage_Posters.class);
+            context.startActivity(i);
         }
 
         return true;

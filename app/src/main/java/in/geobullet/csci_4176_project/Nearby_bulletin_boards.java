@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,6 +30,9 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
         DatabaseHandler db = new DatabaseHandler(this);
 
 
+        //need to coorperate with getBoardByLatitudeLongitudeWithinMeters() in DH to work
+        //db.getBoardByLatitudeLongitudeWithinMeters();
+
         //user posters as example for now.
         List<Poster> ps = db.getPostersForUser(currentUser.getId());
 
@@ -46,6 +52,68 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
                 //pass selected poster to new intent for user to edit
                 //intent.putExtra("posterID", (Serializable) selected_poster);
                 startActivity(intent);
+            }
+        });
+
+        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+        final TextView textView = (TextView) findViewById(R.id.textView_seek);
+
+        textView.setText("Location: +" + 50 + "Meters");
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+
+                if(0 <= progresValue && progresValue <= 5) {
+                    progress = 50;
+                    textView.setText("Location: +" + progress + "Meters");
+                }
+                else if(5 < progresValue && progresValue <= 10) {
+                    progress = 100;
+                    textView.setText("Location: +" + progress + "Meters");
+                }
+                else if(10 < progresValue && progresValue <= 15) {
+                    progress = 200;
+                    textView.setText("Location: +" + progress + "Meters");
+                }
+                else if(15 < progresValue && progresValue <= 20) {
+                    progress = 500;
+                    textView.setText("Location: +" + progress + "Meters");
+                }
+                else if(20 < progresValue && progresValue <= 30) {
+                    progress = 1;
+                    textView.setText("Location: +" + progress + "KM");
+                }
+                else if(30 < progresValue && progresValue <= 40) {
+                    progress = 2;
+                    textView.setText("Location: +" + progress + "KM");
+                }
+                else if(40 < progresValue && progresValue <= 50) {
+                    progress = 5;
+                    textView.setText("Location: +" + progress + "KM");
+                }
+                else if(50 < progresValue && progresValue <= 70) {
+                    progress = 10;
+                    textView.setText("Location: +" + progress + "KM");
+                }
+                else if(70 < progresValue && progresValue <= 90) {
+                    progress = 20;
+                    textView.setText("Location: +" + progress + "KM");
+                }
+                else if(90 < progresValue && progresValue <= 100) {
+                    progress = 100;
+                    textView.setText("Location: National");
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //textView.setText("Covered: " + progress + "/" + seekBar.getMax());
             }
         });
 

@@ -11,10 +11,10 @@
         android:layout_width="336dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -25,17 +25,35 @@
             android:paddingTop="@dimen/activity_vertical_margin">
 
             <TextView
-                android:textSize="20dp"
                 android:id="@+id/nearby_board"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nearby Bulletin Boards" />
+                android:text="Nearby Bulletin Boards"
+                android:textSize="20dp" />
 
             <ListView
                 android:id="@+id/nearby_board_list"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="350dp"
                 android:layout_below="@+id/nearby_board" />
+
+            <TextView
+                android:textSize="20dp"
+                android:id="@+id/textView_seek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nearby_board_list"
+                android:layout_marginTop="10dp"
+                android:text="TextView" />
+            />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/textView_seek"/>
+
+
         </RelativeLayout>
     </ScrollView>
 

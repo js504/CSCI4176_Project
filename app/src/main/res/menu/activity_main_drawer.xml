@@ -30,10 +30,6 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Manage My Posters" />
             <item
-                android:id="@+id/create_poster"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="Add Poster" />
-            <item
                 android:id="@+id/nav_accountInfo"
                 android:icon="@drawable/ic_menu_camera"
                 android:title="Account Info" />

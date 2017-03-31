@@ -139,12 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(navMenu != null){
 
-                    MenuItem menuItem = navMenu.findItem(R.id.create_poster);
-                    if(menuItem != null){
-                        menuItem.setVisible(false);
-                    }
-
-                    menuItem = navMenu.findItem(R.id.admin_tools_menu);
+                    MenuItem menuItem = navMenu.findItem(R.id.admin_tools_menu);
                     if(menuItem != null){
                         menuItem.setVisible(false);
                     }
@@ -176,12 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(navMenu != null){
 
-                    MenuItem menuItem = navMenu.findItem(R.id.create_poster);
-                    if(menuItem != null){
-                        menuItem.setVisible(true);
-                    }
-
-                    menuItem = navMenu.findItem(R.id.manage_my_posters);
+                    MenuItem menuItem = navMenu.findItem(R.id.manage_my_posters);
                     if(menuItem != null){
                         menuItem.setVisible(true);
                     }

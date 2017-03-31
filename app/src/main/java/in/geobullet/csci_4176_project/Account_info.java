@@ -71,7 +71,6 @@ public class Account_info extends AppCompatActivity {
             first_name.setText(currentUser.getFirstName());
             last_name.setText(currentUser.getLastName());
             email.setText(currentUser.getEmail());
-            userPoster = db.getPostersForUser(currentUser.getId());
         }
 
 
@@ -102,25 +101,6 @@ public class Account_info extends AppCompatActivity {
                 }
             }
         });
-
-        ListView lv=(ListView) findViewById(R.id.listView);
-        lv.setAdapter(new CustomAdapterPoster(this, userPoster));
-
-        //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(Account_info.this, CreateNewPoster.class);
-                //get the poster by its id
-                //Poster selected_poster = db.getPosterById(position);
-                //pass selected poster to new intent for user to edit
-                //intent.putExtra("posterID", (Serializable) selected_poster);
-                startActivity(intent);
-            }
-        });
-
-
-
 
 
         //menu component

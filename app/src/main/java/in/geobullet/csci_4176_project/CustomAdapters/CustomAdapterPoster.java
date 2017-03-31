@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.Account_info;
+import in.geobullet.csci_4176_project.Manage_Posters;
 import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
 
@@ -25,7 +26,7 @@ public class CustomAdapterPoster extends BaseAdapter{
     private Context context;
     private List<Poster> posters;
     private static LayoutInflater inflater=null;
-    public CustomAdapterPoster(Account_info mainActivity, List<Poster> posters) {
+    public CustomAdapterPoster(Manage_Posters mainActivity, List<Poster> posters) {
         this.posternames =posternames;
         context=mainActivity;
         this.posters =posters;
