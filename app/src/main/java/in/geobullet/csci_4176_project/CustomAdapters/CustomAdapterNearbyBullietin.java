@@ -27,15 +27,15 @@ public class CustomAdapterNearbyBullietin extends BaseAdapter{
     private List<Poster> posters;
     private List<Board> board;
     private static LayoutInflater inflater=null;
-    public CustomAdapterNearbyBullietin(Nearby_bulletin_boards mainActivity, List<Poster> posters) {
+    public CustomAdapterNearbyBullietin(Nearby_bulletin_boards mainActivity, List<Board> board) {
         this.posternames =posternames;
         context=mainActivity;
-        this.posters =posters;
+        this.board =board;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
     public int getCount() {
-        return posters.size();
+        return board.size();
     }
 
     @Override
@@ -60,13 +60,9 @@ public class CustomAdapterNearbyBullietin extends BaseAdapter{
         listview = inflater.inflate(R.layout.custom_board_listview, null);
         holder.tv=(TextView) listview.findViewById(R.id.boardtext);
         holder.img=(ImageView) listview.findViewById(R.id.boardimage);
-        holder.tv.setText(posters.get(position).getTitle());
-        String name =posters.get(position).getIconName();
-        name = name.substring(0, name.lastIndexOf("."));
-        int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
-        Log.i("name", Integer.toString(id));
+        holder.tv.setText(board.get(position).getName());
         //c.getResources().getIdentifier(ImageName, "drawable", c.getPackageName());
-        holder.img.setImageResource(id);
+        holder.img.setImageResource(R.drawable.pin);
         return listview;
     }
 

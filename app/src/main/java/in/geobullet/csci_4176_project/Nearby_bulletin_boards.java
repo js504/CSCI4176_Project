@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterNearbyBullietin;
+import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
@@ -26,21 +27,14 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_bulletin_boards);
 
-
         DatabaseHandler db = new DatabaseHandler(this);
-
 
         //need to coorperate with getBoardByLatitudeLongitudeWithinMeters() in DH to work
         //db.getBoardByLatitudeLongitudeWithinMeters();
 
-        //user posters as example for now.
-        List<Poster> ps = db.getPostersForUser(currentUser.getId());
-
-        Log.i("board", db.getBoardById(SessionData.boardId).getName());
+        List<Board> bl = db.getAllBoards();
         ListView lv=(ListView) findViewById(R.id.nearby_board_list);
-        lv.setAdapter(new CustomAdapterNearbyBullietin(this, ps));
-
-        Log.i("adapter",lv.getAdapter().getItem(0).toString());
+        lv.setAdapter(new CustomAdapterNearbyBullietin(this, bl));
 
         //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

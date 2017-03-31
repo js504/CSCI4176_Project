@@ -11,6 +11,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterBullietin;
+import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
@@ -23,18 +24,11 @@ public class Manage_Bulletins extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_bulletins);
 
-
         DatabaseHandler db = new DatabaseHandler(this);
 
-
-        //user posters as example for now.
-        List<Poster> ps = db.getPostersForUser(currentUser.getId());
-
-        Log.i("board", db.getBoardById(SessionData.boardId).getName());
+        List<Board> bl = db.getAllBoards();
         ListView lv=(ListView) findViewById(R.id.board_list);
-        lv.setAdapter(new CustomAdapterBullietin(this, ps));
-
-        Log.i("adapter",lv.getAdapter().getItem(0).toString());
+        lv.setAdapter(new CustomAdapterBullietin(this, bl));
 
         //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
