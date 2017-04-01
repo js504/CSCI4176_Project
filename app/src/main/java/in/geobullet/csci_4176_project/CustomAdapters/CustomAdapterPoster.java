@@ -38,8 +38,8 @@ public class CustomAdapterPoster extends BaseAdapter{
     }
 
     @Override
-    public Object getItem(int position) {
-        return position;
+    public Poster getItem(int position) {
+        return posters.get(position);
     }
 
     @Override

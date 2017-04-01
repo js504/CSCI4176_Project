@@ -34,9 +34,7 @@ import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
 public class CreateNewPoster extends AppCompatActivity {
 
-    //todo Create function for posting the poster and make sure all required fields are populated
     //todo Create function for uploading pictures from photo gallery
-    //todo polish up UI with some colour and stuff
 
     //Labels of buttons
     private static final String START_DATE_LABEL = "Start Date";
@@ -73,10 +71,13 @@ public class CreateNewPoster extends AppCompatActivity {
     private Button browsePostersButton;
     private Button submitPosterButton;
 
-
+    private final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"};
 
     private DatabaseHandler dbHandler = null;
 
+    private int posterId;
+    private String imgSrc;
+    private String iconSrc;
 
 
     @Override
@@ -84,7 +85,16 @@ public class CreateNewPoster extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_poster);
 
+
         dbHandler = new DatabaseHandler(this);
+
+        posterId = -1;
+
+        imgSrc = "";
+        iconSrc = "";
+
+        Bundle extras = this.getIntent().getExtras();
+
 
         //get reference to radio buttons
         eventRadioButton = (RadioButton)findViewById(R.id.event_radio_button);
@@ -111,6 +121,40 @@ public class CreateNewPoster extends AppCompatActivity {
         endTimeButton = (Button)findViewById(R.id.end_time_button);
         browsePostersButton = (Button)findViewById(R.id.browse_posters_button);
         submitPosterButton = (Button)findViewById(R.id.submit_poster_button);
+
+        if(extras != null){
+            populateFields(extras);
+        }
+
+
+    }
+
+    private void populateFields(Bundle extras){
+        posterId = (int)extras.get("ID");
+        title.setText((String)extras.get("TITLE"));
+        locationAddress.setText((String)extras.get("ADDRESS"));
+        city.setText((String)extras.get("CITY"));
+
+        String startDateStr = (String)extras.get("STARTDATE");
+        startDateStr = "Start Date: " + parseEditDate(startDateStr);
+
+        String endDateStr = (String)extras.get("ENDDATE");
+        endDateStr = "End Date: " + parseEditDate(endDateStr);
+
+        String startTimeStr = (String)extras.get("STARTTIME");
+        startTimeStr = "Start Time: " + parseEditTime(startTimeStr);
+
+        String endTimeStr = (String)extras.get("ENDTIME");
+        endTimeStr = "End Time: " + parseEditTime(endTimeStr);
+
+        startDate.setText(startDateStr);
+        endDate.setText(endDateStr);
+        startTime.setText(startTimeStr);
+        endTime.setText(endTimeStr);
+        details.setText((String)extras.get("DETAILS"));
+        imgSrc = (String)extras.get("IMGSRC");
+        iconSrc = (String)extras.get("IMGICONSRC");
+
 
 
     }
@@ -247,28 +291,48 @@ public class CreateNewPoster extends AppCompatActivity {
 
         if(poster != null){
             errorTv.setVisibility(View.GONE);
-            int posterId = dbHandler.addPoster(poster);
-            poster = dbHandler.getPosterById(posterId);
+            if(posterId != -1){
+                editPosterInDb(poster);
+            }else{
+                addPosterToDb(poster);
+            }
 
-            Log.i("New Poster: ", poster.toString());
 
-            BoardPosterPair boardPosterPair = new BoardPosterPair();
-
-            boardPosterPair.setBoardId(SessionData.boardId);
-            boardPosterPair.setPosterId(posterId);
-
-            int bppId = dbHandler.addBoardPosterPair(boardPosterPair);
-
-            BoardPosterPair bpp = dbHandler.getBoardPosterPairById(bppId);
-
-            Log.d("Seeding", "Added board poster pair: " + bpp.toString());
-            resetFields();
-            Toast.makeText(this, "Poster Created!", Toast.LENGTH_SHORT).show();
         }
         else{
             errorTv.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    private void editPosterInDb(Poster poster){
+        poster.setId(posterId);
+        boolean tmp = dbHandler.updatePoster(poster);
+        Log.i("UPDATED POSTER", poster.toString());
+        if(tmp){
+            Toast.makeText(this, "Poster Updated!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addPosterToDb(Poster poster){
+        posterId = dbHandler.addPoster(poster);
+
+        poster = dbHandler.getPosterById(posterId);
+
+        Log.i("New Poster: ", poster.toString());
+
+        BoardPosterPair boardPosterPair = new BoardPosterPair();
+
+        boardPosterPair.setBoardId(SessionData.boardId);
+        boardPosterPair.setPosterId(posterId);
+
+        int bppId = dbHandler.addBoardPosterPair(boardPosterPair);
+
+        BoardPosterPair bpp = dbHandler.getBoardPosterPairById(bppId);
+
+        Log.d("Seeding", "Added board poster pair: " + bpp.toString());
+        resetFields();
+        Toast.makeText(this, "Poster Created!", Toast.LENGTH_SHORT).show();
     }
 
     private Poster addEventPoster(){
@@ -493,7 +557,8 @@ public class CreateNewPoster extends AppCompatActivity {
         poster.setEndTime(endDateCal.getTime());
 
         //TODO get the photo name
-        poster.setPhotoName("poster_" + 0 + ".png");
+        poster.setPhotoName(imgSrc);
+        poster.setIconName(iconSrc);
 
 
         //int posterId = dbHandler.addPoster(poster);
@@ -501,9 +566,39 @@ public class CreateNewPoster extends AppCompatActivity {
         return poster;
     }
 
+    private String parseEditDate(String date){
+
+
+
+        String parsedDate = "";
+        String[] dateSplit = date.split(" ");
+
+        Log.i("DATE", Integer.toString(dateSplit.length));
+        Log.i("DATE", date);
+
+
+        if(dateSplit.length == 6){
+
+            parsedDate = dateSplit[2].trim() + "-";
+
+            for(int i = 0; i < MONTHS.length; i++){
+                if(MONTHS[i].equals(dateSplit[1].trim())){
+                    parsedDate += (i + 1) + "-";
+                    break;
+                }
+            }
+
+            parsedDate += dateSplit[5].trim();
+
+        }
+
+        return parsedDate;
+    }
+
     private int[] parseDate(String date){
 
         int[] dateArr = null;
+
         String[] getDateSplit = date.split(":");
 
         String[] dateSplit = getDateSplit[1].split("-");
@@ -512,16 +607,49 @@ public class CreateNewPoster extends AppCompatActivity {
             dateArr = new int[3];
 
             for(int i = 0; i < 3; i++){
-                 dateArr[i] = Integer.parseInt(dateSplit[i].trim());
+                dateArr[i] = Integer.parseInt(dateSplit[i].trim());
             }
         }
 
         return dateArr;
     }
 
+
+    private String parseEditTime(String time){
+
+        String[] split = time.split(" ");
+
+        Log.i("TIME", split[3]);
+
+        String[] timeItems = split[3].split(":");
+
+        int hour = Integer.parseInt(timeItems[0]);
+
+        String amPm = "";
+
+        if(hour >= 12){
+            amPm = "pm";
+        }
+        else{
+            amPm = "am";
+        }
+
+        if(hour == 0){
+            hour = 12;
+        } else if (hour > 12) {
+            hour -= 12;
+        }
+
+        String newTime = Integer.toString(hour) + ":" + timeItems[1]  + amPm;
+
+        return newTime;
+    }
+
     private int[] parseTime(String time){
 
         int[] timeIntArr = null;
+
+
 
         String[] timeSplit = time.split(":");
 

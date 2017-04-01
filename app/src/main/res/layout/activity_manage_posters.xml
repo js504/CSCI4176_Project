@@ -34,11 +34,11 @@
         android:id="@+id/create_new_poster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Creste New Poster"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/listView"
         android:layout_marginLeft="110dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginTop="10dp"
+        android:text="Create New Poster"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listView" />
 
 
 </android.support.constraint.ConstraintLayout>
