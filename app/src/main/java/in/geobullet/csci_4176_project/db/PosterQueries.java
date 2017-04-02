@@ -142,7 +142,7 @@ public class PosterQueries {
 
         vals.put("CreatedByUserId", poster.getCreatedByUserId());
         vals.put("Title", poster.getTitle());
-        vals.put("PosterType", poster.getPosterType().toString());
+        vals.put("PosterType", poster.getPosterType().ordinal());
         vals.put("Address", poster.getAddress());
         vals.put("City", poster.getCity());
         vals.put("StateProv", poster.getStateProv());
