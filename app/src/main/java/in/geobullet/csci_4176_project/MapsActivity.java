@@ -1,6 +1,8 @@
 package in.geobullet.csci_4176_project;
 
 import android.Manifest;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -14,6 +16,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,12 +32,15 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity
         implements  OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener,
-        GoogleMap.OnMapClickListener
+        GoogleMap.OnMapClickListener,
+        ResultCallback<Status>
 {
 
     // Logger Tag
@@ -53,6 +62,11 @@ public class MapsActivity extends FragmentActivity
     private static final float MIN_ZOOM = 15.0f;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 67;
 
+    public static final float GEOFENCE_RADIUS = 100.0f;
+    public static final int GEOFENCE_RESPONSIVENESS = 5000;
+    private PendingIntent geofencePendingIntent = null;
+    private boolean geofenceEnable = false;
+
     LocationRequest mLocationRequest;
 
     // Current location
@@ -72,6 +86,10 @@ public class MapsActivity extends FragmentActivity
      *      When a user clicks a pole, pan the camera over to the marker, and zoom down to it
      *      as the pole loads. Serves as an animated loading bar, effectively. Can launch the
      *      db calls at animation start, and then, on load, context switch to the board view.
+     * > Map click => prompt to add new poster/board near there
+     *      When a user clicks the map, prompt the user to add a board in that location.
+     *      Maybe by adding a "shadow" icon of a pole or poster in the location, or something
+     *      similar.
      * >
      */
 
@@ -227,5 +245,46 @@ public class MapsActivity extends FragmentActivity
         //    LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         //}
 
+    }
+
+    public void buildGeoFence(){
+        Geofence fence = new Geofence.Builder()
+                .setCircularRegion(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), GEOFENCE_RADIUS)
+                .setNotificationResponsiveness(GEOFENCE_RESPONSIVENESS)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build();
+        GeofencingRequest fenceRequest = new GeofencingRequest.Builder()
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .addGeofence(fence)
+                .build();
+
+        try{
+            LocationServices.GeofencingApi.addGeofences(
+                    mGoogleApiClient,
+                    fenceRequest,
+                    getGeofencePendingIntent()
+            ).setResultCallback(this);
+
+        }catch(SecurityException e){
+            Log.d(TAG, "can't do this, As not allowed");
+        }
+
+
+    }
+
+    private PendingIntent getGeofencePendingIntent(){
+        if(geofencePendingIntent != null){
+            return geofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceIntentHandler.class);
+        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @Override
+    public void onResult(@NonNull Status status) {
+        if(status.isSuccess()){
+            // set that geofence has been enabled
+            geofenceEnable = true;
+        }
     }
 }
