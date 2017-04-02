@@ -1,6 +1,5 @@
 package in.geobullet.csci_4176_project;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,9 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.Serializable;
-
-import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
@@ -26,8 +22,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_login_gui);
 
-
-        final DatabaseHandler db = new DatabaseHandler(this);
+        final DatabaseHandler dbHandler = new DatabaseHandler(this);
 
         //adding image and animation to the weather
         ImageView iv = (ImageView) findViewById(R.id.earth);
@@ -59,18 +54,23 @@ public class Login extends AppCompatActivity {
                 String email_input = email.getText().toString();
                 String pwd_input = pwd.getText().toString();
 
-                User usr = db.getUserByEmailPass(email_input,pwd_input);
-                db.close();
+                User usr = dbHandler.getUserByEmailPass(email_input,pwd_input);
+                dbHandler.close();
 
                 if(!email_input.equals("")&& !pwd_input.equals("")) {
-                    if (email_input.equals(usr.getEmail()) && pwd_input.equals(usr.getPassword())) {
+
+                    if (usr != null) { // then there was a match and the user was returned
+
                         Intent i = new Intent(Login.this, Account_info.class);
                         finish();
+
                         i.putExtra("user", usr.getId());
-                        Log.i("idxx",Integer.toString(usr.getId()));
+                        SessionData.currentUser = usr;
+
                         startActivity(i);
                     }
-                }else {
+
+                } else {
                     Toast.makeText(getBaseContext(), "Email or password not valid.", Toast.LENGTH_LONG).show();
                 }
             }

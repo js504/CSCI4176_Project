@@ -126,18 +126,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void dropAndRecreateTables() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String dropStmt = "DROP TABLE IF EXISTS ";
+
+        db.execSQL(dropStmt + TABLE_USER);
+        db.execSQL(dropStmt + TABLE_BOARD);
+        db.execSQL(dropStmt + TABLE_POSTER);
+        db.execSQL(dropStmt + TABLE_BOARD_POSTER_PAIR);
+        db.execSQL(dropStmt + TABLE_USER_FAVORITE);
+
+        onCreate(db);
+    }
 
     /* Begin Board Poster Pair Queries */
 
-    public long addBoardPosterPair(BoardPosterPair bpp) {
+    public int addBoardPosterPair(BoardPosterPair bpp) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         BoardPosterPairQueries bppq = new BoardPosterPairQueries(db);
-        long id = bppq.addBoardPosterPair(bpp);
+
+        int id = (int) bppq.addBoardPosterPair(bpp);
 
         db.close();
 
         return id;
+    }
+
+    public BoardPosterPair getBoardPosterPairById(int bppId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardPosterPairQueries bppq = new BoardPosterPairQueries(db);
+
+        BoardPosterPair bpp = bppq.getBoardPosterPairById(bppId);
+
+        db.close();
+
+        return bpp;
     }
 
     public List<BoardPosterPair> getAllBoardPosterPairs() {
@@ -157,28 +183,71 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /* Begin Board Queries */
 
-    public long addBoard(Board board) {
+    public int addBoard(Board board) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         BoardQueries bqs = new BoardQueries(db);
 
-        long id = bqs.addBoard(board);
+        int id = (int) bqs.addBoard(board);
 
         db.close();
 
         return id;
     }
 
-    public Board getBoardById(int id) {
+    public boolean updateBoard(Board board) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         BoardQueries bqs = new BoardQueries(db);
 
-        Board b = bqs.getBoardById(id);
+        boolean success = bqs.updateBoard(board);
+
+        db.close();
+
+        return success;
+    }
+
+    public List<Board> getAllBoards() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        List<Board> boards = bqs.getAllBoards();
+
+        db.close();
+
+        return boards;
+    }
+
+    public List<Board> getAllBoardsForUser(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        List<Board> boards = bqs.getAllBoardsForUser(userId);
+
+        db.close();
+
+        return boards;
+    }
+
+    public Board getBoardById(int boardId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        Board b = bqs.getBoardById(boardId);
 
         db.close();
 
         return b;
+    }
+
+    public List<Board> getBoardByLatitudeLongitudeWithinMeters(double latitude, double longitude, int meters) {
+
+        // todo finish
+
+        return null;
     }
 
     /* End Board Queries */
@@ -187,36 +256,60 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /* Begin Poster Queries */
 
-    public long addPoster(Poster poster) {
+    public int addPoster(Poster poster) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         PosterQueries pq = new PosterQueries(db);
 
-        long id = pq.addPoster(poster);
+        int id = (int) pq.addPoster(poster);
 
         db.close();
 
         return id;
     }
 
-    public Poster getPosterById(int id) {
+    public boolean updatePoster(Poster poster) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         PosterQueries pq = new PosterQueries(db);
 
-        Poster p = pq.getPosterById(id);
+        boolean success = pq.updatePoster(poster);
+
+        db.close();
+
+        return success;
+    }
+
+    public Poster getPosterById(int posterId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        PosterQueries pq = new PosterQueries(db);
+
+        Poster p = pq.getPosterById(posterId);
 
         db.close();
 
         return p;
     }
 
-    public List<Poster> getPostersByBoardId(int boardId) {
+    public List<Poster> getPostersForBoard(int boardId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         PosterQueries pq = new PosterQueries(db);
 
-        List<Poster> posters = pq.getPostersByBoardId(boardId);
+        List<Poster> posters = pq.getPostersForBoard(boardId);
+
+        db.close();
+
+        return posters;
+    }
+
+    public List<Poster> getPostersForUser(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        PosterQueries pq = new PosterQueries(db);
+
+        List<Poster> posters = pq.getPostersForUser(userId);
 
         db.close();
 
@@ -229,24 +322,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /* Begin User Favorite Queries */
 
-    public long addUserFavorite(UserFavorite userFav) {
+    public int addUserFavorite(UserFavorite userFav) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         UserFavoriteQueries ufq = new UserFavoriteQueries(db);
 
-        long id = ufq.addUserFavorite(userFav);
+        int id = (int) ufq.addUserFavorite(userFav);
 
         db.close();
 
         return id;
     }
 
-    public List<UserFavorite> getUserFavoritesByUserId(int userId) {
+    public List<UserFavorite> getUserFavoritesForUser(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         UserFavoriteQueries ufq = new UserFavoriteQueries(db);
 
-        List<UserFavorite> userFavs = ufq.getUserFavoritesByUserId(userId);
+        List<UserFavorite> userFavs = ufq.getUserFavoritesForUser(userId);
 
         db.close();
 
@@ -259,15 +352,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /* Begin User Queries */
 
-    public long addUser(User u) {
+    public int addUser(User u) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         UserQueries uq = new UserQueries(db);
-        long id = uq.addUser(u);
+        int id = (int) uq.addUser(u);
 
         db.close();
 
         return id;
+    }
+
+    public boolean updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserQueries uq = new UserQueries(db);
+        boolean success = uq.updateUser(user);
+
+        db.close();
+
+        return success;
     }
 
     public User getUserById(int id) {

@@ -8,14 +8,22 @@
         android:layout_gravity="center"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/poster_1" />
+        android:src="@drawable/poster_1_icon" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="15dp"
         android:text="TextView" />
+
+    <TextView
+        android:id="@+id/posterViewId"
+        android:text=""
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

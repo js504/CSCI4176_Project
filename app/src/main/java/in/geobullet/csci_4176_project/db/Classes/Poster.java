@@ -2,6 +2,8 @@ package in.geobullet.csci_4176_project.db.Classes;
 
 import java.util.Date;
 
+import in.geobullet.csci_4176_project.db.Utils.DateUtil;
+
 
 /* Class that corresponds to the Poster database table */
 
@@ -21,6 +23,7 @@ public class Poster {
     private Date startTime;
     private Date endTime;
     private String photoName;
+    private String iconName;
 
     public Poster() {
 
@@ -42,6 +45,8 @@ public class Poster {
         this.startTime = startTime;
         this.endTime = endTime;
         this.photoName = photoName;
+        iconName = photoName.substring(0, photoName.lastIndexOf(".")) +"_icon.png";
+
     }
 
     public int getId() {
@@ -154,13 +159,14 @@ public class Poster {
 
     public void setPhotoName(String photoName) {
         this.photoName = photoName;
+        iconName = photoName.substring(0, photoName.lastIndexOf(".")) +"_icon.png";
     }
 
     @Override
     public String toString() {
         return "Poster{" +
                 "id=" + id +
-                ", created=" + created +
+                ", created=" + DateUtil.formatDate(created) +
                 ", createdByUserId=" + createdByUserId +
                 ", title='" + title + '\'' +
                 ", posterType=" + posterType +
@@ -168,12 +174,20 @@ public class Poster {
                 ", city='" + city + '\'' +
                 ", stateProv='" + stateProv + '\'' +
                 ", details='" + details + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
+                ", startDate=" + DateUtil.formatDate(startDate) +
+                ", endDate=" + DateUtil.formatDate(endDate) +
+                ", startTime=" + DateUtil.formatTime(startTime) +
+                ", endTime=" + DateUtil.formatTime(endTime) +
                 ", photoName='" + photoName + '\'' +
                 '}';
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
     }
 }
 

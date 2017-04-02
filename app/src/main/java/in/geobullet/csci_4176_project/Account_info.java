@@ -6,40 +6,39 @@
 
 package in.geobullet.csci_4176_project;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
+import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterPoster;
+import in.geobullet.csci_4176_project.Utils.NavViewListener;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.Classes.User;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
-public class Account_info extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Account_info extends AppCompatActivity {
 
     //hardcoded poster items
-    public static int[] prgmImages={R.drawable.poster_1,R.drawable.poster_2,R.drawable.poster_3,R.drawable.poster_4,R.drawable.poster_5,R.drawable.poster_6,R.drawable.poster_7,R.drawable.poster_8,R.drawable.poster_9};
+    public static int[] prgmImages={R.drawable.poster_1_icon,R.drawable.poster_2_icon,R.drawable.poster_3_icon,R.drawable.poster_4_icon,R.drawable.poster_5_icon,R.drawable.poster_6_icon,R.drawable.poster_7_icon,R.drawable.poster_8_icon,R.drawable.poster_9_icon};
     public static String[] prgmNameList={"poster 1","poster 2","poster 3","poster 4","poster 5","poster 6","poster 7","poster 8","poster 9"};
 
     @Override
@@ -49,47 +48,66 @@ public class Account_info extends AppCompatActivity
 
         //db user info
         final DatabaseHandler db = new DatabaseHandler(this);
+
         int id = 0;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             id = extras.getInt("user");
             Log.i("id",Integer.toString(id));
         }
-        User currentUser = db.getUserById(1);
 
 
+        final TextView username = (TextView) findViewById(R.id.editUsername);
+        final TextView first_name = (TextView) findViewById(R.id.edit_firstname);
+        final TextView last_name = (TextView) findViewById(R.id.editLastname);
+        final TextView email = (TextView) findViewById(R.id.edit_Email);
+        final TextView oldpwd = (TextView) findViewById(R.id.editOldpwd);
+        final TextView newpwd = (TextView) findViewById(R.id.edit_Newpwd);
 
-        TextView username = (TextView) findViewById(R.id.editUsername);
-        username.setText(currentUser.getDisplayName());
-        TextView first_name = (TextView) findViewById(R.id.edit_firstname);
-        first_name.setText(currentUser.getFirstName());
-        TextView last_name = (TextView) findViewById(R.id.editLastname);
-        last_name.setText(currentUser.getLastName());
-        TextView email = (TextView) findViewById(R.id.edit_Email);
-        email.setText(currentUser.getEmail());
+        final User currentUser = SessionData.currentUser;
+        List<Poster> userPoster = null;
+        if (currentUser != null) {
+            username.setText(currentUser.getDisplayName());
+            first_name.setText(currentUser.getFirstName());
+            last_name.setText(currentUser.getLastName());
+            email.setText(currentUser.getEmail());
+        }
 
 
-        ListView lv=(ListView) findViewById(R.id.listView);
-        lv.setAdapter(new CustomAdapter(this, prgmNameList,prgmImages));
+        //button to update the user's information
+        Button submit_button = (Button) findViewById(R.id.submit_changes);
+        submit_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                assert currentUser != null;
+                if(oldpwd.getText().toString().equals(currentUser.getPassword())) {
+                    currentUser.setDisplayName(username.getText().toString());
+                    currentUser.setFirstName(first_name.getText().toString());
+                    currentUser.setLastName(last_name.getText().toString());
+                    currentUser.setEmail(email.getText().toString());
+                    currentUser.setPassword(newpwd.getText().toString());
 
-        //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(Account_info.this, CreateNewPoster.class);
-                //get the poster by its id
-                //Poster selected_poster = db.getPosterById(position);
-                //pass selected poster to new intent for user to edit
-                //intent.putExtra("posterID", (Serializable) selected_poster);
-                startActivity(intent);
+                    db.updateUser(currentUser);
+                    Intent intent = new Intent(Account_info.this, Account_info.class);
+                    finish();
+                    startActivity(intent);
+                }
+                else{
+                    //showing toast message alert user that the original password not match when trying to change user information
+                    Context context = getApplicationContext();
+                    CharSequence text = "Original password not valid!";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
             }
         });
+
 
         //menu component
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //display login username at toolbar
-        getSupportActionBar().setTitle("Login as: "+ currentUser.getDisplayName());
+        getSupportActionBar().setTitle("Login as: " + (currentUser == null ? "" : currentUser.getDisplayName()));
 
 
 
@@ -108,8 +126,18 @@ public class Account_info extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+
+        //update header information about user
+        View hView =  navigationView.getHeaderView(0);
+        TextView welcome_menu = (TextView)hView.findViewById(R.id.nav_welcome);
+        welcome_menu.setText("Welcome: " + SessionData.currentUser.getFirstName() +" "+ SessionData.currentUser.getLastName());
+
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
@@ -120,6 +148,13 @@ public class Account_info extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+
     }
 
     @Override
@@ -144,54 +179,4 @@ public class Account_info extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_accountInfo) {
-            // Handle the camera action
-
-            //startActivity(new Intent(MainActivity.this,Main_GUI.class));
-
-        } else if (id == R.id.nav_MainGUI) {
-            Intent i = new Intent(Account_info.this, Main_GUI.class);
-            finish();
-            startActivity(i);
-
-        } else if (id == R.id.nav_mapGUI) {
-
-            //Intent i = new Intent(MainActivity.this, MapsActivity.class);
-            //startService(i);
-            //vf.setDisplayedChild(1);
-
-        } else if (id == R.id.create_poster) {
-
-            Intent i = new Intent(Account_info.this, CreateNewPoster.class);
-            startActivity(i);
-            //vf.setDisplayedChild(2);
-
-        } else if (id == R.id.nav_manageBulletins) {
-
-        } else if (id == R.id.create_nearByBulletins) {
-
-        } else if (id == R.id.nav_searchEvents) {
-
-        } else if (id == R.id.nav_manageEvents) {
-
-        } else if (id == R.id.nav_createEvents) {
-
-        } else if (id == R.id.nav_addEvent) {
-
-        } else if (id == R.id.nav_delBulletinBoards) {
-
-        } else if (id == R.id.nav_achievement) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }

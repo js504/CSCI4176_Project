@@ -3,9 +3,8 @@ package in.geobullet.csci_4176_project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,26 +12,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.HorizontalScrollView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
+import in.geobullet.csci_4176_project.Utils.NavViewListener;
 import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
-public class Main_GUI extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Main_GUI extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__gui);
-
+        final DatabaseHandler dbHandler = new DatabaseHandler(this);
 
         int BOARD_ID = 1;
-
-        final DatabaseHandler dbHandler = new DatabaseHandler(this);
+        int left_margin_index = 1;
 
         Board board = dbHandler.getBoardById(BOARD_ID);
 
@@ -40,19 +40,46 @@ public class Main_GUI extends AppCompatActivity
 
             // todo: Use board to set page title, radius,
 
-            List<Poster> postersForBoard1 = dbHandler.getPostersByBoardId(BOARD_ID);
-
-            HorizontalScrollView hScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
+           List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(BOARD_ID);
 
             for (Poster p : postersForBoard1) {
-                //ImageView iv = new ImageView();
 
-                // something like this
-                //iv.setImage(p.getPhotoName());
+                ImageView iv = new ImageView(this);
 
-                //hScrollView.addView(iv);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 160);
+
+                layoutParams.setMargins(left_margin_index*50, 100, 0, 0);
+                iv.setLayoutParams(layoutParams);
+
+                //top_margin_index++;
+                left_margin_index++;
             }
         }
+//
+//        final DatabaseHandler dbHandler = new DatabaseHandler(this);
+//
+//        Board board = dbHandler.getBoardById(BOARD_ID);
+//
+//        if (board != null) {
+//
+//            // todo: Use board to set page title, radius,
+//
+//            List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(BOARD_ID);
+//
+//            HorizontalScrollView hScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
+//
+//            for (Poster p : postersForBoard1) {
+//
+//                // todo finish
+//
+//                //ImageView iv = new ImageView();
+//
+//                // something like this
+//                //iv.setImage(p.getPhotoName());
+//
+//                //hScrollView.addView(iv);
+//            }
+//        }
 
 
 
@@ -75,9 +102,15 @@ public class Main_GUI extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+        //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -111,51 +144,4 @@ public class Main_GUI extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_accountInfo) {
-            Intent i = new Intent(Main_GUI.this, Login.class);
-            finish();
-            startActivity(i);
-        } else if (id == R.id.nav_MainGUI) {
-
-
-        } else if (id == R.id.nav_mapGUI) {
-
-            //Intent i = new Intent(MainActivity.this, MapsActivity.class);
-            //startService(i);
-            //vf.setDisplayedChild(1);
-
-        } else if (id == R.id.create_poster) {
-
-            Intent i = new Intent(Main_GUI.this, CreateNewPoster.class);
-            startActivity(i);
-            //vf.setDisplayedChild(2);
-
-        } else if (id == R.id.nav_manageBulletins) {
-
-        } else if (id == R.id.create_nearByBulletins) {
-
-        } else if (id == R.id.nav_searchEvents) {
-
-        } else if (id == R.id.nav_manageEvents) {
-
-        } else if (id == R.id.nav_createEvents) {
-
-        } else if (id == R.id.nav_addEvent) {
-
-        } else if (id == R.id.nav_delBulletinBoards) {
-
-        } else if (id == R.id.nav_achievement) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }

@@ -7,8 +7,10 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -40,7 +42,10 @@
             android:name=".Account_info"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Login"></activity>
+        <activity android:name=".Login" />
+        <activity android:name=".Manage_Bulletins" />
+        <activity android:name=".Nearby_bulletin_boards" />
+        <activity android:name=".Manage_Posters"></activity>
     </application>
 
 </manifest>
