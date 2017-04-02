@@ -28,6 +28,16 @@ public class UserQueries {
         // (The calling class is responsible for closing the database)
     }
 
+    public int getNumUsers() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_USER;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
+
+        // (The calling class is responsible for closing the database)
+    }
+
     public boolean updateUser(User user) {
         ContentValues vals = new ContentValues();
 

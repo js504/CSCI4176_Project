@@ -154,6 +154,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return id;
     }
 
+    public boolean boardPosterPairsExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardPosterPairQueries bppq = new BoardPosterPairQueries(db);
+
+        int num = bppq.getNumBoardPosterPairs();
+
+        db.close();
+
+        return num > 0;
+    }
+
     public BoardPosterPair getBoardPosterPairById(int bppId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -193,6 +205,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return id;
+    }
+
+    public boolean boardsExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        int num = bqs.getNumBoards();
+
+        db.close();
+
+        return num > 0;
     }
 
     public boolean updateBoard(Board board) {
@@ -268,6 +292,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return id;
     }
 
+    public boolean postersExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        PosterQueries pq = new PosterQueries(db);
+
+        int num = pq.getNumPosters();
+
+        db.close();
+
+        return num > 0;
+    }
+
     public boolean updatePoster(Poster poster) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -334,6 +370,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return id;
     }
 
+    public boolean userFavoritesExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserFavoriteQueries ufq = new UserFavoriteQueries(db);
+
+        int num = ufq.getNumUserFavorites();
+
+        db.close();
+
+        return num > 0;
+    }
+
     public List<UserFavorite> getUserFavoritesForUser(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -361,6 +409,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return id;
+    }
+
+    public boolean usersExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserQueries uq = new UserQueries(db);
+
+        int numUsers = uq.getNumUsers();
+
+        db.close();
+
+        return numUsers > 0;
     }
 
     public boolean updateUser(User user) {

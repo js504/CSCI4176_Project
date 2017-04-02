@@ -39,6 +39,16 @@ public class PosterQueries {
         return db.insert(DatabaseHandler.TABLE_POSTER, null, vals);
     }
 
+    public int getNumPosters() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_POSTER;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
+
+        // (The calling class is responsible for closing the database)
+    }
+
     public boolean updatePoster(Poster poster) {
 
         ContentValues vals = new ContentValues();

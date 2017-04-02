@@ -32,6 +32,16 @@ public class BoardPosterPairQueries {
         // (The calling class is responsible for closing the database)
     }
 
+    public int getNumBoardPosterPairs() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_BOARD_POSTER_PAIR;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
+
+        // (The calling class is responsible for closing the database)
+    }
+
     public BoardPosterPair getBoardPosterPairById(int bppId) {
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD_POSTER_PAIR + " WHERE Id = " + bppId + ";";
 

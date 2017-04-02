@@ -35,6 +35,16 @@ public class BoardQueries {
         // (The calling class is responsible for closing the database)
     }
 
+    public int getNumBoards() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_BOARD;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
+
+        // (The calling class is responsible for closing the database)
+    }
+
     public boolean updateBoard(Board board) {
 
         ContentValues vals = new ContentValues();

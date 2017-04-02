@@ -1,8 +1,6 @@
 package in.geobullet.csci_4176_project;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -35,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
-        dbHandler.dropAndRecreateTables();
 
         Log.d("Seeding", "************************************ Begin Database Seeding *******************************************");
         DBSeeder dbSeeder = new DBSeeder();

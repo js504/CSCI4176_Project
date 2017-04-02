@@ -32,6 +32,16 @@ public class UserFavoriteQueries {
         // (The calling class is responsible for closing the database)
     }
 
+    public int getNumUserFavorites() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_USER_FAVORITE;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
+
+        // (The calling class is responsible for closing the database)
+    }
+
     public List<UserFavorite> getUserFavoritesForUser(int userId) {
         List<UserFavorite> favs = new ArrayList<UserFavorite>();
 
