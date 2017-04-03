@@ -47,6 +47,9 @@ public class Main_GUI extends AppCompatActivity{
         int left_margin_index = 1;
         int top_margin_index = 1;
         String poster_name = null;
+        RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
 
         Board board = dbHandler.getFirstBoard();
 
@@ -55,20 +58,19 @@ public class Main_GUI extends AppCompatActivity{
             List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
 
             for (Poster p : postersForBoard1) {
-                ImageButton iv = new ImageButton(this);
-                poster_name = p.getPhotoName();
-                poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
-
-                int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
-                iv.setImageResource(resID);
-
-                RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                 if(selected_poster_type.equals("Event"))
                 {
                     if(p.getPosterType().equals(PosterType.Event))
                     {
+                        ImageView iv = new ImageView(this);
+                        poster_name = p.getPhotoName();
+                        poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
+                        poster_name = poster_name + "_icon";
+
+                        int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
+                        iv.setImageResource(resID);
+
                         if(left_margin_index == 1)
                         {
                             params.setMargins(50, 50, 0, 0);
@@ -77,7 +79,7 @@ public class Main_GUI extends AppCompatActivity{
                         }
                         else
                         {
-                            params.setMargins(left_margin_index*500, 0, 0, 0);
+                            params.setMargins(50, 50, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
                         }
@@ -88,6 +90,14 @@ public class Main_GUI extends AppCompatActivity{
                 {
                     if(p.getPosterType().equals(PosterType.Service))
                     {
+                        ImageView iv = new ImageView(this);
+                        poster_name = p.getPhotoName();
+                        poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
+                        poster_name = poster_name + "_icon";
+
+                        int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
+                        iv.setImageResource(resID);
+
                         if(left_margin_index == 1)
                         {
                             params.setMargins(50, 50, 0, 0);
@@ -96,13 +106,14 @@ public class Main_GUI extends AppCompatActivity{
                         }
                         else
                         {
-                            params.setMargins(left_margin_index*500, 0, 0, 0);
+                            params.setMargins(left_margin_index*100, 0, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
                         }
                     }
                     else;
                 }
+
 
                 top_margin_index++;
                 left_margin_index++;
