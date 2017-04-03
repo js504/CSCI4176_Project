@@ -1,8 +1,8 @@
-package in.geobullet.csci_4176_project.db.Classes;
+package in.geobullet.csci_4176_project.Database.Classes;
 
 import java.util.Date;
 
-import in.geobullet.csci_4176_project.db.Utils.DateUtil;
+import in.geobullet.csci_4176_project.Database.Utils.DateUtil;
 
 /* Class that corresponds to the Board database table */
 

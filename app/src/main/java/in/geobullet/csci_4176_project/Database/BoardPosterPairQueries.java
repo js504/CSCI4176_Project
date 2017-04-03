@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db;
+package in.geobullet.csci_4176_project.Database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
+import in.geobullet.csci_4176_project.Database.Classes.BoardPosterPair;
 
 /**
  * Created by Nick on 2017-03-15.

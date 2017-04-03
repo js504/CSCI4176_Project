@@ -11,24 +11,22 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import in.geobullet.csci_4176_project.Shared.SessionData;
 import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterPoster;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.Classes.User;
-import in.geobullet.csci_4176_project.db.DatabaseHandler;
+import in.geobullet.csci_4176_project.Database.Classes.Poster;
+import in.geobullet.csci_4176_project.Database.Classes.User;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 
 public class Manage_Posters extends AppCompatActivity {
 
-
     final User currentUser = SessionData.currentUser;
     final DatabaseHandler db = new DatabaseHandler(this);
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_posters);
-
 
         //create new poster button to invoke the create new poster activity
         Button submit_button = (Button) findViewById(R.id.create_new_poster);
@@ -46,7 +44,6 @@ public class Manage_Posters extends AppCompatActivity {
         super.onResume();
         List<Poster> userPoster = null;
         userPoster = db.getPostersForUser(currentUser.getId());
-
 
         ListView lv=(ListView) findViewById(R.id.listView);
         lv.setAdapter(new CustomAdapterPoster(this, userPoster));
@@ -73,8 +70,6 @@ public class Manage_Posters extends AppCompatActivity {
                     editPosterBundle.putString("IMGICONSRC", poster.getIconName());
 
                     Log.i("Getting Poster", poster.getStartDate().toString());
-
-
 
                     Intent intent = new Intent(Manage_Posters.this, CreateNewPoster.class);
                     intent.putExtras(editPosterBundle);

@@ -1,6 +1,6 @@
-package in.geobullet.csci_4176_project;
+package in.geobullet.csci_4176_project.Shared;
 
-import in.geobullet.csci_4176_project.db.Classes.User;
+import in.geobullet.csci_4176_project.Database.Classes.User;
 
 
 public class SessionData {

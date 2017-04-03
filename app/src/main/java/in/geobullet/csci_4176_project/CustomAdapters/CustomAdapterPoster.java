@@ -15,10 +15,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import in.geobullet.csci_4176_project.Account_info;
 import in.geobullet.csci_4176_project.Manage_Posters;
 import in.geobullet.csci_4176_project.R;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
+import in.geobullet.csci_4176_project.Database.Classes.Poster;
 
 
 public class CustomAdapterPoster extends BaseAdapter{

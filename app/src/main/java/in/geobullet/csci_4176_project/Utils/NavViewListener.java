@@ -8,17 +8,15 @@ import android.support.design.widget.NavigationView;
 import android.view.MenuItem;
 
 import in.geobullet.csci_4176_project.Account_info;
-import in.geobullet.csci_4176_project.CreateNewPoster;
 import in.geobullet.csci_4176_project.Login;
 import in.geobullet.csci_4176_project.MainActivity;
-import in.geobullet.csci_4176_project.Main_GUI;
 import in.geobullet.csci_4176_project.Manage_Bulletins;
 import in.geobullet.csci_4176_project.Manage_Posters;
 import in.geobullet.csci_4176_project.MapsActivity;
 import in.geobullet.csci_4176_project.Nearby_bulletin_boards;
 import in.geobullet.csci_4176_project.Poster_Search;
 import in.geobullet.csci_4176_project.R;
-import in.geobullet.csci_4176_project.SessionData;
+import in.geobullet.csci_4176_project.Shared.SessionData;
 
 /**
  * Class overrides the navigationview on selected item listener so as to avoid repeat code
@@ -42,18 +40,16 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
 
         if (id == R.id.nav_accountInfo) {
             // Handle the camera action
-
             Intent i;
-            if(SessionData.currentUser == null){
+
+            if (SessionData.currentUser == null) {
                 i = new Intent(context, Login.class);
             }
-            else{
+            else {
                 i = new Intent(context, Account_info.class);
             }
 
-
             context.startActivity(i);
-
 
         } else if (id == R.id.nav_MainGUI) {
 

@@ -3,7 +3,6 @@ package in.geobullet.csci_4176_project;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -11,11 +10,8 @@ import android.widget.ListView;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterBullietin;
-import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.DatabaseHandler;
-
-import static in.geobullet.csci_4176_project.SessionData.currentUser;
+import in.geobullet.csci_4176_project.Database.Classes.Board;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 
 public class Manage_Bulletins extends AppCompatActivity {
 

@@ -1,8 +1,6 @@
 package in.geobullet.csci_4176_project;
 
-import android.app.usage.UsageEvents;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,27 +14,36 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import java.util.List;
 
+import in.geobullet.csci_4176_project.Shared.SessionData;
+import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
-import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.Classes.PosterType;
-import in.geobullet.csci_4176_project.db.DatabaseHandler;
+import in.geobullet.csci_4176_project.Database.Classes.Board;
+import in.geobullet.csci_4176_project.Database.Classes.Poster;
+import in.geobullet.csci_4176_project.Database.Classes.PosterType;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 
 
 public class Main_GUI extends AppCompatActivity{
 
+    private NavigationView navigationView;
+    private NavMenuManager navManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        navManager = new NavMenuManager();
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+
         setContentView(R.layout.activity_main__gui);
+
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
+
         String selected_poster_type = null;
 
         Intent intent=this.getIntent();
@@ -140,6 +147,19 @@ public class Main_GUI extends AppCompatActivity{
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Check if a user has logged in , if so show the hidden menu items
+        if (navigationView != null) {
+            if (SessionData.currentUser != null) {
+                navManager.showUserMenuItems(navigationView);
+            } else {
+                navManager.hideUserMenuItem(navigationView);
+            }
+        }
+    }
 
     @Override
     public void onBackPressed() {
