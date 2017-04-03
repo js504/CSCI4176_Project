@@ -1,6 +1,8 @@
 package in.geobullet.csci_4176_project;
 
+import android.app.usage.UsageEvents;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -13,79 +15,105 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.List;
 
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
 import in.geobullet.csci_4176_project.db.Classes.Board;
 import in.geobullet.csci_4176_project.db.Classes.Poster;
+import in.geobullet.csci_4176_project.db.Classes.PosterType;
 import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
+
 public class Main_GUI extends AppCompatActivity{
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__gui);
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
+        String selected_poster_type = null;
 
-        int BOARD_ID = 1;
+        Intent intent=this.getIntent();
+
+        if(intent != null)
+            selected_poster_type = intent.getStringExtra("postertype");
+
+        int BOARD_ID = 1;//SessionData.boardId;
         int left_margin_index = 1;
+        int top_margin_index = 1;
+        String poster_name = null;
 
         Board board = dbHandler.getBoardById(BOARD_ID);
 
         if (board != null) {
 
-            // todo: Use board to set page title, radius,
-
-           List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(BOARD_ID);
+            List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
 
             for (Poster p : postersForBoard1) {
+                ImageButton iv = new ImageButton(this);
+                poster_name = p.getPhotoName();
+                poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
 
-                ImageView iv = new ImageView(this);
+                int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
+                iv.setImageResource(resID);
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 160);
+                RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                layoutParams.setMargins(left_margin_index*50, 100, 0, 0);
-                iv.setLayoutParams(layoutParams);
+                if(selected_poster_type.equals("Event"))
+                {
+                    if(p.getPosterType().equals(PosterType.Event))
+                    {
+                        if(left_margin_index == 1)
+                        {
+                            params.setMargins(50, 50, 0, 0);
+                            iv.setLayoutParams(params);
+                            RelLayout.addView(iv);
+                        }
+                        else
+                        {
+                            params.setMargins(left_margin_index*500, 0, 0, 0);
+                            iv.setLayoutParams(params);
+                            RelLayout.addView(iv);
+                        }
+                    }
+                    else;
+                }
+                else        //selected_poster_type == "Service"
+                {
+                    if(p.getPosterType().equals(PosterType.Service))
+                    {
+                        if(left_margin_index == 1)
+                        {
+                            params.setMargins(50, 50, 0, 0);
+                            iv.setLayoutParams(params);
+                            RelLayout.addView(iv);
+                        }
+                        else
+                        {
+                            params.setMargins(left_margin_index*500, 0, 0, 0);
+                            iv.setLayoutParams(params);
+                            RelLayout.addView(iv);
+                        }
+                    }
+                    else;
+                }
 
-                //top_margin_index++;
+                top_margin_index++;
                 left_margin_index++;
             }
         }
-//
-//        final DatabaseHandler dbHandler = new DatabaseHandler(this);
-//
-//        Board board = dbHandler.getBoardById(BOARD_ID);
-//
-//        if (board != null) {
-//
-//            // todo: Use board to set page title, radius,
-//
-//            List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(BOARD_ID);
-//
-//            HorizontalScrollView hScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
-//
-//            for (Poster p : postersForBoard1) {
-//
-//                // todo finish
-//
-//                //ImageView iv = new ImageView();
-//
-//                // something like this
-//                //iv.setImage(p.getPhotoName());
-//
-//                //hScrollView.addView(iv);
-//            }
-//        }
-
-
 
         //add menu component
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +123,7 @@ public class Main_GUI extends AppCompatActivity{
                         .setAction("Action", null).show();
             }
         });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -109,6 +138,7 @@ public class Main_GUI extends AppCompatActivity{
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
     }
 
 
@@ -143,5 +173,17 @@ public class Main_GUI extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
+/*
+    @Override
+    public void onClick(View view) {
 
+        int i = view.getId();
+        int t = 0;
+        t++;
+        /*
+        switch(view.getId()) {
+            case
+        }
+
+    } */
 }
