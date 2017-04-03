@@ -37,7 +37,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.geobullet.csci_4176_project.db.Classes.Board;
+import in.geobullet.csci_4176_project.Database.Classes.Board;
+import in.geobullet.csci_4176_project.Shared.SessionData;
 
 public class MapsActivity extends FragmentActivity
         implements  OnMapReadyCallback,
