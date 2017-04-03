@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import in.geobullet.csci_4176_project.Account_info;
 import in.geobullet.csci_4176_project.Login;
 import in.geobullet.csci_4176_project.MainActivity;
+import in.geobullet.csci_4176_project.Main_GUI;
 import in.geobullet.csci_4176_project.Manage_Bulletins;
 import in.geobullet.csci_4176_project.Manage_Posters;
 import in.geobullet.csci_4176_project.MapsActivity;
@@ -53,7 +54,7 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
 
         } else if (id == R.id.nav_MainGUI) {
 
-            Intent i = new Intent(context, Poster_Search.class);
+            Intent i = new Intent(context, Main_GUI.class);
             context.startActivity(i);
 
         } else if (id == R.id.nav_mapGUI) {
@@ -66,6 +67,9 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
             context.startActivity(i);
 
         } else if (id == R.id.nav_searchEvents) {
+            Intent i = new Intent(context, Poster_Search.class);
+            context.startActivity(i);
+
 
         } else if (id == R.id.nav_delBulletinBoards) {
 

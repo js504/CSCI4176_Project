@@ -65,7 +65,37 @@ public class Main_GUI extends AppCompatActivity{
 
             for (Poster p : postersForBoard1) {
 
-                if(selected_poster_type.equals("Event"))
+                if(selected_poster_type == null) // display all posters (Events & Services)
+                {
+                    ImageButton iv = new ImageButton(this);
+                    poster_name = p.getPhotoName();
+                    poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
+                    poster_name = poster_name + "_icon";
+
+                    RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+
+                    int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
+                    iv.setImageResource(resID);
+
+                    if(left_margin_index == 0)
+                    {
+                        params.setMargins(0, 50, 0, 0);
+                        iv.setLayoutParams(params);
+                        RelLayout.addView(iv);
+                    }
+                    else
+                    {
+                        params.setMargins(left_margin_index*520, 50, 0, 0);
+                        iv.setLayoutParams(params);
+                        RelLayout.addView(iv);
+
+                    }
+                    top_margin_index++;
+                    left_margin_index++;
+                }
+                else if(selected_poster_type.equals("Event"))
                 {
                     if(p.getPosterType().equals(PosterType.Event))
                     {
@@ -76,7 +106,6 @@ public class Main_GUI extends AppCompatActivity{
 
                         RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
                         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
 
                         int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
                         iv.setImageResource(resID);
@@ -97,7 +126,6 @@ public class Main_GUI extends AppCompatActivity{
                         top_margin_index++;
                         left_margin_index++;
                     }
-                    else;
                 }
                 else        //selected_poster_type == "Service"
                 {
@@ -129,7 +157,6 @@ public class Main_GUI extends AppCompatActivity{
                         top_margin_index++;
                         left_margin_index++;
                     }
-                    else;
                 }
             }
         }
