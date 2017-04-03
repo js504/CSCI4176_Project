@@ -44,12 +44,11 @@ public class Main_GUI extends AppCompatActivity{
         if(intent != null)
             selected_poster_type = intent.getStringExtra("postertype");
 
-        int BOARD_ID = 1;//SessionData.boardId;
         int left_margin_index = 1;
         int top_margin_index = 1;
         String poster_name = null;
 
-        Board board = dbHandler.getBoardById(BOARD_ID);
+        Board board = dbHandler.getFirstBoard();
 
         if (board != null) {
 

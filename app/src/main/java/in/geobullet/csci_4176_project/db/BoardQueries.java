@@ -94,6 +94,24 @@ public class BoardQueries {
         return b;
     }
 
+    public Board getFirstBoard() {
+        String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD + " LIMIT 1;";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        Board b = null;
+
+        if (cursor.moveToFirst()) {
+            do {
+                b = this.setBoardFields(cursor, b);
+            } while (cursor.moveToNext());
+        }
+
+        // (The calling class is responsible for closing the database)
+
+        return b;
+    }
+
     public List<Board> getAllBoardsForUser(int userId) {
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD + " WHERE CreatedByUserId=" + userId +
                 " ORDER BY Name ASC;";

@@ -267,6 +267,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return b;
     }
 
+    public Board getFirstBoard() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        Board b = bqs.getFirstBoard();
+
+        db.close();
+
+        return b;
+    }
+
     public List<Board> getBoardByLatitudeLongitudeWithinMeters(double latitude, double longitude, int meters) {
 
         // todo finish
