@@ -1,8 +1,6 @@
 package in.geobullet.csci_4176_project;
 
-import android.app.usage.UsageEvents;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -17,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import java.util.List;
@@ -44,11 +41,9 @@ public class Main_GUI extends AppCompatActivity{
         if(intent != null)
             selected_poster_type = intent.getStringExtra("postertype");
 
-        int left_margin_index = 1;
-        int top_margin_index = 1;
+        int left_margin_index = 0;
+        int top_margin_index = 0;
         String poster_name = null;
-        RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
 
         Board board = dbHandler.getFirstBoard();
@@ -63,26 +58,33 @@ public class Main_GUI extends AppCompatActivity{
                 {
                     if(p.getPosterType().equals(PosterType.Event))
                     {
-                        ImageView iv = new ImageView(this);
+                        ImageButton iv = new ImageButton(this);
                         poster_name = p.getPhotoName();
                         poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
                         poster_name = poster_name + "_icon";
 
+                        RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+
                         int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
                         iv.setImageResource(resID);
 
-                        if(left_margin_index == 1)
+                        if(left_margin_index == 0)
                         {
-                            params.setMargins(50, 50, 0, 0);
+                            params.setMargins(0, 50, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
                         }
                         else
                         {
-                            params.setMargins(50, 50, 0, 0);
+                            params.setMargins(left_margin_index*520, 50, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
+
                         }
+                        top_margin_index++;
+                        left_margin_index++;
                     }
                     else;
                 }
@@ -90,33 +92,34 @@ public class Main_GUI extends AppCompatActivity{
                 {
                     if(p.getPosterType().equals(PosterType.Service))
                     {
-                        ImageView iv = new ImageView(this);
+                        ImageButton iv = new ImageButton(this);
                         poster_name = p.getPhotoName();
                         poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
                         poster_name = poster_name + "_icon";
 
+                        RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
                         int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
                         iv.setImageResource(resID);
 
-                        if(left_margin_index == 1)
+                        if(left_margin_index == 0)
                         {
-                            params.setMargins(50, 50, 0, 0);
+                            params.setMargins(0, 50, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
                         }
                         else
                         {
-                            params.setMargins(left_margin_index*100, 0, 0, 0);
+                            params.setMargins(left_margin_index*520, 50, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
                         }
+                        top_margin_index++;
+                        left_margin_index++;
                     }
                     else;
                 }
-
-
-                top_margin_index++;
-                left_margin_index++;
             }
         }
 
