@@ -7,5 +7,23 @@
     android:layout_height="fill_parent"
     android:background="@drawable/p_look_bg">
 
+    <ScrollView
+        android:id="@+id/vertical_scroll_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
+
+        <LinearLayout
+            android:id="@+id/lin_in_scroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 </LinearLayout>

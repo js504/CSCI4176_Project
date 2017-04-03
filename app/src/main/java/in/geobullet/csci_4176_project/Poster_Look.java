@@ -34,7 +34,7 @@ public class Poster_Look extends AppCompatActivity {
         TextView address = new TextView(this);
         TextView date = new TextView(this);
 
-        LinearLayout LinLayout = (LinearLayout) findViewById(R.id.poster_look_lay);
+        LinearLayout LinLayout = (LinearLayout) findViewById(R.id.lin_in_scroll);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         int resID = this.getResources().getIdentifier(passed_postername, "drawable", this.getPackageName());
