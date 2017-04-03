@@ -20,10 +20,11 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.Classes.PosterType;
-import in.geobullet.csci_4176_project.db.DatabaseHandler;
+import in.geobullet.csci_4176_project.Shared.SessionData;
+import in.geobullet.csci_4176_project.Database.Classes.BoardPosterPair;
+import in.geobullet.csci_4176_project.Database.Classes.Poster;
+import in.geobullet.csci_4176_project.Database.Classes.PosterType;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 
 /**
  *
@@ -125,8 +126,6 @@ public class CreateNewPoster extends AppCompatActivity {
         if(extras != null){
             populateFields(extras);
         }
-
-
     }
 
     private void populateFields(Bundle extras){

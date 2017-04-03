@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db;
+package in.geobullet.csci_4176_project.Database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -12,10 +12,10 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
-import in.geobullet.csci_4176_project.db.Utils.DateUtil;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.Classes.PosterType;
+import in.geobullet.csci_4176_project.Database.Classes.BoardPosterPair;
+import in.geobullet.csci_4176_project.Database.Utils.DateUtil;
+import in.geobullet.csci_4176_project.Database.Classes.Poster;
+import in.geobullet.csci_4176_project.Database.Classes.PosterType;
 
 /**
  * Created by Nick on 2017-03-15.
@@ -37,6 +37,16 @@ public class PosterQueries {
         // (The calling class is responsible for closing the database)
 
         return db.insert(DatabaseHandler.TABLE_POSTER, null, vals);
+    }
+
+    public int getNumPosters() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_POSTER;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
+
+        // (The calling class is responsible for closing the database)
     }
 
     public boolean updatePoster(Poster poster) {
@@ -142,7 +152,7 @@ public class PosterQueries {
 
         vals.put("CreatedByUserId", poster.getCreatedByUserId());
         vals.put("Title", poster.getTitle());
-        vals.put("PosterType", poster.getPosterType().toString());
+        vals.put("PosterType", poster.getPosterType().ordinal());
         vals.put("Address", poster.getAddress());
         vals.put("City", poster.getCity());
         vals.put("StateProv", poster.getStateProv());

@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db.Utils;
+package in.geobullet.csci_4176_project.Database.Utils;
 
 import android.util.Log;
 
@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import in.geobullet.csci_4176_project.MainActivity;
-import in.geobullet.csci_4176_project.SessionData;
-import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.Classes.PosterType;
-import in.geobullet.csci_4176_project.db.Classes.User;
-import in.geobullet.csci_4176_project.db.DatabaseHandler;
+import in.geobullet.csci_4176_project.Shared.SessionData;
+import in.geobullet.csci_4176_project.Database.Classes.Board;
+import in.geobullet.csci_4176_project.Database.Classes.BoardPosterPair;
+import in.geobullet.csci_4176_project.Database.Classes.Poster;
+import in.geobullet.csci_4176_project.Database.Classes.PosterType;
+import in.geobullet.csci_4176_project.Database.Classes.User;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 
 /**
  * Created by Nick on 2017-03-23.
@@ -25,12 +24,14 @@ public class DBSeeder {
     public void seedDatabase(DatabaseHandler dbHandler) {
 
         User u1 = new User();
+
         u1.setFirstName("Johnny");
         u1.setLastName("B. Goode.");
         u1.setDisplayName("JBG");
         u1.setEmail("JBG@goody.com");
         u1.setPassword("YouGuessedIt");
         u1.setAdmin(true);
+
 
         int user1Id = dbHandler.addUser(u1);
 
@@ -67,11 +68,8 @@ public class DBSeeder {
 
         List<Poster> allPosters = new ArrayList<>();
 
-
-
         /*********** Begin add all posters ****************/
 
-        // todo fill in
         String[] posterTitles = {
                 "QueenPins Spring Fundraising Event"
                 , "Entreprenurial Development Conference & Expo"
@@ -90,7 +88,6 @@ public class DBSeeder {
                 , "IELTS Preparation"
         };
 
-        // todo set to Event or Service
         PosterType[] posterTypes = {
                 PosterType.Event, PosterType.Event, PosterType.Service, PosterType.Service,
                 PosterType.Event, PosterType.Event, PosterType.Event, PosterType.Event,
@@ -98,7 +95,6 @@ public class DBSeeder {
                 PosterType.Event, PosterType.Service, PosterType.Service
         };
 
-        // todo fill in
         String[] posterAddresses = {
                 "Brightwood Golf & Country Club 227 School St.",
                 "World Trade Convention Centre 1800 Argyle St.",
@@ -117,21 +113,18 @@ public class DBSeeder {
                 "1256 Barrington St"
         };
 
-        // todo fill in
         String[] posterCities = {
                 "Dartmouth", "Halifax", "Halifax", "Halifax", "Halifax",
                 "Halifax", "Halifax", "Dartmouth", "Fall River", "Halifax",
                 "Halifax", "Halifax", "Halifax", "Halifax", "Halifax"
         };
 
-        // todo fill in
         String[] posterStateProvs = {
                 "NS", "NS", "NS", "NS", "NS",
                 "NS", "NS", "NS", "NS", "NS",
                 "NS", "NS", "NS", "NS", "NS"
         };
 
-        // todo fill in
         String[] posterDetails = {
                 "Join us for 3 hours of high energy fun while we host three \n" +
                         "incredible speakers, showcase local businesses, and connect \n" +
@@ -284,7 +277,6 @@ public class DBSeeder {
                         "get feedback on all four parts of the test."
         };
 
-        // todo fill in
         int[] posterStartDateYears = {
                 2017, 2017, 2017, 2017,
                 2017, 2017, 2017, 2017,
@@ -292,28 +284,24 @@ public class DBSeeder {
                 2017, 2017, 2017
         };
 
-        // todo fill in
         int[] posterStartDateMonths = {
                 Calendar.APRIL, Calendar.APRIL, Calendar.APRIL, Calendar.APRIL, Calendar.APRIL,
                 Calendar.APRIL, Calendar.APRIL, Calendar.APRIL, Calendar.APRIL, Calendar.MARCH,
                 Calendar.APRIL, Calendar.APRIL, Calendar.APRIL, Calendar.APRIL, Calendar.APRIL
         };
 
-        // todo set (1-31)
         int[] posterStartDateDays = {
                 20, 28, 28, 10, 9,
                 15, 30, 8, 29, 30,
                 3, 7, 22, 22, 26
         };
 
-        // todo set (1-24)
         int[] posterStartDateHours = {
                 14, 18, 9, 9, 14,
                 22, 20, 19, 19, 18,
                 14, 20, 11, 10, 17
         };
 
-        // todo set (0-59)
         int[] posterStartDateMinutes = {
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -321,7 +309,6 @@ public class DBSeeder {
                 0, 0, 0
         };
 
-        // todo set
         int[] posterEndDateYears = {
                 2017, 2017, 2017, 2017,
                 2017, 2017, 2017, 2017,
@@ -329,7 +316,6 @@ public class DBSeeder {
                 2017, 2017, 2017
         };
 
-        // todo set
         int[] posterEndDateMonths = {
                 Calendar.APRIL, Calendar.APRIL, Calendar.APRIL, Calendar.APRIL,
                 Calendar.APRIL, Calendar.APRIL, Calendar.APRIL, Calendar.APRIL,
@@ -337,21 +323,18 @@ public class DBSeeder {
                 Calendar.APRIL, Calendar.APRIL, Calendar.APRIL
         };
 
-        // todo set (1-31)
         int[] posterEndDateDays = {
                 20, 28, 28, 13, 9,
                 16, 30, 8, 29, 30,
                 3, 8, 23, 22, 27
         };
 
-        // todo set (1-24)
         int[] posterEndDateHours = {
                 17, 23, 17, 17, 23,
                 23, 23, 22, 21, 21,
                 16, 23, 18, 16, 19
         };
 
-        // todo set (0-59)
         int[] posterEndDateMinutes = {
                 0, 0, 0, 0, 0,
                 59, 0, 0, 30, 0,
@@ -407,7 +390,6 @@ public class DBSeeder {
 
         /*********** End add all posters ****************/
 
-
         /*********** Begin all Board Poster Pairs (add all posters to board 1) ************/
 
         for (Poster p: allPosters) {
@@ -425,10 +407,6 @@ public class DBSeeder {
         }
 
         /*********** End all Board Poster Pairs ************/
-
-
-
-        // todo finish seeding
 
     }
 }

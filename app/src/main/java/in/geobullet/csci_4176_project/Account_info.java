@@ -21,25 +21,26 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
-import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterPoster;
+import in.geobullet.csci_4176_project.Shared.SessionData;
+import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.Classes.User;
-import in.geobullet.csci_4176_project.db.DatabaseHandler;
+import in.geobullet.csci_4176_project.Database.Classes.Poster;
+import in.geobullet.csci_4176_project.Database.Classes.User;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 
 public class Account_info extends AppCompatActivity {
 
     //hardcoded poster items
     public static int[] prgmImages={R.drawable.poster_1_icon,R.drawable.poster_2_icon,R.drawable.poster_3_icon,R.drawable.poster_4_icon,R.drawable.poster_5_icon,R.drawable.poster_6_icon,R.drawable.poster_7_icon,R.drawable.poster_8_icon,R.drawable.poster_9_icon};
     public static String[] prgmNameList={"poster 1","poster 2","poster 3","poster 4","poster 5","poster 6","poster 7","poster 8","poster 9"};
+    private NavigationView navigationView;
+    private NavMenuManager navManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,9 @@ public class Account_info extends AppCompatActivity {
             Log.i("id",Integer.toString(id));
         }
 
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+        navManager = new NavMenuManager();
 
         final TextView username = (TextView) findViewById(R.id.editUsername);
         final TextView first_name = (TextView) findViewById(R.id.edit_firstname);
@@ -151,10 +155,17 @@ public class Account_info extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
-
+        // Check if a user has logged in , if so show the hidden menu items
+        if (navigationView != null) {
+            if (SessionData.currentUser != null) {
+                navManager.showUserMenuItems(navigationView);
+            } else {
+                navManager.hideUserMenuItem(navigationView);
+            }
+        }
     }
 
     @Override

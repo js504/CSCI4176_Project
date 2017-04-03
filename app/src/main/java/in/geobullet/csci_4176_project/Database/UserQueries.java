@@ -1,10 +1,10 @@
-package in.geobullet.csci_4176_project.db;
+package in.geobullet.csci_4176_project.Database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import in.geobullet.csci_4176_project.db.Classes.User;
+import in.geobullet.csci_4176_project.Database.Classes.User;
 
 /**
  * Created by Nick on 2017-03-15.
@@ -24,6 +24,16 @@ public class UserQueries {
         vals = this.setContentValues(vals, user);
 
         return db.insert(DatabaseHandler.TABLE_USER, null, vals);
+
+        // (The calling class is responsible for closing the database)
+    }
+
+    public int getNumUsers() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_USER;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
 
         // (The calling class is responsible for closing the database)
     }

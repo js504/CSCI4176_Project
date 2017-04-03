@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db;
+package in.geobullet.csci_4176_project.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,11 +7,11 @@ import android.util.Log;
 
 import java.util.List;
 
-import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.Classes.User;
-import in.geobullet.csci_4176_project.db.Classes.UserFavorite;
+import in.geobullet.csci_4176_project.Database.Classes.Board;
+import in.geobullet.csci_4176_project.Database.Classes.BoardPosterPair;
+import in.geobullet.csci_4176_project.Database.Classes.Poster;
+import in.geobullet.csci_4176_project.Database.Classes.User;
+import in.geobullet.csci_4176_project.Database.Classes.UserFavorite;
 
 /**
  * Created by Nick on 2017-03-04.
@@ -154,6 +154,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return id;
     }
 
+    public boolean boardPosterPairsExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardPosterPairQueries bppq = new BoardPosterPairQueries(db);
+
+        int num = bppq.getNumBoardPosterPairs();
+
+        db.close();
+
+        return num > 0;
+    }
+
     public BoardPosterPair getBoardPosterPairById(int bppId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -193,6 +205,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return id;
+    }
+
+    public boolean boardsExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        int num = bqs.getNumBoards();
+
+        db.close();
+
+        return num > 0;
     }
 
     public boolean updateBoard(Board board) {
@@ -243,6 +267,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return b;
     }
 
+    public Board getFirstBoard() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        Board b = bqs.getFirstBoard();
+
+        db.close();
+
+        return b;
+    }
+
     public List<Board> getBoardByLatitudeLongitudeWithinMeters(double latitude, double longitude, int meters) {
 
         // todo finish
@@ -266,6 +302,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return id;
+    }
+
+    public boolean postersExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        PosterQueries pq = new PosterQueries(db);
+
+        int num = pq.getNumPosters();
+
+        db.close();
+
+        return num > 0;
     }
 
     public boolean updatePoster(Poster poster) {
@@ -334,6 +382,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return id;
     }
 
+    public boolean userFavoritesExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserFavoriteQueries ufq = new UserFavoriteQueries(db);
+
+        int num = ufq.getNumUserFavorites();
+
+        db.close();
+
+        return num > 0;
+    }
+
     public List<UserFavorite> getUserFavoritesForUser(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -361,6 +421,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return id;
+    }
+
+    public boolean usersExist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        UserQueries uq = new UserQueries(db);
+
+        int numUsers = uq.getNumUsers();
+
+        db.close();
+
+        return numUsers > 0;
     }
 
     public boolean updateUser(User user) {

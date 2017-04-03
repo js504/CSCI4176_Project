@@ -1,8 +1,6 @@
 package in.geobullet.csci_4176_project;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,21 +11,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import in.geobullet.csci_4176_project.Shared.SessionData;
+import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
-import in.geobullet.csci_4176_project.db.DatabaseHandler;
-import in.geobullet.csci_4176_project.db.Utils.DBSeeder;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.Database.Utils.DBSeeder;
 
 public class MainActivity extends AppCompatActivity {
-
 
     public static int boardId = -1;
 
     private static final int addPosterMenuItemIndex = 3;
-
+    private NavMenuManager navManager;
     private NavigationView navigationView;
 
     @Override
@@ -63,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        navManager = new NavMenuManager();
         //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
@@ -74,15 +73,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
-        //Check if a user has logged in , if so show the hidden menu items
-        if(navigationView != null) {
+        // Check if a user has logged in , if so show the hidden menu items
+        if (navigationView != null) {
             if (SessionData.currentUser != null) {
-                showUserMenuItems(navigationView);
+                navManager.showUserMenuItems(navigationView);
             } else {
-                hideUserMenuItem(navigationView);
+                navManager.hideUserMenuItem(navigationView);
             }
         }
     }
@@ -125,66 +124,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    /**
-     * Function hides user menu items when a user has logged in based on the SessionData class
-     *
-     * @param navigationView  The navigation view to set the menu items visible for
-     */
-    private void hideUserMenuItem(NavigationView navigationView){
-        if(SessionData.currentUser == null){
-            if(navigationView != null) {
-
-                Menu navMenu = navigationView.getMenu();
-
-                if(navMenu != null){
-
-                    MenuItem menuItem = navMenu.findItem(R.id.admin_tools_menu);
-                    if(menuItem != null){
-                        menuItem.setVisible(false);
-                    }
-
-                    menuItem = navMenu.findItem(R.id.manage_my_posters);
-                    if(menuItem != null){
-                        menuItem.setVisible(false);
-                    }
-
-                    menuItem = navMenu.findItem(R.id.nav_accountInfo);
-                    if(menuItem != null){
-                        menuItem.setTitle("Log in");
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Function shows user menu items when a user has logged in based on the SessionData class
-     *
-     * @param navigationView  The navigation view to set the menu items visible for
-     */
-    private void showUserMenuItems(NavigationView navigationView){
-        if(SessionData.currentUser != null){
-            if(navigationView != null) {
-
-                Menu navMenu = navigationView.getMenu();
-
-                if(navMenu != null){
-
-                    MenuItem menuItem = navMenu.findItem(R.id.manage_my_posters);
-                    if(menuItem != null){
-                        menuItem.setVisible(true);
-                    }
-
-                    if(SessionData.currentUser.isAdmin()) {
-                        menuItem = navMenu.findItem(R.id.admin_tools_menu);
-                        if (menuItem != null) {
-                            menuItem.setVisible(true);
-                        }
-                    }
-
-                }
-            }
-        }
-    }
 }

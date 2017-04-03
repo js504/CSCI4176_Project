@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db;
+package in.geobullet.csci_4176_project.Database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.geobullet.csci_4176_project.db.Classes.UserFavorite;
+import in.geobullet.csci_4176_project.Database.Classes.UserFavorite;
 
 /**
  * Created by Nick on 2017-03-15.
@@ -28,6 +28,16 @@ public class UserFavoriteQueries {
         vals.put("BoardPosterPairId", userFav.getBoardPosterPairId());
 
         return db.insert(DatabaseHandler.TABLE_USER_FAVORITE, null, vals);
+
+        // (The calling class is responsible for closing the database)
+    }
+
+    public int getNumUserFavorites() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_USER_FAVORITE;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
 
         // (The calling class is responsible for closing the database)
     }

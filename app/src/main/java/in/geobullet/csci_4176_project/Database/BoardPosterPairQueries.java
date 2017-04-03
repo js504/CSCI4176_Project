@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db;
+package in.geobullet.csci_4176_project.Database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.geobullet.csci_4176_project.db.Classes.BoardPosterPair;
+import in.geobullet.csci_4176_project.Database.Classes.BoardPosterPair;
 
 /**
  * Created by Nick on 2017-03-15.
@@ -28,6 +28,16 @@ public class BoardPosterPairQueries {
         vals.put("PosterId", bpp.getPosterId());
 
         return db.insert(DatabaseHandler.TABLE_BOARD_POSTER_PAIR, null, vals);
+
+        // (The calling class is responsible for closing the database)
+    }
+
+    public int getNumBoardPosterPairs() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_BOARD_POSTER_PAIR;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
 
         // (The calling class is responsible for closing the database)
     }

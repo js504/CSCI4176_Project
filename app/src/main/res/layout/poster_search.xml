@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/stapled_background"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.18">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/poster_search_bg"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="100dp"
+            />
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="75dp"
+            android:layout_marginTop="130dp"
+            android:fontFamily="casual"
+            android:text="Select Poster Type"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <NumberPicker
+            android:id="@+id/np"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/tv"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="30dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:theme="@style/Animation.AppCompat.DropDownUp" />
+
+        <Button
+            android:id="@+id/poster_search_btn"
+            style="@android:style/Widget.Button.Inset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="95dp"
+            android:layout_marginTop="300dp"
+            android:text="Show me the posters!" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

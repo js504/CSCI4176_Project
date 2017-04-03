@@ -13,79 +13,158 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import java.util.List;
 
+import in.geobullet.csci_4176_project.Database.Classes.Board;
+import in.geobullet.csci_4176_project.Database.Classes.Poster;
+import in.geobullet.csci_4176_project.Database.Classes.PosterType;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.Shared.SessionData;
+import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
-import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Classes.Poster;
-import in.geobullet.csci_4176_project.db.DatabaseHandler;
+
 
 public class Main_GUI extends AppCompatActivity{
+
+    private NavMenuManager navManager;
+    private NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__gui);
+
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
 
-        int BOARD_ID = 1;
-        int left_margin_index = 1;
+        String selected_poster_type = null;
 
-        Board board = dbHandler.getBoardById(BOARD_ID);
+        navManager = new NavMenuManager();
+        //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+
+        Intent intent = this.getIntent();
+
+        if(intent != null)
+            selected_poster_type = intent.getStringExtra("postertype");
+
+        int left_margin_index = 0;
+        int top_margin_index = 0;
+        String poster_name = null;
+
+
+        Board board = dbHandler.getFirstBoard();
 
         if (board != null) {
 
-            // todo: Use board to set page title, radius,
-
-           List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(BOARD_ID);
+            List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
 
             for (Poster p : postersForBoard1) {
 
-                ImageView iv = new ImageView(this);
+                if(selected_poster_type == null) // display all posters (Events & Services)
+                {
+                    ImageButton iv = new ImageButton(this);
+                    poster_name = p.getPhotoName();
+                    poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
+                    poster_name = poster_name + "_icon";
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 160);
+                    RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                layoutParams.setMargins(left_margin_index*50, 100, 0, 0);
-                iv.setLayoutParams(layoutParams);
 
-                //top_margin_index++;
-                left_margin_index++;
+                    int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
+                    iv.setImageResource(resID);
+
+                    if(left_margin_index == 0)
+                    {
+                        params.setMargins(0, 50, 0, 0);
+                        iv.setLayoutParams(params);
+                        RelLayout.addView(iv);
+                    }
+                    else
+                    {
+                        params.setMargins(left_margin_index*520, 50, 0, 0);
+                        iv.setLayoutParams(params);
+                        RelLayout.addView(iv);
+
+                    }
+                    top_margin_index++;
+                    left_margin_index++;
+                }
+                else if(selected_poster_type.equals("Event"))
+                {
+                    if(p.getPosterType().equals(PosterType.Event))
+                    {
+                        ImageButton iv = new ImageButton(this);
+                        poster_name = p.getPhotoName();
+                        poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
+                        poster_name = poster_name + "_icon";
+
+                        RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                        int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
+                        iv.setImageResource(resID);
+
+                        if(left_margin_index == 0)
+                        {
+                            params.setMargins(0, 50, 0, 0);
+                            iv.setLayoutParams(params);
+                            RelLayout.addView(iv);
+                        }
+                        else
+                        {
+                            params.setMargins(left_margin_index*520, 50, 0, 0);
+                            iv.setLayoutParams(params);
+                            RelLayout.addView(iv);
+
+                        }
+                        top_margin_index++;
+                        left_margin_index++;
+                    }
+                }
+                else        //selected_poster_type == "Service"
+                {
+                    if(p.getPosterType().equals(PosterType.Service))
+                    {
+                        ImageButton iv = new ImageButton(this);
+                        poster_name = p.getPhotoName();
+                        poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
+                        poster_name = poster_name + "_icon";
+
+                        RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                        int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
+                        iv.setImageResource(resID);
+
+                        if(left_margin_index == 0)
+                        {
+                            params.setMargins(0, 50, 0, 0);
+                            iv.setLayoutParams(params);
+                            RelLayout.addView(iv);
+                        }
+                        else
+                        {
+                            params.setMargins(left_margin_index*520, 50, 0, 0);
+                            iv.setLayoutParams(params);
+                            RelLayout.addView(iv);
+                        }
+                        top_margin_index++;
+                        left_margin_index++;
+                    }
+                }
             }
         }
-//
-//        final DatabaseHandler dbHandler = new DatabaseHandler(this);
-//
-//        Board board = dbHandler.getBoardById(BOARD_ID);
-//
-//        if (board != null) {
-//
-//            // todo: Use board to set page title, radius,
-//
-//            List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(BOARD_ID);
-//
-//            HorizontalScrollView hScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
-//
-//            for (Poster p : postersForBoard1) {
-//
-//                // todo finish
-//
-//                //ImageView iv = new ImageView();
-//
-//                // something like this
-//                //iv.setImage(p.getPhotoName());
-//
-//                //hScrollView.addView(iv);
-//            }
-//        }
-
-
 
         //add menu component
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +174,7 @@ public class Main_GUI extends AppCompatActivity{
                         .setAction("Action", null).show();
             }
         });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -109,6 +189,21 @@ public class Main_GUI extends AppCompatActivity{
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Check if a user has logged in , if so show the hidden menu items
+        if (navigationView != null) {
+            if (SessionData.currentUser != null) {
+                navManager.showUserMenuItems(navigationView);
+            } else {
+                navManager.hideUserMenuItem(navigationView);
+            }
+        }
     }
 
 
@@ -143,5 +238,17 @@ public class Main_GUI extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
+/*
+    @Override
+    public void onClick(View view) {
 
+        int i = view.getId();
+        int t = 0;
+        t++;
+        /*
+        switch(view.getId()) {
+            case
+        }
+
+    } */
 }

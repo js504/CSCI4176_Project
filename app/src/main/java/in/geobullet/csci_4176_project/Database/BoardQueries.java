@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db;
+package in.geobullet.csci_4176_project.Database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -10,8 +10,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.geobullet.csci_4176_project.db.Classes.Board;
-import in.geobullet.csci_4176_project.db.Utils.DateUtil;
+import in.geobullet.csci_4176_project.Database.Classes.Board;
+import in.geobullet.csci_4176_project.Database.Utils.DateUtil;
 
 /**
  * Created by Nick on 2017-03-15.
@@ -31,6 +31,16 @@ public class BoardQueries {
         vals = this.setContentValues(vals, board);
 
         return db.insert(DatabaseHandler.TABLE_BOARD, null, vals);
+
+        // (The calling class is responsible for closing the database)
+    }
+
+    public int getNumBoards() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHandler.TABLE_BOARD;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor.getCount();
 
         // (The calling class is responsible for closing the database)
     }
@@ -68,6 +78,24 @@ public class BoardQueries {
 
     public Board getBoardById(int boardId) {
         String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD + " WHERE Id = " + boardId + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        Board b = null;
+
+        if (cursor.moveToFirst()) {
+            do {
+                b = this.setBoardFields(cursor, b);
+            } while (cursor.moveToNext());
+        }
+
+        // (The calling class is responsible for closing the database)
+
+        return b;
+    }
+
+    public Board getFirstBoard() {
+        String query = "SELECT * FROM " + DatabaseHandler.TABLE_BOARD + " LIMIT 1;";
 
         Cursor cursor = db.rawQuery(query, null);
 

@@ -39,6 +39,10 @@
             android:label="@string/title_activity_main__gui"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".Poster_Search"
+            android:label="Poster_Search"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".Account_info"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.db.Classes;
+package in.geobullet.csci_4176_project.Database.Classes;
 
 
 /* Class that corresponds to the BoardPosterPair database table */
