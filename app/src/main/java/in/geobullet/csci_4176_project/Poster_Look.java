@@ -20,14 +20,19 @@ public class Poster_Look extends AppCompatActivity {
         setContentView(R.layout.poster_look);
         String passed_postername = null;
         String poster_details = null;
+        String poster_address = null;
+        String poster_date = null;
 
         Bundle bundle = getIntent().getExtras();
         passed_postername = bundle.getString("postername");
         poster_details = bundle.getString("posterdetails");
-
+        poster_address = bundle.getString("posteraddress");
+        poster_date = bundle.getString("posterdate");
 
         ImageView iv = new ImageView(this);
-        TextView tv = new TextView(this);
+        TextView details = new TextView(this);
+        TextView address = new TextView(this);
+        TextView date = new TextView(this);
 
         LinearLayout LinLayout = (LinearLayout) findViewById(R.id.poster_look_lay);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -39,10 +44,20 @@ public class Poster_Look extends AppCompatActivity {
         iv.setLayoutParams(params);
         LinLayout.addView(iv);
 
-        tv.setText(poster_details);
-        params.setMargins(20, 0, 0, 0);
-        tv.setLayoutParams(params);
-        LinLayout.addView(tv);
+        details.setText("Details: " + poster_details);
+        params.setMargins(10, 0, 0, 0);
+        details.setLayoutParams(params);
+        LinLayout.addView(details);
+
+        address.setText("Address: " + poster_address);
+        params.setMargins(10, 20, 0, 0);
+        address.setLayoutParams(params);
+        LinLayout.addView(address);
+
+        date.setText("Date:" + poster_date);
+        params.setMargins(10, 20, 0, 0);
+        date.setLayoutParams(params);
+        LinLayout.addView(date);
 
     }
 }

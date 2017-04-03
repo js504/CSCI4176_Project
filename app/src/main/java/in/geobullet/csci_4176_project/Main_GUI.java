@@ -253,8 +253,10 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
 
             Board board = dbHandler.getFirstBoard();
             List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
-            String poster_details = "Nothing";
-            String poster_name_pass = "Nothing";
+            String poster_details = "Empty";
+            String poster_name_pass = "Empty";
+            String poster_address = "Empty";
+            String poster_date = "Empty";
 
             int ib_ident = v.getId();
 
@@ -262,12 +264,17 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                 if((p.getId())== ib_ident)
                 {
                     poster_details = p.getDetails();
+                    poster_address = p.getAddress();
+                    //poster_date = p.getStartDate() + p.getStartTime() + "to" p.getEndDate() + p.getEndTime();
                     poster_name_pass = p.getPhotoName();
                     poster_name_pass = poster_name_pass.substring(0, poster_name_pass.lastIndexOf("."));
 
                     Intent intent = new Intent(Main_GUI.this, Poster_Look.class);
                     intent.putExtra("postername", poster_name_pass);
                     intent.putExtra("posterdetails", poster_details);
+                    intent.putExtra("posteraddress", poster_address);
+                    intent.putExtra("posterdate", poster_date);
+
                     startActivity(intent);
 
                 }
