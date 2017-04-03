@@ -22,6 +22,7 @@ import in.geobullet.csci_4176_project.Database.Classes.Board;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.Classes.PosterType;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.Database.Utils.DateUtil;
 import in.geobullet.csci_4176_project.Shared.SessionData;
 import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
@@ -256,7 +257,8 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
             String poster_details = "Empty";
             String poster_name_pass = "Empty";
             String poster_address = "Empty";
-            String poster_date = "Empty";
+            String poster_sdate = "Empty";
+            String poster_edate = "Empty";
 
             int ib_ident = v.getId();
 
@@ -265,7 +267,8 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                 {
                     poster_details = p.getDetails();
                     poster_address = p.getAddress();
-                    //poster_date = p.getStartDate() + p.getStartTime() + "to" p.getEndDate() + p.getEndTime();
+                    poster_sdate = DateUtil.formatDate(p.getStartDate());
+                    poster_edate = DateUtil.formatDate(p.getEndDate());
                     poster_name_pass = p.getPhotoName();
                     poster_name_pass = poster_name_pass.substring(0, poster_name_pass.lastIndexOf("."));
 
@@ -273,7 +276,8 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                     intent.putExtra("postername", poster_name_pass);
                     intent.putExtra("posterdetails", poster_details);
                     intent.putExtra("posteraddress", poster_address);
-                    intent.putExtra("posterdate", poster_date);
+                    intent.putExtra("postersdate", poster_sdate);
+                    intent.putExtra("posteredate", poster_edate);
 
                     startActivity(intent);
 
