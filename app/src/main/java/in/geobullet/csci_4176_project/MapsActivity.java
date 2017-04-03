@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.os.ResultReceiver;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingEvent;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -32,7 +34,10 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import in.geobullet.csci_4176_project.db.Classes.Board;
 
 public class MapsActivity extends FragmentActivity
         implements  OnMapReadyCallback,
@@ -66,11 +71,15 @@ public class MapsActivity extends FragmentActivity
     public static final int GEOFENCE_RESPONSIVENESS = 5000;
     private PendingIntent geofencePendingIntent = null;
     private boolean geofenceEnable = false;
+    public GeoFenceResultReceiver rr = null;
+    public Geofence currentFence = null;
+    public Location currentFenceLocation = null;
+    public int currentFenceRadius = (int)GEOFENCE_RADIUS;
 
     LocationRequest mLocationRequest;
 
     // Current location
-    private Location mLastKnownLocation;
+    private Location mLastKnownLocation = null;
 
     // Need a Marker array to store the currently pulled markers
     Marker[] markerArray;
@@ -189,6 +198,12 @@ public class MapsActivity extends FragmentActivity
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this
             );
+            // Get the last known location
+            if(mLastKnownLocation == null){
+                mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            }
+            buildGeoFence(mLastKnownLocation);
+            // Populate with Markers
         }
     }
 
@@ -234,6 +249,7 @@ public class MapsActivity extends FragmentActivity
     @Override
     public void onLocationChanged(Location location){
         mLastKnownLocation = location;
+        SessionData.location = location;
         // move the User Marker
 
         LatLng currLocation = new LatLng(
@@ -247,12 +263,16 @@ public class MapsActivity extends FragmentActivity
 
     }
 
-    public void buildGeoFence(){
+    public void buildGeoFence(Location loc){
+        // Only set up Exiting as the Geofence transition: only care abo0ut a user leaving a fence.
+        if(loc == null) return;
         Geofence fence = new Geofence.Builder()
-                .setCircularRegion(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), GEOFENCE_RADIUS)
+                .setCircularRegion(loc.getLatitude(), loc.getLongitude(), GEOFENCE_RADIUS)
                 .setNotificationResponsiveness(GEOFENCE_RESPONSIVENESS)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build();
+        currentFence = fence;
+        currentFenceLocation = loc;
         GeofencingRequest fenceRequest = new GeofencingRequest.Builder()
                 .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
                 .addGeofence(fence)
@@ -272,11 +292,34 @@ public class MapsActivity extends FragmentActivity
 
     }
 
+    public List<Marker> getPlacedMarkers(Location loc){
+        // Return a list of the placed markers
+        // Return null if none found
+        List<Marker> markerList = null;
+
+
+        return markerList;
+    }
+
+    public void addMarkersAtLocationWithinMeters(Location loc, int meters, List<Board> boardList){
+
+    }
+
+    public void removeMarkersAtLocationWithinMeters(Location loc, int meters){
+
+    }
+
+    public void removeMarkersByGeofence(Geofence fence){
+
+    }
+
     private PendingIntent getGeofencePendingIntent(){
         if(geofencePendingIntent != null){
             return geofencePendingIntent;
         }
+        rr = new GeoFenceResultReceiver();
         Intent intent = new Intent(this, GeofenceIntentHandler.class);
+        intent.putExtra("ResultReceiver", rr);
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -285,6 +328,38 @@ public class MapsActivity extends FragmentActivity
         if(status.isSuccess()){
             // set that geofence has been enabled
             geofenceEnable = true;
+            Log.d(TAG, "Geofence enabled!");
+        }
+    }
+
+    class GeoFenceResultReceiver extends ResultReceiver{
+        public GeoFenceResultReceiver(){
+            // Retrieve from any handler
+            super(null);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            super.onReceiveResult(resultCode, resultData);
+            Location triggeredLocation = resultData.getParcelable("Location");
+            String reqID = resultData.getString("reqID");
+            // Retrieve the markers in the area of the geofence
+            // Remove the markers of the last geofence
+            removeMarkersAtLocationWithinMeters(currentFenceLocation, currentFenceRadius);
+            // Make DB call for boards
+            ArrayList<Board> boardList = null;
+            // ArrayList<Board> boardList = getBoardByLatitudeLongitudeWithinMeters(triggeredLocation.getLatitude(), triggeredLocation.getLongitude(), (int)GEOFENCE_RADIUS);
+            // Add new markers around the current location
+            addMarkersAtLocationWithinMeters(triggeredLocation, (int)GEOFENCE_RADIUS, boardList);
+
+
+            // Build a new Geofence around the location
+            buildGeoFence(triggeredLocation);
+            // Remove the triggered Geofence
+            List<String> geoList = new ArrayList();
+            geoList.add(reqID);
+            LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient, geoList);
+
         }
     }
 }
