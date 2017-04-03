@@ -27,7 +27,7 @@ import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
 
 
-public class Main_GUI extends AppCompatActivity{
+public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
 
     private NavMenuManager navManager;
     private NavigationView navigationView;
@@ -56,18 +56,18 @@ public class Main_GUI extends AppCompatActivity{
         int top_margin_index = 0;
         String poster_name = null;
 
-
         Board board = dbHandler.getFirstBoard();
 
         if (board != null) {
 
             List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
 
-            for (Poster p : postersForBoard1) {
+            for (final Poster p : postersForBoard1) {
 
                 if(selected_poster_type == null) // display all posters (Events & Services)
                 {
-                    ImageButton iv = new ImageButton(this);
+                    ImageButton ib = new ImageButton(this);
+                    ib.setOnClickListener(poster_Listener);
                     poster_name = p.getPhotoName();
                     poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
                     poster_name = poster_name + "_icon";
@@ -75,21 +75,20 @@ public class Main_GUI extends AppCompatActivity{
                     RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-
                     int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
-                    iv.setImageResource(resID);
+                    ib.setImageResource(resID);
 
                     if(left_margin_index == 0)
                     {
                         params.setMargins(0, 50, 0, 0);
-                        iv.setLayoutParams(params);
-                        RelLayout.addView(iv);
+                        ib.setLayoutParams(params);
+                        RelLayout.addView(ib);
                     }
                     else
                     {
                         params.setMargins(left_margin_index*520, 50, 0, 0);
-                        iv.setLayoutParams(params);
-                        RelLayout.addView(iv);
+                        ib.setLayoutParams(params);
+                        RelLayout.addView(ib);
 
                     }
                     top_margin_index++;
@@ -99,7 +98,8 @@ public class Main_GUI extends AppCompatActivity{
                 {
                     if(p.getPosterType().equals(PosterType.Event))
                     {
-                        ImageButton iv = new ImageButton(this);
+                        ImageButton ib = new ImageButton(this);
+                        ib.setOnClickListener(poster_Listener);
                         poster_name = p.getPhotoName();
                         poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
                         poster_name = poster_name + "_icon";
@@ -108,20 +108,19 @@ public class Main_GUI extends AppCompatActivity{
                         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                         int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
-                        iv.setImageResource(resID);
+                        ib.setImageResource(resID);
 
                         if(left_margin_index == 0)
                         {
                             params.setMargins(0, 50, 0, 0);
-                            iv.setLayoutParams(params);
-                            RelLayout.addView(iv);
+                            ib.setLayoutParams(params);
+                            RelLayout.addView(ib);
                         }
                         else
                         {
                             params.setMargins(left_margin_index*520, 50, 0, 0);
-                            iv.setLayoutParams(params);
-                            RelLayout.addView(iv);
-
+                            ib.setLayoutParams(params);
+                            RelLayout.addView(ib);
                         }
                         top_margin_index++;
                         left_margin_index++;
@@ -131,7 +130,8 @@ public class Main_GUI extends AppCompatActivity{
                 {
                     if(p.getPosterType().equals(PosterType.Service))
                     {
-                        ImageButton iv = new ImageButton(this);
+                        ImageButton ib = new ImageButton(this);
+                        ib.setOnClickListener(poster_Listener);
                         poster_name = p.getPhotoName();
                         poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
                         poster_name = poster_name + "_icon";
@@ -140,19 +140,19 @@ public class Main_GUI extends AppCompatActivity{
                         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                         int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
-                        iv.setImageResource(resID);
+                        ib.setImageResource(resID);
 
                         if(left_margin_index == 0)
                         {
                             params.setMargins(0, 50, 0, 0);
-                            iv.setLayoutParams(params);
-                            RelLayout.addView(iv);
+                            ib.setLayoutParams(params);
+                            RelLayout.addView(ib);
                         }
                         else
                         {
                             params.setMargins(left_margin_index*520, 50, 0, 0);
-                            iv.setLayoutParams(params);
-                            RelLayout.addView(iv);
+                            ib.setLayoutParams(params);
+                            RelLayout.addView(ib);
                         }
                         top_margin_index++;
                         left_margin_index++;
@@ -160,6 +160,8 @@ public class Main_GUI extends AppCompatActivity{
                 }
             }
         }
+
+
 
         //add menu component
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -238,17 +240,31 @@ public class Main_GUI extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
-/*
+
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
 
-        int i = view.getId();
-        int t = 0;
-        t++;
-        /*
-        switch(view.getId()) {
-            case
+        // default method for handling onClick Events..
+    }
+
+    private View.OnClickListener poster_Listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            /*
+            v.getId();
+            String poster_details = null;
+            String poster_name_pass = null;
+
+            poster_details = p.getDetails();
+            poster_name_pass = p.getPhotoName();
+            poster_name_pass = poster_name_pass.substring(0, poster_name_pass.lastIndexOf("."));
+
+            Intent intent = new Intent(Main_GUI.this, Poster_Look.class);
+            intent.putExtra("postername", poster_name_pass);
+            intent.putExtra("posterdetails", poster_details);
+            startActivity(intent);
+            */
         }
-
-    } */
+    };
 }
