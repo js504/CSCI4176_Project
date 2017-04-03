@@ -16,6 +16,7 @@ import in.geobullet.csci_4176_project.Manage_Bulletins;
 import in.geobullet.csci_4176_project.Manage_Posters;
 import in.geobullet.csci_4176_project.MapsActivity;
 import in.geobullet.csci_4176_project.Nearby_bulletin_boards;
+import in.geobullet.csci_4176_project.Poster_Search;
 import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.SessionData;
 
@@ -56,7 +57,7 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
 
         } else if (id == R.id.nav_MainGUI) {
 
-            Intent i = new Intent(context, Main_GUI.class);
+            Intent i = new Intent(context, Poster_Search.class);
             context.startActivity(i);
 
         } else if (id == R.id.nav_mapGUI) {
