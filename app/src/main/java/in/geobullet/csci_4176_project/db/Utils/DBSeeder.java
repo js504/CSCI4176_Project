@@ -32,6 +32,7 @@ public class DBSeeder {
         u1.setPassword("YouGuessedIt");
         u1.setAdmin(true);
 
+
         int user1Id = dbHandler.addUser(u1);
 
         User currentUser = dbHandler.getUserById(user1Id);
