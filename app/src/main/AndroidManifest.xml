@@ -43,6 +43,10 @@
             android:label="Poster_Search"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".Poster_Look"
+            android:label="Poster_Look"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".Account_info"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />

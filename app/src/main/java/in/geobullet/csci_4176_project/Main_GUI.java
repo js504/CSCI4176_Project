@@ -32,13 +32,12 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
     private NavMenuManager navManager;
     private NavigationView navigationView;
 
+    final DatabaseHandler dbHandler = new DatabaseHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__gui);
-
-        final DatabaseHandler dbHandler = new DatabaseHandler(this);
 
         String selected_poster_type = null;
 
@@ -52,15 +51,13 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
         if(intent != null)
             selected_poster_type = intent.getStringExtra("postertype");
 
+        Board board = dbHandler.getFirstBoard();
+        List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
         int left_margin_index = 0;
         int top_margin_index = 0;
         String poster_name = null;
 
-        Board board = dbHandler.getFirstBoard();
-
         if (board != null) {
-
-            List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
 
             for (final Poster p : postersForBoard1) {
 
@@ -77,6 +74,7 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
 
                     int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
                     ib.setImageResource(resID);
+                    ib.setId(p.getId());
 
                     if(left_margin_index == 0)
                     {
@@ -109,6 +107,7 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
 
                         int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
                         ib.setImageResource(resID);
+                        ib.setId(p.getId());
 
                         if(left_margin_index == 0)
                         {
@@ -141,6 +140,7 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
 
                         int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
                         ib.setImageResource(resID);
+                        ib.setId(p.getId());
 
                         if(left_margin_index == 0)
                         {
@@ -251,20 +251,27 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
         @Override
         public void onClick(View v) {
 
-            /*
-            v.getId();
-            String poster_details = null;
-            String poster_name_pass = null;
+            Board board = dbHandler.getFirstBoard();
+            List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
+            String poster_details = "Nothing";
+            String poster_name_pass = "Nothing";
 
-            poster_details = p.getDetails();
-            poster_name_pass = p.getPhotoName();
-            poster_name_pass = poster_name_pass.substring(0, poster_name_pass.lastIndexOf("."));
+            int ib_ident = v.getId();
 
-            Intent intent = new Intent(Main_GUI.this, Poster_Look.class);
-            intent.putExtra("postername", poster_name_pass);
-            intent.putExtra("posterdetails", poster_details);
-            startActivity(intent);
-            */
+            for (final Poster p : postersForBoard1) {
+                if((p.getId())== ib_ident)
+                {
+                    poster_details = p.getDetails();
+                    poster_name_pass = p.getPhotoName();
+                    poster_name_pass = poster_name_pass.substring(0, poster_name_pass.lastIndexOf("."));
+
+                    Intent intent = new Intent(Main_GUI.this, Poster_Look.class);
+                    intent.putExtra("postername", poster_name_pass);
+                    intent.putExtra("posterdetails", poster_details);
+                    startActivity(intent);
+
+                }
+            }
         }
     };
 }

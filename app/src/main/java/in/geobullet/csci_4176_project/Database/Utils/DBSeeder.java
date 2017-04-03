@@ -126,154 +126,154 @@ public class DBSeeder {
         };
 
         String[] posterDetails = {
-                "Join us for 3 hours of high energy fun while we host three \n" +
-                        "incredible speakers, showcase local businesses, and connect \n" +
-                        "powerful women (and their supporters) to other powerful \n" +
-                        "people within the community. All this while raising funds for \n" +
+                "Join us for 3 hours of high energy fun while we host three " +
+                        "incredible speakers, showcase local businesses, and connect " +
+                        "powerful women (and their supporters) to other powerful " +
+                        "people within the community. All this while raising funds for " +
                         "Habitat for Humanity Nova Scotia!",
 
-                "Join your peers at Atlantic Canada's #1 business conference, \n" +
-                        "expo, and networking event of the year! EDCE was created \n" +
-                        "to help new and seasoned entrepreneurs take charge of their \n" +
-                        "business. Our 1.5-day event offers valuable insights and \n" +
-                        "exclusive opportunities with over 20 in-depth sessions, \n" +
-                        "workshops, and presentations from top industry experts. \n" +
-                        "We couple this content with an interactive Small Business \n" +
-                        "expo and 3 one-on-one networking events to give you \n" +
-                        "everything you'll need to address the ever changing business \n" +
+                "Join your peers at Atlantic Canada's #1 business conference, " +
+                        "expo, and networking event of the year! EDCE was created " +
+                        "to help new and seasoned entrepreneurs take charge of their " +
+                        "business. Our 1.5-day event offers valuable insights and " +
+                        "exclusive opportunities with over 20 in-depth sessions, " +
+                        "workshops, and presentations from top industry experts. " +
+                        "We couple this content with an interactive Small Business " +
+                        "expo and 3 one-on-one networking events to give you " +
+                        "everything you'll need to address the ever changing business " +
                         "landscapes.",
 
-                "This one day program will introduce participants to the \n" +
-                        "principles of developing an effective Business Case, within \n" +
-                        "the context of an interactive course driven by a case study.\n" +
-                        "This workshop will provide participants with a working \n" +
-                        "knowledge of the principles of writing an effective, \n" +
-                        "comprehensive and compelling Business Case.\n" +
-                        "The course is driven by participation in a case study, \n" +
+                "This one day program will introduce participants to the " +
+                        "principles of developing an effective Business Case, within " +
+                        "the context of an interactive course driven by a case study." +
+                        "This workshop will provide participants with a working " +
+                        "knowledge of the principles of writing an effective, " +
+                        "comprehensive and compelling Business Case." +
+                        "The course is driven by participation in a case study, " +
                         "promoting immediate workplace transference.",
 
-                "The PMP signifies that you speak and understand the\n" +
-                        " global language of project management and connects \n" +
-                        "you to a community of professionals, organizations \n" +
-                        "and experts worldwide. Become a PMP and become a \n" +
-                        "project hero. This Course Provides everything you \n" +
-                        "need to know to pass the PMP Exam and become a \n" +
+                "The PMP signifies that you speak and understand the" +
+                        " global language of project management and connects " +
+                        "you to a community of professionals, organizations " +
+                        "and experts worldwide. Become a PMP and become a " +
+                        "project hero. This Course Provides everything you " +
+                        "need to know to pass the PMP Exam and become a " +
                         "Certified Project Management professional.",
 
-                "Process for employers to participate in the \n" +
-                        "New Atlantic initiative programs and pathways \n" +
-                        "to immigration.Increasing Cultural Diversity.\n" +
-                        "* Building the NS Economy.\n" +
-                        "* Increasing opportunity.\n" +
-                        "* Boosts Innovation\n" +
-                        "FOR INFORMATION Contact US NOW\n" +
-                        "(902) 880-2428\n" +
-                        "info@ibtradeshow.com\n" +
+                "Process for employers to participate in the " +
+                        "New Atlantic initiative programs and pathways " +
+                        "to immigration.Increasing Cultural Diversity." +
+                        "* Building the NS Economy." +
+                        "* Increasing opportunity." +
+                        "* Boosts Innovation" +
+                        "FOR INFORMATION Contact US NOW" +
+                        "(902) 880-2428" +
+                        "info@ibtradeshow.com" +
                         "WWW.IBTRADESHOW.COM",
 
-                "Air Traffic Control is coming back to play \n" +
-                        "the Grand Banker in Lunenburg Nova Scotia. \n" +
-                        "Air Traffic Control is a rock band with an \n" +
-                        "alternative twist. The independent and \n" +
-                        "self-managed three-piece originated as \n" +
-                        "Madhat and earned three nominations for \n" +
-                        "Alternative Recording of the Year by the \n" +
+                "Air Traffic Control is coming back to play " +
+                        "the Grand Banker in Lunenburg Nova Scotia. " +
+                        "Air Traffic Control is a rock band with an " +
+                        "alternative twist. The independent and " +
+                        "self-managed three-piece originated as " +
+                        "Madhat and earned three nominations for " +
+                        "Alternative Recording of the Year by the " +
                         "East Coast Music Association.",
 
-                "HOPSIN is finally coming to HALIFAX! \n" +
-                        "With Millions of followers and hundreds\n" +
-                        " of millions of views on his YouTube videos,\n" +
-                        " this guy is a Hip Hop legend who's only \n" +
-                        "just getting started! This Canadian Tour \n" +
-                        "will also feature TOKEN, who is being \n" +
+                "HOPSIN is finally coming to HALIFAX! " +
+                        "With Millions of followers and hundreds" +
+                        " of millions of views on his YouTube videos," +
+                        " this guy is a Hip Hop legend who's only " +
+                        "just getting started! This Canadian Tour " +
+                        "will also feature TOKEN, who is being " +
                         "heralded as the next Eminem!",
 
-                "Always wanted to experience the magic and \n" +
-                        "music of Broadway, but couldn't get to New \n" +
-                        "York? Dartmouth Choral Society has you \n" +
-                        "covered! In its annual spring concert, DCS \n" +
-                        "brings some of Broadway's best-known and \n" +
-                        "best-loved hits to cool, choral life - right \n" +
-                        "in your own backyard! For just $15, you \n" +
-                        "can experience classics from Les Miserables, \n" +
-                        "Cats, Rent, West Side Story, The Phantom of \n" +
+                "Always wanted to experience the magic and " +
+                        "music of Broadway, but couldn't get to New " +
+                        "York? Dartmouth Choral Society has you " +
+                        "covered! In its annual spring concert, DCS " +
+                        "brings some of Broadway's best-known and " +
+                        "best-loved hits to cool, choral life - right " +
+                        "in your own backyard! For just $15, you " +
+                        "can experience classics from Les Miserables, " +
+                        "Cats, Rent, West Side Story, The Phantom of " +
                         "the Opera, and more!",
 
-                "Come Join us for a fun night @ LWF Hall. We\n" +
-                        "will be hosting a Paint the Town Fundraiser \n" +
-                        "in support of KELOOSE. 2017 is our 40th Year\n" +
+                "Come Join us for a fun night @ LWF Hall. We" +
+                        "will be hosting a Paint the Town Fundraiser " +
+                        "in support of KELOOSE. 2017 is our 40th Year" +
                         "and we want to make it a memorable year! ",
 
-                "A Syrian cultural night put on by Syrian \n" +
-                        "newcomers to give back to the community.\n" +
-                        "Experience authentic Syrian culture and \n" +
-                        "traditions in this unique show with a \n" +
-                        "classic live action play, a singing \n" +
-                        "performance, delicious Syrian food, and \n" +
-                        "an exciting dance of swords and shields. \n" +
-                        "Written and performed by Syrian newcomers \n" +
-                        "and students, this event will provide you \n" +
-                        "with the best and most authentic experience \n" +
+                "A Syrian cultural night put on by Syrian " +
+                        "newcomers to give back to the community." +
+                        "Experience authentic Syrian culture and " +
+                        "traditions in this unique show with a " +
+                        "classic live action play, a singing " +
+                        "performance, delicious Syrian food, and " +
+                        "an exciting dance of swords and shields. " +
+                        "Written and performed by Syrian newcomers " +
+                        "and students, this event will provide you " +
+                        "with the best and most authentic experience " +
                         "of Syrian culture!",
 
-                "The Artists of Dalhousie society is excited\n" +
-                        "to launch their Inaugural Art Exhibition \n" +
-                        "happening on Monday, April 3rd at 2:30 pm \n" +
-                        "in the SUB. That's right, Dalhousie is \n" +
-                        "getting its' own student and Dal/King's \n" +
-                        "community Art Gallery on the walls of the \n" +
-                        "SUB'S atrium and more! We are thrilled to \n" +
-                        "be bringing more visual arts into the SUB!\n" +
-                        "And that's where you incredible humans \n" +
-                        "come in! We're putting out a call for \n" +
-                        "submissions for students, alumni, faculty \n" +
+                "The Artists of Dalhousie society is excited" +
+                        "to launch their Inaugural Art Exhibition " +
+                        "happening on Monday, April 3rd at 2:30 pm " +
+                        "in the SUB. That's right, Dalhousie is " +
+                        "getting its' own student and Dal/King's " +
+                        "community Art Gallery on the walls of the " +
+                        "SUB'S atrium and more! We are thrilled to " +
+                        "be bringing more visual arts into the SUB!" +
+                        "And that's where you incredible humans " +
+                        "come in! We're putting out a call for " +
+                        "submissions for students, alumni, faculty " +
                         "can submit artwork of their creation to us!",
 
-                "Kamphyre studio is delighted to welcome \n" +
-                        "the producers, directors and actors of \n" +
-                        "an exciting new musical production, KAMP,\n" +
-                        "as hosts for the April edition of our \n" +
-                        "Kamphyre Cabaret. colliding worlds and \n" +
-                        "new faces within the Halifax arts \n" +
-                        "community is sure to uplift and inspire \n" +
-                        "anyone partaking or as guests at this \n" +
-                        "event. This cabaret is a fundraiser we \n" +
-                        "are thrilled to host which will support \n" +
-                        "the financial undertaking of an artistic \n" +
+                "Kamphyre studio is delighted to welcome " +
+                        "the producers, directors and actors of " +
+                        "an exciting new musical production, KAMP," +
+                        "as hosts for the April edition of our " +
+                        "Kamphyre Cabaret. colliding worlds and " +
+                        "new faces within the Halifax arts " +
+                        "community is sure to uplift and inspire " +
+                        "anyone partaking or as guests at this " +
+                        "event. This cabaret is a fundraiser we " +
+                        "are thrilled to host which will support " +
+                        "the financial undertaking of an artistic " +
                         "endeavour of this calibre.",
 
-                "Come Join the fun as we gather once more \n" +
-                        "for the MOST AFFORDABLE weekend of geeky \n" +
-                        "goodness! Support your favorite clubs \n" +
-                        "gathered here to fundraise for the year \n" +
-                        "ahead! This years cohost clubs are JVPS \n" +
-                        ",SCA, NERO ARMONIA,IKG,MHA,FRAG and of \n" +
-                        "course Geeks Versus Nerds - back with \n" +
+                "Come Join the fun as we gather once more " +
+                        "for the MOST AFFORDABLE weekend of geeky " +
+                        "goodness! Support your favorite clubs " +
+                        "gathered here to fundraise for the year " +
+                        "ahead! This years cohost clubs are JVPS " +
+                        ",SCA, NERO ARMONIA,IKG,MHA,FRAG and of " +
+                        "course Geeks Versus Nerds - back with " +
                         "mayhem and VIP party goodness. ",
 
-                "In the struggle to meet the challenges of \n" +
-                        "everyday living, the richness, beauty and \n" +
-                        "sacredness of life often remain hidden in \n" +
-                        "the shadows of the mundane.This retreat \n" +
-                        "offers an opportunity to explore beneath \n" +
-                        "the layers of ordinariness and enter the \n" +
-                        "inner chambers of your being. Strengthen \n" +
-                        "your foundation of self-respect, inner \n" +
-                        "power and love that is the glue for your \n" +
-                        "life. Discover the humility to offer your \n" +
-                        "unique gift to the world. Enjoy a day of \n" +
-                        "simple exercises, reflective time and \n" +
-                        "guided meditations. Designed for the \n" +
-                        "modern multi-tasking woman with an \n" +
+                "In the struggle to meet the challenges of " +
+                        "everyday living, the richness, beauty and " +
+                        "sacredness of life often remain hidden in " +
+                        "the shadows of the mundane.This retreat " +
+                        "offers an opportunity to explore beneath " +
+                        "the layers of ordinariness and enter the " +
+                        "inner chambers of your being. Strengthen " +
+                        "your foundation of self-respect, inner " +
+                        "power and love that is the glue for your " +
+                        "life. Discover the humility to offer your " +
+                        "unique gift to the world. Enjoy a day of " +
+                        "simple exercises, reflective time and " +
+                        "guided meditations. Designed for the " +
+                        "modern multi-tasking woman with an " +
                         "interest in practical spirituality.",
 
-                "This two and a half hour intensive review \n" +
-                        "session with an IELTS specialist will help \n" +
-                        "you prepare for your upcoming IELTS test. \n" +
-                        "Learn strategies to help you with your \n" +
-                        "listening, reading and writing. Know what \n" +
-                        "to expect when you take your test, and \n" +
-                        "feel more confident. Ask questions and \n" +
+                "This two and a half hour intensive review " +
+                        "session with an IELTS specialist will help " +
+                        "you prepare for your upcoming IELTS test. " +
+                        "Learn strategies to help you with your " +
+                        "listening, reading and writing. Know what " +
+                        "to expect when you take your test, and " +
+                        "feel more confident. Ask questions and " +
                         "get feedback on all four parts of the test."
         };
 
