@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.Database.Classes.Board;
-import in.geobullet.csci_4176_project.Database.Utils.DateUtil;
+import in.geobullet.csci_4176_project.Utils.DateUtil;
 
 /**
  * Created by Nick on 2017-03-15.
