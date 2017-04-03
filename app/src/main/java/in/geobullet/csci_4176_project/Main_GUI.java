@@ -14,36 +14,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+
 import android.widget.RelativeLayout;
 
 import java.util.List;
 
-import in.geobullet.csci_4176_project.Shared.SessionData;
-import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
-import in.geobullet.csci_4176_project.Database.Classes.Board;
-import in.geobullet.csci_4176_project.Database.Classes.Poster;
-import in.geobullet.csci_4176_project.Database.Classes.PosterType;
-import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.db.Classes.Board;
+import in.geobullet.csci_4176_project.db.Classes.Poster;
+import in.geobullet.csci_4176_project.db.Classes.PosterType;
+import in.geobullet.csci_4176_project.db.DatabaseHandler;
 
 
 public class Main_GUI extends AppCompatActivity{
 
-    private NavigationView navigationView;
-    private NavMenuManager navManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        navManager = new NavMenuManager();
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
-
         setContentView(R.layout.activity_main__gui);
-
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
-
         String selected_poster_type = null;
 
         Intent intent=this.getIntent();
@@ -51,11 +41,9 @@ public class Main_GUI extends AppCompatActivity{
         if(intent != null)
             selected_poster_type = intent.getStringExtra("postertype");
 
-        int left_margin_index = 1;
-        int top_margin_index = 1;
+        int left_margin_index = 0;
+        int top_margin_index = 0;
         String poster_name = null;
-        RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
 
         Board board = dbHandler.getFirstBoard();
@@ -70,26 +58,33 @@ public class Main_GUI extends AppCompatActivity{
                 {
                     if(p.getPosterType().equals(PosterType.Event))
                     {
-                        ImageView iv = new ImageView(this);
+                        ImageButton iv = new ImageButton(this);
                         poster_name = p.getPhotoName();
                         poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
                         poster_name = poster_name + "_icon";
 
+                        RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+
                         int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
                         iv.setImageResource(resID);
 
-                        if(left_margin_index == 1)
+                        if(left_margin_index == 0)
                         {
-                            params.setMargins(50, 50, 0, 0);
+                            params.setMargins(0, 50, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
                         }
                         else
                         {
-                            params.setMargins(50, 50, 0, 0);
+                            params.setMargins(left_margin_index*520, 50, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
+
                         }
+                        top_margin_index++;
+                        left_margin_index++;
                     }
                     else;
                 }
@@ -97,33 +92,34 @@ public class Main_GUI extends AppCompatActivity{
                 {
                     if(p.getPosterType().equals(PosterType.Service))
                     {
-                        ImageView iv = new ImageView(this);
+                        ImageButton iv = new ImageButton(this);
                         poster_name = p.getPhotoName();
                         poster_name = poster_name.substring(0, poster_name.lastIndexOf("."));
                         poster_name = poster_name + "_icon";
 
+                        RelativeLayout RelLayout = (RelativeLayout) findViewById(R.id.rel_in_horz);
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
                         int resID = this.getResources().getIdentifier(poster_name, "drawable", this.getPackageName());
                         iv.setImageResource(resID);
 
-                        if(left_margin_index == 1)
+                        if(left_margin_index == 0)
                         {
-                            params.setMargins(50, 50, 0, 0);
+                            params.setMargins(0, 50, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
                         }
                         else
                         {
-                            params.setMargins(left_margin_index*100, 0, 0, 0);
+                            params.setMargins(left_margin_index*520, 50, 0, 0);
                             iv.setLayoutParams(params);
                             RelLayout.addView(iv);
                         }
+                        top_margin_index++;
+                        left_margin_index++;
                     }
                     else;
                 }
-
-
-                top_margin_index++;
-                left_margin_index++;
             }
         }
 
@@ -158,19 +154,6 @@ public class Main_GUI extends AppCompatActivity{
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Check if a user has logged in , if so show the hidden menu items
-        if (navigationView != null) {
-            if (SessionData.currentUser != null) {
-                navManager.showUserMenuItems(navigationView);
-            } else {
-                navManager.hideUserMenuItem(navigationView);
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
