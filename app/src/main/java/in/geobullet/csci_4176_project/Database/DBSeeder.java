@@ -1,4 +1,4 @@
-package in.geobullet.csci_4176_project.Database.Utils;
+package in.geobullet.csci_4176_project.Database;
 
 import android.util.Log;
 
@@ -6,13 +6,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import in.geobullet.csci_4176_project.Shared.SessionData;
 import in.geobullet.csci_4176_project.Database.Classes.Board;
 import in.geobullet.csci_4176_project.Database.Classes.BoardPosterPair;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.Classes.PosterType;
 import in.geobullet.csci_4176_project.Database.Classes.User;
-import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.Shared.SessionData;
 
 /**
  * Created by Nick on 2017-03-23.

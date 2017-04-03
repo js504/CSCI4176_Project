@@ -18,7 +18,7 @@ import in.geobullet.csci_4176_project.Shared.SessionData;
 import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
-import in.geobullet.csci_4176_project.Database.Utils.DBSeeder;
+import in.geobullet.csci_4176_project.Database.DBSeeder;
 
 public class MainActivity extends AppCompatActivity {
 
