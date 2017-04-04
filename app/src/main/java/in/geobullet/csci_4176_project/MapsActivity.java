@@ -7,7 +7,11 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +21,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.ResultTransform;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
@@ -46,8 +53,8 @@ public class MapsActivity extends FragmentActivity
         GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener,
         GoogleMap.OnMapClickListener,
-        ResultCallback<Status>
-{
+        ResultCallback<Status>,
+        GeofenceResultReceiver.GeofenceReceiver {
 
     // Logger Tag
     private static final String TAG = "Maps";
@@ -63,19 +70,24 @@ public class MapsActivity extends FragmentActivity
 
     // Defaults for when location services not enabled Properly
     private LatLng mDefaultLocationHalifax = new LatLng(44.6488, 63.5752);
-    private static final float DEFAULT_ZOOM = 16.6f;
-    private static final float MAX_ZOOM = 18.0f;
+    private static final float DEFAULT_ZOOM = 16.4f;
+    private static final float MAX_ZOOM = 18.0f; // For restricting access
     private static final float MIN_ZOOM = 15.0f;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 67;
 
-    public static final float GEOFENCE_RADIUS = 100.0f;
-    public static final int GEOFENCE_RESPONSIVENESS = 5000;
+    public static final float GEOFENCE_RADIUS_f = 50.0f;
+    public static final int GEOFENCE_RADIUS_i = 25;
+    public static final int GEOFENCE_RESPONSIVENESS = 1000;
+    public static final long GEOFENCE_EXPIRATION = 1000 * 60 * 2; // 120 seconds
+    public static final int GEOFENCE_LOITER_TIME = 1000 * 5; // 5 seconds
+    public static final String GEOFENCE_REQ_ID = "GEOFENCE_REQUEST_ID";
     private PendingIntent geofencePendingIntent = null;
     private boolean geofenceEnable = false;
-    public GeoFenceResultReceiver rr = null;
+    public GeofenceResultReceiver resultReceiver = null;
     public Geofence currentFence = null;
     public Location currentFenceLocation = null;
-    public int currentFenceRadius = (int)GEOFENCE_RADIUS;
+    public boolean fenceSet = false;
+    public final int MARKER_RADIUS = 3 * GEOFENCE_RADIUS_i;
 
     LocationRequest mLocationRequest;
 
@@ -112,23 +124,25 @@ public class MapsActivity extends FragmentActivity
         setContentView(R.layout.activity_maps);
 
         // Check for permissions
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        resultReceiver = new GeofenceResultReceiver(new Handler());
+        resultReceiver.setGFReceiver(this);
+        buildGoogleApiClient();
     }
 
-    protected synchronized void buildGoogleApiClient(){
+    protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
+                .enableAutoManage(this, this)
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .build();
-        mGoogleApiClient.connect();
     }
 
     @Override
@@ -137,16 +151,14 @@ public class MapsActivity extends FragmentActivity
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         // Get Permissions:
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(
                     this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED){
+                    == PackageManager.PERMISSION_GRANTED) {
 
-                buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
             }
-        }else{
-            buildGoogleApiClient();
+        } else {
             mMap.setMyLocationEnabled(true);
         }
         setMapStyling(googleMap);
@@ -154,7 +166,7 @@ public class MapsActivity extends FragmentActivity
     }
 
     // If desired, can add different styles depending on the time
-    private void setMapStyling(GoogleMap googleMap){
+    private void setMapStyling(GoogleMap googleMap) {
         googleMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                         this, R.raw.map_styles_day));
@@ -165,21 +177,28 @@ public class MapsActivity extends FragmentActivity
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
-        switch(requestCode){
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:{
-                if(grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    if(ContextCompat.checkSelfPermission(
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(
                             this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED){
-                        if(mGoogleApiClient == null){
+                            == PackageManager.PERMISSION_GRANTED) {
+                        if (mGoogleApiClient == null) {
                             buildGoogleApiClient();
                         }
                         mMap.setMyLocationEnabled(true);
+                        // Get the last known location
+                        if (mLastKnownLocation == null) {
+                            mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                        }
+                        if(mGoogleApiClient != null && !mGoogleApiClient.isConnected()){
+                            mGoogleApiClient.connect();
+                        }
                     }
-                }else{
-                    Toast.makeText(this, "Location Permissions Denied; Please Enable to Use Maps Properly", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Location Permissions Denied;\nPlease Enable to Use Maps Properly", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -193,18 +212,43 @@ public class MapsActivity extends FragmentActivity
                 .setInterval(1000)
                 .setFastestInterval(1000)
                 .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        if(ContextCompat.checkSelfPermission(
+        if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED){
+                == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this
             );
             // Get the last known location
-            if(mLastKnownLocation == null){
+            if (mLastKnownLocation == null) {
                 mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             }
-            buildGeoFence(mLastKnownLocation);
+            //if(!fenceSet){
+             //   fenceSet = true;
+                buildGeoFence(mLastKnownLocation);
+            //}
             // Populate with Markers
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mGoogleApiClient != null){
+            mGoogleApiClient.disconnect();
+        }
+        if(resultReceiver != null){
+            resultReceiver.setGFReceiver(null);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mGoogleApiClient != null){
+            mGoogleApiClient.connect();
+        }
+        if(resultReceiver != null){
+            resultReceiver.setGFReceiver(this);
         }
     }
 
@@ -219,26 +263,26 @@ public class MapsActivity extends FragmentActivity
         Log.d(TAG, "Connection Suspended");
     }
 
-    public boolean checkLocationPermission(){
-        if(ContextCompat.checkSelfPermission(
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(
-                    this, Manifest.permission.ACCESS_FINE_LOCATION)){
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 ActivityCompat.requestPermissions(
                         this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
                 );
-            }else{
+            } else {
                 ActivityCompat.requestPermissions(
                         this,
-                        new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
                 );
             }
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -248,7 +292,7 @@ public class MapsActivity extends FragmentActivity
     }
 
     @Override
-    public void onLocationChanged(Location location){
+    public void onLocationChanged(Location location) {
         mLastKnownLocation = location;
         SessionData.location = location;
         // move the User Marker
@@ -264,103 +308,136 @@ public class MapsActivity extends FragmentActivity
 
     }
 
-    public void buildGeoFence(Location loc){
+    public PendingResult<Status> buildGeoFence(Location loc) {
         // Only set up Exiting as the Geofence transition: only care abo0ut a user leaving a fence.
-        if(loc == null) return;
+        if (loc == null) return null;
         Geofence fence = new Geofence.Builder()
-                .setCircularRegion(loc.getLatitude(), loc.getLongitude(), GEOFENCE_RADIUS)
+                .setRequestId(GEOFENCE_REQ_ID)
+                .setExpirationDuration(GEOFENCE_EXPIRATION)
+                .setCircularRegion(loc.getLatitude(), loc.getLongitude(), GEOFENCE_RADIUS_i)
                 .setNotificationResponsiveness(GEOFENCE_RESPONSIVENESS)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
+                //.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL) // testing
+                .setLoiteringDelay(GEOFENCE_LOITER_TIME)
                 .build();
         currentFence = fence;
         currentFenceLocation = loc;
         GeofencingRequest fenceRequest = new GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
                 .addGeofence(fence)
+                .setInitialTrigger(Geofence.GEOFENCE_TRANSITION_DWELL) // Testing
                 .build();
-
-        try{
-            LocationServices.GeofencingApi.addGeofences(
+        try {
+            return LocationServices.GeofencingApi.addGeofences(
                     mGoogleApiClient,
                     fenceRequest,
                     getGeofencePendingIntent()
-            ).setResultCallback(this);
+            );
 
-        }catch(SecurityException e){
+        } catch (SecurityException e) {
             Log.d(TAG, "can't do this, As not allowed");
+            e.printStackTrace();
+            return null;
         }
-
-
     }
 
-    public List<Marker> getPlacedMarkers(Location loc){
-        // Return a list of the placed markers
-        // Return null if none found
+    public List<Marker> getNewMarkers(Location loc, int radius){
+        // make a database call and build up a list of boards, based on loc
+        // then build a list of markers from the boards; markers will have the boards as tags
         List<Marker> markerList = null;
-
-
         return markerList;
     }
 
-    public void addMarkersAtLocationWithinMeters(Location loc, int meters, List<Board> boardList){
+    public List<Marker> getOldMarkers(){
+        // get all of the markers previously assigned;
+        // Should be stored in an array, probably.
+        List<Marker> markerList = null;
+        return markerList;
+    }
+
+    public void pruneOutOfRangeMarkers(List<Marker> oldMarkers, List<Marker> newMarkers){
 
     }
 
-    public void removeMarkersAtLocationWithinMeters(Location loc, int meters){
-
-    }
-
-    public void removeMarkersByGeofence(Geofence fence){
-
-    }
-
-    private PendingIntent getGeofencePendingIntent(){
-        if(geofencePendingIntent != null){
+    private PendingIntent getGeofencePendingIntent() {
+        if (geofencePendingIntent != null) {
             return geofencePendingIntent;
         }
-        rr = new GeoFenceResultReceiver();
         Intent intent = new Intent(this, GeofenceIntentHandler.class);
-        intent.putExtra("ResultReceiver", rr);
-        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra(GeofenceResultReceiver.TAG, resultReceiver);
+        geofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return geofencePendingIntent;
     }
 
     @Override
     public void onResult(@NonNull Status status) {
-        if(status.isSuccess()){
+        if (status.isSuccess()) {
             // set that geofence has been enabled
             geofenceEnable = true;
             Log.d(TAG, "Geofence enabled!");
+        }else{
+            Log.d(TAG, "Returned, not success?");
+            Log.d(TAG, "Status code = " + status.getStatusCode());
         }
     }
 
-    class GeoFenceResultReceiver extends ResultReceiver{
-        public GeoFenceResultReceiver(){
-            // Retrieve from any handler
-            super(null);
-        }
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+        // The received code comes back strange. Not sure what is going on there.
+        // However, it reliably comes back when it is supposed to.
+        // Therefore, as long as we know that there is only a single geofence active at a time,
+        // we can assume that any received data from the intent handler is correct.
+        // So: when a message is received, get the ReqId from the constant, GEOFENCE_REQUEST_ID
+        // The location is stored in the currentFenceLocation. Other data is in the currentFence.
 
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-            super.onReceiveResult(resultCode, resultData);
-            Location triggeredLocation = resultData.getParcelable("Location");
-            String reqID = resultData.getString("reqID");
-            // Retrieve the markers in the area of the geofence
-            // Remove the markers of the last geofence
-            removeMarkersAtLocationWithinMeters(currentFenceLocation, currentFenceRadius);
-            // Make DB call for boards
-            ArrayList<Board> boardList = null;
-            // ArrayList<Board> boardList = getBoardByLatitudeLongitudeWithinMeters(triggeredLocation.getLatitude(), triggeredLocation.getLongitude(), (int)GEOFENCE_RADIUS);
-            // Add new markers around the current location
-            addMarkersAtLocationWithinMeters(triggeredLocation, (int)GEOFENCE_RADIUS, boardList);
+        // Tasks:
+        // > Remove the
 
+        fenceSet = false;
+        currentFence = null;
+        Toast.makeText(this, "Geofence broken!", Toast.LENGTH_LONG).show();
+        // Remove the last fence; continue in the callback
+        LocationServices.GeofencingApi.removeGeofences(
+                mGoogleApiClient,
+                getGeofencePendingIntent()
+        ).then(new ResultTransform<Status, Status>(){
+            @Nullable
+            @Override
+            public PendingResult<Status> onSuccess(Status status){
+                // Callback on the success of the Removal, done in the background
+                // Add a new Geofence at the current location
+                pruneOutOfRangeMarkers(
+                        getOldMarkers(),
+                        getNewMarkers(mLastKnownLocation, MARKER_RADIUS)
+                );
+                Log.d(TAG, "Removal Success");
+                return buildGeoFence(mLastKnownLocation);
+            }
 
-            // Build a new Geofence around the location
-            buildGeoFence(triggeredLocation);
-            // Remove the triggered Geofence
-            List<String> geoList = new ArrayList();
-            geoList.add(reqID);
-            LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient, geoList);
+            @NonNull
+            @Override
+            public Status onFailure(@NonNull Status status) {
+                // Failure to remove
+                Log.d(TAG, "REMOVAL FAILURE");
+                //Toast.makeText(MapsActivity.this, "Error in removing the Geofence", Toast.LENGTH_LONG).show();
+                return super.onFailure(status);
+            }
+        }).then(new ResultTransform<Status, Result>() {
+            @Nullable
+            @Override
+            public PendingResult<Result> onSuccess(@NonNull Status status) {
+                // callback for Adding the new Geofence at mLastKnownLocation
+                //Toast.makeText(MapsActivity.this, "GeoFence rebuilt!", Toast.LENGTH_LONG).show();
+                Log.d(TAG, "TOTALLY AWESOME");
+                return null;
+            }
 
-        }
+            @NonNull
+            @Override
+            public Status onFailure(@NonNull Status status) {
+                //Toast.makeText(MapsActivity.this, "Error in Building new Geofence", Toast.LENGTH_LONG).show();
+                Log.d(TAG, "NOT AWSOME");
+                return super.onFailure(status);
+            }
+        });
     }
 }
