@@ -2,8 +2,6 @@ package in.geobullet.csci_4176_project.Database.Classes;
 
 import java.util.Date;
 
-import in.geobullet.csci_4176_project.Utils.DateUtil;
-
 
 /* Class that corresponds to the Poster database table */
 
@@ -24,13 +22,14 @@ public class Poster {
     private Date endTime;
     private String photoName;
     private String iconName;
+    private String cost;
 
     public Poster() {
 
-
     }
 
-    public Poster(int id, Date created, int createdByUserId, String title, PosterType posterType, String address, String city, String stateProv, String details, Date startDate, Date endDate, Date startTime, Date endTime, String photoName) {
+    public Poster(int id, Date created, int createdByUserId, String title, PosterType posterType, String address, String city, String stateProv,
+                  String details, Date startDate, Date endDate, Date startTime, Date endTime, String photoName, String cost) {
         this.id = id;
         this.created = created;
         this.createdByUserId = createdByUserId;
@@ -45,8 +44,8 @@ public class Poster {
         this.startTime = startTime;
         this.endTime = endTime;
         this.photoName = photoName;
-        iconName = photoName.substring(0, photoName.lastIndexOf(".")) +"_icon.png";
-
+        this.iconName = photoName.substring(0, photoName.lastIndexOf(".")) +"_icon.png";
+        this.cost = cost;
     }
 
     public int getId() {
@@ -162,11 +161,19 @@ public class Poster {
         iconName = photoName.substring(0, photoName.lastIndexOf(".")) +"_icon.png";
     }
 
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
+    }
+
     @Override
     public String toString() {
         return "Poster{" +
                 "id=" + id +
-                ", created=" + DateUtil.formatDate(created) +
+                ", created=" + created +
                 ", createdByUserId=" + createdByUserId +
                 ", title='" + title + '\'' +
                 ", posterType=" + posterType +
@@ -174,11 +181,13 @@ public class Poster {
                 ", city='" + city + '\'' +
                 ", stateProv='" + stateProv + '\'' +
                 ", details='" + details + '\'' +
-                ", startDate=" + DateUtil.formatDate(startDate) +
-                ", endDate=" + DateUtil.formatDate(endDate) +
-                ", startTime=" + DateUtil.formatTime(startTime) +
-                ", endTime=" + DateUtil.formatTime(endTime) +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 ", photoName='" + photoName + '\'' +
+                ", iconName='" + iconName + '\'' +
+                ", cost='" + cost + '\'' +
                 '}';
     }
 

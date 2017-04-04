@@ -75,7 +75,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     "EndDate DATE, " +
                     "StartTime DATETIME, " +
                     "EndTime DATETIME, " +
-                    "PhotoName VARCHAR(255) " +
+                    "PhotoName VARCHAR(255), " +
+                    "Cost VARCHAR(255) " +
                 ");";
 
     private static final String CREATE_TABLE_BOARD_POSTER_PAIR =
