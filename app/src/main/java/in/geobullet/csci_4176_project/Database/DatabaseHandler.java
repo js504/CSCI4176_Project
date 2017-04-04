@@ -280,7 +280,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return b;
     }
 
-    public List<Board> searchAllBoardsWithinMetersOfGivenLatitudeLongitude(double latitude, double longitude, int meters) {
+    public List<Board> searchAllBoardsWithinMetersOfGivenLatitudeLongitude(int meters, double latitude, double longitude) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
