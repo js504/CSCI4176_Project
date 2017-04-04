@@ -131,7 +131,7 @@ public class BoardQueries {
         return boards;
     }
 
-    public List<Board> searchBoardsByLatitudeLongitudeWithinMeters(double targetLatitude, double targetLongitude, int numMeters) {
+    public List<Board> searchAllBoardsWithinMetersOfGivenLatitudeLongitude(int numMeters, double targetLatitude, double targetLongitude) {
 
         List<Board> matchingBoards = new ArrayList<>();
 
