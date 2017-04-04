@@ -22,9 +22,8 @@ import in.geobullet.csci_4176_project.Database.Classes.Board;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.Classes.PosterType;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
-
-import in.geobullet.csci_4176_project.Shared.SessionData;
 import in.geobullet.csci_4176_project.Utils.DateUtil;
+import in.geobullet.csci_4176_project.Shared.SessionData;
 import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
 
@@ -57,9 +56,6 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
         List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
         int left_margin_index = 0;
         int top_margin_index = 0;
-        int column_index = 0;
-        int row_index = 0;
-        int poster_count = 0;
         String poster_name = null;
 
         if (board != null) {
@@ -81,37 +77,21 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                     ib.setImageResource(resID);
                     ib.setId(p.getId());
 
-                    if(poster_count == 0)
+                    if(left_margin_index == 0)
                     {
-                        poster_count++;
-                        params.setMargins(left_margin_index, top_margin_index, 0, 0);
+                        params.setMargins(0, 50, 0, 0);
                         ib.setLayoutParams(params);
                         RelLayout.addView(ib);
-                        row_index++;
                     }
                     else
                     {
-                        if(row_index <=2)
-                        {
-                            top_margin_index = (230*row_index);
-                            left_margin_index = (520*column_index);
-                            params.setMargins(left_margin_index, top_margin_index, 0, 0);
-                            ib.setLayoutParams(params);
-                            RelLayout.addView(ib);
-                            row_index++;
-                        }
-                        else
-                        {
-                            column_index++;
-                            row_index = 0;
-                            left_margin_index = (520*column_index);
-                            top_margin_index = (230*row_index);
-                            params.setMargins(left_margin_index, top_margin_index, 0, 0);
-                            ib.setLayoutParams(params);
-                            RelLayout.addView(ib);
-                            row_index++;
-                        }
+                        params.setMargins(left_margin_index*520, 50, 0, 0);
+                        ib.setLayoutParams(params);
+                        RelLayout.addView(ib);
+
                     }
+                    top_margin_index++;
+                    left_margin_index++;
                 }
                 else if(selected_poster_type.equals("Event"))
                 {
@@ -130,37 +110,20 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                         ib.setImageResource(resID);
                         ib.setId(p.getId());
 
-                        if(poster_count == 0)
+                        if(left_margin_index == 0)
                         {
-                            poster_count++;
-                            params.setMargins(left_margin_index, top_margin_index, 0, 0);
+                            params.setMargins(0, 50, 0, 0);
                             ib.setLayoutParams(params);
                             RelLayout.addView(ib);
-                            row_index++;
                         }
                         else
                         {
-                            if(row_index <=2)
-                            {
-                                top_margin_index = (230*row_index);
-                                left_margin_index = (520*column_index);
-                                params.setMargins(left_margin_index, top_margin_index, 0, 0);
-                                ib.setLayoutParams(params);
-                                RelLayout.addView(ib);
-                                row_index++;
-                            }
-                            else
-                            {
-                                column_index++;
-                                row_index = 0;
-                                left_margin_index = (520*column_index);
-                                top_margin_index = (230*row_index);
-                                params.setMargins(left_margin_index, top_margin_index, 0, 0);
-                                ib.setLayoutParams(params);
-                                RelLayout.addView(ib);
-                                row_index++;
-                            }
+                            params.setMargins(left_margin_index*520, 50, 0, 0);
+                            ib.setLayoutParams(params);
+                            RelLayout.addView(ib);
                         }
+                        top_margin_index++;
+                        left_margin_index++;
                     }
                 }
                 else        //selected_poster_type == "Service"
@@ -180,37 +143,20 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                         ib.setImageResource(resID);
                         ib.setId(p.getId());
 
-                        if(poster_count == 0)
+                        if(left_margin_index == 0)
                         {
-                            poster_count++;
-                            params.setMargins(left_margin_index, top_margin_index, 0, 0);
+                            params.setMargins(0, 50, 0, 0);
                             ib.setLayoutParams(params);
                             RelLayout.addView(ib);
-                            row_index++;
                         }
                         else
                         {
-                            if(row_index <=2)
-                            {
-                                top_margin_index = (230*row_index);
-                                left_margin_index = (520*column_index);
-                                params.setMargins(left_margin_index, top_margin_index, 0, 0);
-                                ib.setLayoutParams(params);
-                                RelLayout.addView(ib);
-                                row_index++;
-                            }
-                            else
-                            {
-                                column_index++;
-                                row_index = 0;
-                                left_margin_index = (520*column_index);
-                                top_margin_index = (230*row_index);
-                                params.setMargins(left_margin_index, top_margin_index, 0, 0);
-                                ib.setLayoutParams(params);
-                                RelLayout.addView(ib);
-                                row_index++;
-                            }
+                            params.setMargins(left_margin_index*520, 50, 0, 0);
+                            ib.setLayoutParams(params);
+                            RelLayout.addView(ib);
                         }
+                        top_margin_index++;
+                        left_margin_index++;
                     }
                 }
             }
