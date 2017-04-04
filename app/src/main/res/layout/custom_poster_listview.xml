@@ -1,29 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:id="@+id/swipe_layout"
+    android:layout_margin="5dp">
+    <!-- Bottom View Start-->
+    <LinearLayout
+        android:background="@color/errorText"
+        android:id="@+id/bottom_wrapper"
+        android:layout_width="160dp"
+        android:weightSum="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_gravity="center"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/poster_1_icon" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:text="TextView" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/del_poster_ic"
+            android:src="@drawable/trash_can"/>
 
-    <TextView
-        android:id="@+id/posterViewId"
-        android:text=""
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        <!--What you want to show-->
+    </LinearLayout>
+    <!-- Bottom View End-->
 
-</LinearLayout>
+    <!-- Surface View Start -->
+    <LinearLayout
+        android:padding="10dp"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <!--What you want to show in SurfaceView-->
+
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_gravity="center"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/poster_1_icon" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/posterViewId"
+            android:text=""
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+    <!-- Surface View End -->
+</com.daimajia.swipe.SwipeLayout>
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:orientation="horizontal" android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+
+<!--</LinearLayout>-->

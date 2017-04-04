@@ -5,6 +5,8 @@ package in.geobullet.csci_4176_project.CustomAdapters;
  */
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
+
 import java.util.List;
 
+import in.geobullet.csci_4176_project.CreateNewPoster;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.MainActivity;
 import in.geobullet.csci_4176_project.Manage_Posters;
 import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
@@ -25,7 +32,13 @@ public class CustomAdapterPoster extends BaseAdapter{
     private Context context;
     private List<Poster> posters;
     private static LayoutInflater inflater=null;
-    public CustomAdapterPoster(Manage_Posters mainActivity, List<Poster> posters) {
+
+    private Manage_Posters mainActivity;
+    private DatabaseHandler db;
+
+    public CustomAdapterPoster(Manage_Posters mainActivity, List<Poster> posters, DatabaseHandler db) {
+        this.mainActivity = mainActivity;
+        this.db = db;
         this.posternames =posternames;
         context=mainActivity;
         this.posters =posters;
@@ -56,6 +69,86 @@ public class CustomAdapterPoster extends BaseAdapter{
         Holder holder=new Holder();
         View listview;
         listview = inflater.inflate(R.layout.custom_poster_listview, null);
+
+
+
+        SwipeLayout swipeLayout =  (SwipeLayout)listview.findViewById(R.id.swipe_layout);
+
+//set show mode.
+        swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+//add drag edge.(If the BottomView has 'layout_gravity' attribute, this line is unnecessary)
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, listview.findViewById(R.id.bottom_wrapper));
+
+        swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+            @Override
+            public void onClose(SwipeLayout layout) {
+                //when the SurfaceView totally cover the BottomView.
+            }
+
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                //you are swiping.
+            }
+
+            @Override
+            public void onStartOpen(SwipeLayout layout) {
+
+            }
+
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                //when the BottomView totally show.
+            }
+
+            @Override
+            public void onStartClose(SwipeLayout layout) {
+
+            }
+
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                //when user's hand released.
+            }
+        });
+
+
+        swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                Poster poster = posters.get(position);
+
+                Bundle editPosterBundle = new Bundle();
+                editPosterBundle.putInt("ID", poster.getId());
+                editPosterBundle.putString("TITLE", poster.getTitle());
+                editPosterBundle.putString("ADDRESS", poster.getAddress());
+                editPosterBundle.putString("CITY", poster.getCity());
+                editPosterBundle.putString("STARTDATE", poster.getStartDate().toString());
+                editPosterBundle.putString("ENDDATE", poster.getEndDate().toString());
+                editPosterBundle.putString("STARTTIME", poster.getStartTime().toString());
+                editPosterBundle.putString("ENDTIME", poster.getEndTime().toString());
+                editPosterBundle.putString("DETAILS", poster.getDetails());
+                editPosterBundle.putString("IMGSRC", poster.getPhotoName());
+                editPosterBundle.putString("IMGICONSRC", poster.getIconName());
+
+                Log.i("SWIPE SURFACE CLICKED!", "CLICKED" + posters.get(position).getTitle());
+                Intent intent = new Intent(mainActivity, CreateNewPoster.class);
+                intent.putExtras(editPosterBundle);
+
+                mainActivity.startActivity(intent);
+            }
+        });
+
+        swipeLayout.findViewById(R.id.bottom_wrapper).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                Log.i("SWIPE BOTTOM CLICKED!", "BOTTOM" + posters.get(position).getTitle());
+            }
+        });
+
+
         holder.tv=(TextView) listview.findViewById(R.id.textView1);
         holder.img=(ImageView) listview.findViewById(R.id.imageView1);
         holder.tv.setText(posters.get(position).getTitle());
@@ -65,6 +158,8 @@ public class CustomAdapterPoster extends BaseAdapter{
         Log.i("name", Integer.toString(id));
         //c.getResources().getIdentifier(ImageName, "drawable", c.getPackageName());
         holder.img.setImageResource(id);
+
+
         return listview;
     }
 
