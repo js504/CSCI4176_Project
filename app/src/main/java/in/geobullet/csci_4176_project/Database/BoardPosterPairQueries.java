@@ -3,6 +3,7 @@ package in.geobullet.csci_4176_project.Database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,5 +102,21 @@ public class BoardPosterPairQueries {
 
         return bpp;
     }
+
+    public void removePosterBoardPairByPosterId(int posterId){
+        String query = "DELETE FROM " + DatabaseHandler.TABLE_BOARD_POSTER_PAIR + " WHERE PosterId=" + posterId + ";";
+
+        List<BoardPosterPair> bpps = getAllBoardPosterPairs();
+
+        Log.i("BOARD PAIRS", "COUNT: " + bpps.size());
+
+        db.execSQL(query);
+
+        List<BoardPosterPair> bppsDelete = getAllBoardPosterPairs();
+
+        Log.i("DELETED BOARD PAIRS", "COUNT: " + bppsDelete.size());
+
+    }
+
 
 }

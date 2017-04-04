@@ -475,6 +475,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return u;
     }
 
+    public void removePosterBoardPairByPosterId(int posterId){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardPosterPairQueries bppq = new BoardPosterPairQueries(db);
+        bppq.removePosterBoardPairByPosterId(posterId);
+
+        PosterQueries pq = new PosterQueries(db);
+        pq.removePosterById(posterId);
+    }
+
     /* End User Queries */
 
 

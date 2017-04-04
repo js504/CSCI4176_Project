@@ -285,4 +285,10 @@ public class PosterQueries {
         return p;
     }
 
+    public void removePosterById(int posterId){
+        String query = "DELETE FROM Poster WHERE Id=" + posterId + ";";
+
+        db.execSQL(query);
+    }
+
 }
