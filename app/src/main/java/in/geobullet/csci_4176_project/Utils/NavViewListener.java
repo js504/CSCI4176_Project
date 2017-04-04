@@ -74,10 +74,8 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
         } else if (id == R.id.nav_delBulletinBoards) {
 
         } else if (id == R.id.nav_nearby_bulletin_boards) {
-            if( !(context instanceof MainActivity)) {
                 Intent i = new Intent(context, Nearby_bulletin_boards.class);
                 context.startActivity(i);
-            }
         }else if (id == R.id.manage_my_posters) {
             Intent i = new Intent(context, Manage_Posters.class);
             context.startActivity(i);

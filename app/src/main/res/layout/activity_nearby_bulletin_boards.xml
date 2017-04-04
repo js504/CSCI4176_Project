@@ -34,7 +34,7 @@
             <ListView
                 android:id="@+id/nearby_board_list"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="320dp"
                 android:layout_below="@+id/nearby_board" />
 
             <TextView
@@ -52,6 +52,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_below="@+id/textView_seek"/>
+
+            <Button
+                android:layout_marginLeft="20dp"
+                android:id="@+id/modify_radius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update Nearby Bulletin Boards"
+                android:layout_below="@+id/seekBar"/>
 
 
         </RelativeLayout>

@@ -14,11 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import in.geobullet.csci_4176_project.Database.DBSeeder;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 import in.geobullet.csci_4176_project.Shared.SessionData;
 import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
-import in.geobullet.csci_4176_project.Database.DatabaseHandler;
-import in.geobullet.csci_4176_project.Database.Utils.DBSeeder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         DBSeeder dbSeeder = new DBSeeder();
         dbSeeder.seedDatabase(dbHandler);
         Log.d("Seeding", "************************************ End Database Seeding *******************************************");
-
 
         setContentView(R.layout.activity_main);
 

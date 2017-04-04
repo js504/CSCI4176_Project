@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.Database.Classes.Board;
-import in.geobullet.csci_4176_project.Database.Utils.DateUtil;
+import in.geobullet.csci_4176_project.Utils.DateUtil;
 
 /**
  * Created by Nick on 2017-03-15.
@@ -131,6 +131,45 @@ public class BoardQueries {
         return boards;
     }
 
+    public List<Board> searchAllBoardsWithinMetersOfGivenLatitudeLongitude(int numMeters, double targetLatitude, double targetLongitude) {
+
+        List<Board> matchingBoards = new ArrayList<>();
+
+        List<Board> allBoards = this.getAllBoards();
+
+        double radiusOfEarthInMeters = 6371000;
+
+        for (Board board: allBoards) {
+
+            // Calculate the distance from each board to the coordinate passed in
+
+            double boardLat = board.getLatitude();
+            double boardLong = board.getLongitude();
+
+            double latitudeDiff = Math.toRadians(boardLat - targetLatitude);
+            double longitudeDiff = Math.toRadians(boardLong - targetLongitude);
+
+            double a = Math.sin(latitudeDiff / 2) * Math.sin(latitudeDiff / 2) +
+                    Math.cos(Math.toRadians(targetLatitude)) * Math.cos(Math.toRadians(boardLat)) *
+                    Math.sin(longitudeDiff / 2) * Math.sin(longitudeDiff / 2);
+
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            double distanceInKm = radiusOfEarthInMeters * c;
+
+            // If the board is within numMeters to the target coordinates, it's a match
+            if ((distanceInKm * 1000) <= numMeters) {
+                matchingBoards.add(board);
+            }
+        }
+
+        return matchingBoards;
+    }
+
+
+    // todo deleteBoard
+
+
     private ContentValues setContentValues(ContentValues vals, Board board) {
 
         if (board.getCreated() != null) {
@@ -201,7 +240,5 @@ public class BoardQueries {
         return b;
     }
 
-
-    // todo deleteBoard, getAllBoards, getBoardByLatitudeLongitudeWithinMeters
 
 }

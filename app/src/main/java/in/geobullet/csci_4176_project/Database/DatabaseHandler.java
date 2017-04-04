@@ -75,7 +75,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     "EndDate DATE, " +
                     "StartTime DATETIME, " +
                     "EndTime DATETIME, " +
-                    "PhotoName VARCHAR(255) " +
+                    "PhotoName VARCHAR(255), " +
+                    "Cost VARCHAR(255) " +
                 ");";
 
     private static final String CREATE_TABLE_BOARD_POSTER_PAIR =
@@ -279,11 +280,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return b;
     }
 
-    public List<Board> getBoardByLatitudeLongitudeWithinMeters(double latitude, double longitude, int meters) {
+    public List<Board> searchAllBoardsWithinMetersOfGivenLatitudeLongitude(int meters, double latitude, double longitude) {
 
-        // todo finish
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        return null;
+        BoardQueries bqs = new BoardQueries(db);
+
+        List<Board> boards = bqs.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(meters, latitude, longitude);
+
+        db.close();
+
+        return boards;
     }
 
     /* End Board Queries */

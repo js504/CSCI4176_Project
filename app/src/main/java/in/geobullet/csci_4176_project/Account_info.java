@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +38,6 @@ import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 public class Account_info extends AppCompatActivity {
 
     //hardcoded poster items
-    public static int[] prgmImages={R.drawable.poster_1_icon,R.drawable.poster_2_icon,R.drawable.poster_3_icon,R.drawable.poster_4_icon,R.drawable.poster_5_icon,R.drawable.poster_6_icon,R.drawable.poster_7_icon,R.drawable.poster_8_icon,R.drawable.poster_9_icon};
-    public static String[] prgmNameList={"poster 1","poster 2","poster 3","poster 4","poster 5","poster 6","poster 7","poster 8","poster 9"};
     private NavigationView navigationView;
     private NavMenuManager navManager;
 
@@ -46,6 +45,9 @@ public class Account_info extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_info);
+
+        //hide keyboard when start
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //db user info
         final DatabaseHandler db = new DatabaseHandler(this);
@@ -113,16 +115,6 @@ public class Account_info extends AppCompatActivity {
         //display login username at toolbar
         getSupportActionBar().setTitle("Login as: " + (currentUser == null ? "" : currentUser.getDisplayName()));
 
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
