@@ -3,20 +3,25 @@ package in.geobullet.csci_4176_project;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterNearbyBullietin;
 import in.geobullet.csci_4176_project.Database.Classes.Board;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.Shared.SessionData;
 
 public class Nearby_bulletin_boards extends AppCompatActivity {
-
+    private int progress = 0;
+    List<Board> bl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,10 +29,12 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
 
         DatabaseHandler db = new DatabaseHandler(this);
 
-        //need to coorperate with getBoardByLatitudeLongitudeWithinMeters() in DH to work
-        //db.getBoardByLatitudeLongitudeWithinMeters();
+        if(SessionData.location == null && SessionData.radius == -1 || progress == 100000){
+            bl = db.getAllBoards();
+        }else{
+            bl = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(SessionData.radius, SessionData.location.getLatitude(), SessionData.location.getLongitude());
+        }
 
-        List<Board> bl = db.getAllBoards();
         ListView lv=(ListView) findViewById(R.id.nearby_board_list);
         lv.setAdapter(new CustomAdapterNearbyBullietin(this, bl));
 
@@ -50,7 +57,6 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
         textView.setText("Location: +" + 50 + " Meters");
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
 
@@ -59,41 +65,32 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
 
                 if (0 <= progresValue && progresValue <= 5) {
                     progress = 50;
-                }
-                else if (5 < progresValue && progresValue <= 10) {
+                } else if (5 < progresValue && progresValue <= 10) {
                     progress = 100;
                     suffix = "Meters";
-                }
-                else if (10 < progresValue && progresValue <= 15) {
+                } else if (10 < progresValue && progresValue <= 15) {
                     progress = 200;
                     suffix = "Meters";
-                }
-                else if (15 < progresValue && progresValue <= 20) {
+                } else if (15 < progresValue && progresValue <= 20) {
                     progress = 500;
                     suffix = "Meters";
-                }
-                else if (20 < progresValue && progresValue <= 30) {
-                    progress = 1;
-                    suffix = "Km";
-                }
-                else if (30 < progresValue && progresValue <= 40) {
-                    progress = 2;
-                    suffix = "Km";
-                }
-                else if (40 < progresValue && progresValue <= 50) {
-                    progress = 5;
-                    suffix = "Km";
-                }
-                else if (50 < progresValue && progresValue <= 70) {
-                    progress = 10;
-                    suffix = "Km";
-                }
-                else if (70 < progresValue && progresValue <= 90) {
-                    progress = 20;
-                    suffix = "Km";
-                }
-                else if (90 < progresValue && progresValue <= 100) {
-                    progress = 100;
+                } else if (20 < progresValue && progresValue <= 30) {
+                    progress = 1000;
+                    suffix = "Meters";
+                } else if (30 < progresValue && progresValue <= 40) {
+                    progress = 2000;
+                    suffix = "Meters";
+                } else if (40 < progresValue && progresValue <= 50) {
+                    progress = 5000;
+                    suffix = "Meters";
+                } else if (50 < progresValue && progresValue <= 70) {
+                    progress = 10000;
+                    suffix = "Meters";
+                } else if (70 < progresValue && progresValue <= 90) {
+                    progress = 20000;
+                    suffix = "Meters";
+                } else if (90 < progresValue && progresValue <= 100) {
+                    progress = 100000;
                     isNational = true;
                 }
 
@@ -105,18 +102,33 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
                 }
 
                 textView.setText(text);
-            }
 
+            }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //textView.setText("Covered: " + progress + "/" + seekBar.getMax());
+
             }
         });
 
+        Button update_radius = (Button) findViewById(R.id.modify_radius);
+        //update the board information
+        update_radius.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(SessionData.location == null){
+                    Toast.makeText(Nearby_bulletin_boards.this, "Location are not avaliable",
+                            Toast.LENGTH_LONG).show();
+                }else {
+                    Intent intent = new Intent(Nearby_bulletin_boards.this, Nearby_bulletin_boards.class);
+                    SessionData.radius = progress;
+                    finish();
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
 }

@@ -11,4 +11,5 @@ public class SessionData {
     public static User currentUser = null;
     public static int boardId = -1;
     public static Location location = null;
+    public static int radius = -1;
 }

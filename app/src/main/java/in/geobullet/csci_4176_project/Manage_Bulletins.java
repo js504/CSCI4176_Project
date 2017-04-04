@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterBullietin;
@@ -20,7 +21,7 @@ public class Manage_Bulletins extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_bulletins);
 
-        DatabaseHandler db = new DatabaseHandler(this);
+        final DatabaseHandler db = new DatabaseHandler(this);
 
         List<Board> bl = db.getAllBoards();
         ListView lv=(ListView) findViewById(R.id.board_list);
@@ -30,11 +31,10 @@ public class Manage_Bulletins extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(Manage_Bulletins.this, CreateNewPoster.class);
-                //get the poster by its id
-                //Poster selected_poster = db.getPosterById(position);
-                //pass selected poster to new intent for user to edit
-                //intent.putExtra("posterID", (Serializable) selected_poster);
+                Intent intent = new Intent(Manage_Bulletins.this, EditBoard.class);
+                Board board = db.getBoardById(position+1);
+
+                intent.putExtra("boardID", board.getId());
                 startActivity(intent);
             }
         });

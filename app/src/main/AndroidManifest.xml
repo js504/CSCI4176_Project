@@ -52,6 +52,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Login" />
         <activity android:name=".Manage_Bulletins" />
+        <activity android:name=".EditBoard" />
         <activity android:name=".Nearby_bulletin_boards" />
         <activity android:name=".Manage_Posters"></activity>
     </application>
