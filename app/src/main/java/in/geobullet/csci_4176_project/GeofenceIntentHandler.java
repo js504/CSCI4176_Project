@@ -15,10 +15,6 @@ import com.google.android.gms.location.GeofencingEvent;
 import java.util.List;
 
 
-/**
- * Created by rkett on 3/23/2017.
- */
-
 public class GeofenceIntentHandler extends IntentService {
     public static final String TAG = "GfHandler";
     ResultReceiver resultReceiver = null;
@@ -53,18 +49,7 @@ public class GeofenceIntentHandler extends IntentService {
             return;
         }
         int transition = event.getGeofenceTransition();
-        Bundle b = null;
-        Log.d(TAG, "Transition ID = " + transition);
-        try{
-            List<Geofence> fenceList = event.getTriggeringGeofences();
-            String reqID = fenceList.get(0).getRequestId();
-            b = new Bundle();
-            b.putString("reqID", reqID);
-            b.putParcelable("Location", event.getTriggeringLocation());
-        }catch(Exception e){
-            Log.d(TAG, "Actually bad");
-        }
         event = null;
-        resultReceiver.send(transition, b);
+        resultReceiver.send(transition, null);
     }
 }

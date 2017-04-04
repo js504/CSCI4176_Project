@@ -33,6 +33,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.Database.Classes.Board;
+import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 import in.geobullet.csci_4176_project.Shared.SessionData;
 
 public class MapsActivity extends FragmentActivity
@@ -53,28 +55,34 @@ public class MapsActivity extends FragmentActivity
         GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener,
         GoogleMap.OnMapClickListener,
+        OnMarkerClickListener,
         ResultCallback<Status>,
         GeofenceResultReceiver.GeofenceReceiver {
+
+    // Small Container Class
+    private class BoardAndMarkerOptions{
+        Board b;
+        MarkerOptions m;
+    }
 
     // Logger Tag
     private static final String TAG = "Maps";
 
-    // Map instance
-    private GoogleMap mMap;
-
-    // Camera Position
-    private CameraPosition mCameraPosition;
-
-    // Play services API client
+    // Location
     private GoogleApiClient mGoogleApiClient;
-
-    // Defaults for when location services not enabled Properly
     private LatLng mDefaultLocationHalifax = new LatLng(44.6488, 63.5752);
+    private Location mLastKnownLocation = null;
+    LocationRequest mLocationRequest;
+
+    // Maps
+    private GoogleMap mMap;
+    private CameraPosition mCameraPosition;
     private static final float DEFAULT_ZOOM = 16.4f;
     private static final float MAX_ZOOM = 18.0f; // For restricting access
     private static final float MIN_ZOOM = 15.0f;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 67;
 
+    // GeoFencing
     public static final float GEOFENCE_RADIUS_f = 50.0f;
     public static final int GEOFENCE_RADIUS_i = 25;
     public static final int GEOFENCE_RESPONSIVENESS = 1000;
@@ -87,23 +95,26 @@ public class MapsActivity extends FragmentActivity
     public Geofence currentFence = null;
     public Location currentFenceLocation = null;
     public boolean fenceSet = false;
+
+    // Markers
     public final int MARKER_RADIUS = 3 * GEOFENCE_RADIUS_i;
+    public final int MARKER_PRUNE_MARKERS = 1234;
+    List<Marker> shownMarkerList = new ArrayList<>();
 
-    LocationRequest mLocationRequest;
+    Handler uiHandler = new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(Message msg){
+            Location loc = (Location)msg.obj;
+            pruneOutOfRangeMarkers(getOldMarkers(), getNewMarkers(loc, MARKER_RADIUS));
 
-    // Current location
-    private Location mLastKnownLocation = null;
+        }
+    };
 
-    // Need a Marker array to store the currently pulled markers
-    Marker[] markerArray;
-    // Needs an API to pull marker id's using a current location
-    // Needs an API to pull board URLs using the marker id's
+    // Database
+    final DatabaseHandler db = new DatabaseHandler(this);
 
 
     /* Implementations; ideas for the map:
-     * > Geo-fenced pole-fetching
-     *      When a user leaves a set radius (set at the last fetch), redraw the geo-fence, and
-     *      fetch the poles in the radius of the current geofence.
      * > Pan-and-Zoom on pole-click
      *      When a user clicks a pole, pan the camera over to the marker, and zoom down to it
      *      as the pole loads. Serves as an animated loading bar, effectively. Can launch the
@@ -161,7 +172,9 @@ public class MapsActivity extends FragmentActivity
         } else {
             mMap.setMyLocationEnabled(true);
         }
-        setMapStyling(googleMap);
+        mMap.setMinZoomPreference(MIN_ZOOM);
+        mMap.setMaxZoomPreference(MAX_ZOOM);
+        setMapStyling(mMap);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mDefaultLocationHalifax));
     }
 
@@ -222,11 +235,8 @@ public class MapsActivity extends FragmentActivity
             if (mLastKnownLocation == null) {
                 mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             }
-            //if(!fenceSet){
-             //   fenceSet = true;
-                buildGeoFence(mLastKnownLocation);
-            //}
-            // Populate with Markers
+            buildGeoFence(mLastKnownLocation);
+            addInitialMarkers(mLastKnownLocation);
         }
     }
 
@@ -244,7 +254,7 @@ public class MapsActivity extends FragmentActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if(mGoogleApiClient != null){
+        if(mGoogleApiClient != null && !mGoogleApiClient.isConnected()){
             mGoogleApiClient.connect();
         }
         if(resultReceiver != null){
@@ -340,22 +350,83 @@ public class MapsActivity extends FragmentActivity
         }
     }
 
-    public List<Marker> getNewMarkers(Location loc, int radius){
+    public List<BoardAndMarkerOptions> getNewMarkers(Location loc, int radius){
         // make a database call and build up a list of boards, based on loc
         // then build a list of markers from the boards; markers will have the boards as tags
-        List<Marker> markerList = null;
-        return markerList;
+        List<Board> boardList = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(
+                radius, loc.getLatitude(), loc.getLongitude());
+        List<BoardAndMarkerOptions> list = new ArrayList<>();
+        for(Board board : boardList){
+            // Build a object of both a board and a set of MarkerOptions
+            //TODO: add in the icon and anchors
+            MarkerOptions mo = new MarkerOptions()
+                    .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
+                    //.icon()
+                    //.anchor()
+                    .draggable(false)
+                    .visible(true);
+            BoardAndMarkerOptions bmo = new BoardAndMarkerOptions();
+            bmo.b = board;
+            bmo.m = mo;
+            list.add(bmo);
+        }
+        return list;
     }
 
     public List<Marker> getOldMarkers(){
         // get all of the markers previously assigned;
-        // Should be stored in an array, probably.
-        List<Marker> markerList = null;
-        return markerList;
+        return shownMarkerList;
     }
 
-    public void pruneOutOfRangeMarkers(List<Marker> oldMarkers, List<Marker> newMarkers){
+    public void pruneOutOfRangeMarkers(List<Marker> oldMarkers, List<BoardAndMarkerOptions> newMarkers){
+        // Compare the tags of the previously lain markers to the boards in the newMarker
+        Log.d(TAG, "There are " + oldMarkers.size() + " OldMarkers, and " + newMarkers.size() + " NewMarkers in range");
+        List<Marker> toBeKept = new ArrayList<>();
+        for(BoardAndMarkerOptions bmo : newMarkers){
+            Board newBoard = bmo.b;
+            MarkerOptions newOptions = bmo.m;
+            for(Marker m : oldMarkers){
+                Board oldBoard = (Board)m.getTag();
+                // If the board is a duplicate of the other
+                if(oldBoard.getId() == newBoard.getId()){
+                    toBeKept.add(m);
+                    oldMarkers.remove(m);
+                    m.remove();
+                    break;
+                }
+            }
+            // Not found in the Old Board list
+            Marker mark = mMap.addMarker(newOptions);
+            mark.setTag(newBoard);
+            toBeKept.add(mark);
+        }
 
+        shownMarkerList = toBeKept;
+    }
+
+    public void addInitialMarkers(Location loc){
+        List<Board> boardList = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(
+                MARKER_RADIUS, loc.getLatitude(), loc.getLongitude());
+        Log.d(TAG, "There are " + boardList.size() + " boards in range");
+        for(Board b : boardList){
+            //TODO: add in the icon and anchors
+            Marker m = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
+                    //.icon()
+                    .visible(true)
+                    .draggable(false)
+                    //.anchor()
+            );
+            m.setTag(b);
+            shownMarkerList.add(m);
+        }
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Toast.makeText(this, "YOU CLICKED A MARKER!", Toast.LENGTH_LONG);
+        return false;
     }
 
     private PendingIntent getGeofencePendingIntent() {
@@ -394,8 +465,7 @@ public class MapsActivity extends FragmentActivity
 
         fenceSet = false;
         currentFence = null;
-        Toast.makeText(this, "Geofence broken!", Toast.LENGTH_LONG).show();
-        // Remove the last fence; continue in the callback
+        // Remove the previous fence; continue in the callback
         LocationServices.GeofencingApi.removeGeofences(
                 mGoogleApiClient,
                 getGeofencePendingIntent()
@@ -405,11 +475,8 @@ public class MapsActivity extends FragmentActivity
             public PendingResult<Status> onSuccess(Status status){
                 // Callback on the success of the Removal, done in the background
                 // Add a new Geofence at the current location
-                pruneOutOfRangeMarkers(
-                        getOldMarkers(),
-                        getNewMarkers(mLastKnownLocation, MARKER_RADIUS)
-                );
-                Log.d(TAG, "Removal Success");
+                uiHandler.obtainMessage(MARKER_PRUNE_MARKERS, mLastKnownLocation).sendToTarget();
+                Log.d(TAG, "REMOVAL SUCCESS");
                 return buildGeoFence(mLastKnownLocation);
             }
 
@@ -428,6 +495,7 @@ public class MapsActivity extends FragmentActivity
                 // callback for Adding the new Geofence at mLastKnownLocation
                 //Toast.makeText(MapsActivity.this, "GeoFence rebuilt!", Toast.LENGTH_LONG).show();
                 Log.d(TAG, "TOTALLY AWESOME");
+                //System.gc(); // End of the geofence handling, so clean up the disposed of Markers
                 return null;
             }
 
@@ -435,7 +503,7 @@ public class MapsActivity extends FragmentActivity
             @Override
             public Status onFailure(@NonNull Status status) {
                 //Toast.makeText(MapsActivity.this, "Error in Building new Geofence", Toast.LENGTH_LONG).show();
-                Log.d(TAG, "NOT AWSOME");
+                Log.d(TAG, "NOT AWESOME");
                 return super.onFailure(status);
             }
         });
