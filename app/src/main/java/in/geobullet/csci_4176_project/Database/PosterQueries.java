@@ -170,7 +170,9 @@ public class PosterQueries {
         if (poster.getEndTime() != null) {
             vals.put("EndTime", DateFormat.format(DateUtil.DATE_FORMAT, poster.getEndTime()).toString());
         }
+
         vals.put("PhotoName", poster.getPhotoName());
+        vals.put("Cost", poster.getCost());
 
         return vals;
     }
@@ -194,6 +196,7 @@ public class PosterQueries {
         int sTimeIdx = cursor.getColumnIndex("StartTime");
         int eTimeIdx = cursor.getColumnIndex("EndTime");
         int photoNameIdx = cursor.getColumnIndex("PhotoName");
+        int costIdx = cursor.getColumnIndex("Cost");
 
         p.setId(cursor.getInt(idIdx));
 
@@ -277,6 +280,7 @@ public class PosterQueries {
         }
 
         p.setPhotoName(cursor.getString(photoNameIdx));
+        p.setCost(cursor.getString(costIdx));
 
         return p;
     }
