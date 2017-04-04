@@ -50,6 +50,10 @@
         <activity android:name=".Manage_Bulletins" />
         <activity android:name=".Nearby_bulletin_boards" />
         <activity android:name=".Manage_Posters"></activity>
+        <service
+            android:name=".GeofenceIntentHandler"
+            android:exported="true"
+            />
     </application>
 
 </manifest>

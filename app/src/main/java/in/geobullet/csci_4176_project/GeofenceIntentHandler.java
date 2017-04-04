@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.os.ResultReceiver;
+import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
@@ -19,46 +20,51 @@ import java.util.List;
  */
 
 public class GeofenceIntentHandler extends IntentService {
-    public static final String TAG = "GeofenceHandler";
-    ResultReceiver resultReceiver;
+    public static final String TAG = "GfHandler";
+    ResultReceiver resultReceiver = null;
 
     public GeofenceIntentHandler(){
-       super(TAG);
+        super(TAG);
+        Log.d(TAG, "IN THE GFH CONSTRUCTOR");
+
     }
 
     @Override
-    public void onCreate(){ super.onCreate(); }
+    public void onCreate(){
+        super.onCreate();
+        Log.d(TAG, "GFH BEING CREATED");
+    }
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        resultReceiver = intent.getParcelableExtra("ResultReceiver");
+        resultReceiver = intent.getParcelableExtra(GeofenceResultReceiver.TAG);
+        Log.d(TAG, "Assigning resultreceiver inside Handler");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     protected void onHandleIntent(Intent intent){
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
-
-        // On the GeoFence being broken, need to:
-        // > Delete the current geofence, so it can't be retriggered; and to prevent leaks
-        // > Build a new Geofence around the current location
-
+        Log.d(TAG, "Intent handler triggered");
 
         if(event.hasError()){
             // Handle errors
+            Log.d(TAG, "Errors encountered");
             return;
         }
         int transition = event.getGeofenceTransition();
-        if(transition == Geofence.GEOFENCE_TRANSITION_EXIT){
-            // Need to delete the current fence, and create a new one at the current location
+        Bundle b = null;
+        Log.d(TAG, "Transition ID = " + transition);
+        try{
             List<Geofence> fenceList = event.getTriggeringGeofences();
             String reqID = fenceList.get(0).getRequestId();
-            Bundle b = new Bundle();
+            b = new Bundle();
             b.putString("reqID", reqID);
             b.putParcelable("Location", event.getTriggeringLocation());
-            resultReceiver.send(Activity.RESULT_OK, b);
+        }catch(Exception e){
+            Log.d(TAG, "Actually bad");
         }
-
-
+        event = null;
+        resultReceiver.send(transition, b);
     }
 }
