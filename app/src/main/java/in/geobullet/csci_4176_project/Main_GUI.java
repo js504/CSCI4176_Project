@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -245,6 +246,14 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
         //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+
+
+        View hView =  navigationView.getHeaderView(0);
+        TextView welcome_menu = (TextView)hView.findViewById(R.id.nav_welcome);
+        if(SessionData.currentUser != null) {
+            welcome_menu.setText("Welcome: " + SessionData.currentUser.getFirstName() + " " + SessionData.currentUser.getLastName());
+        }
+
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
