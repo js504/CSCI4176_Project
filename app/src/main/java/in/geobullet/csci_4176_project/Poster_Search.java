@@ -27,6 +27,7 @@ public class Poster_Search extends AppCompatActivity {
         //Get the widgets reference from XML layout
         final TextView tv = (TextView) findViewById(R.id.tv);
         NumberPicker np = (NumberPicker) findViewById(R.id.np);
+        np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         Button button = (Button) findViewById(R.id.poster_search_btn);
 
         //Initializing a new string array with elements
