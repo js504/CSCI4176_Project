@@ -153,14 +153,14 @@ public class EditBoard extends AppCompatActivity {
 
                     if (startDateInt != null) {
                         startDateCal.set(Calendar.YEAR, startDateInt[2]);
-                        startDateCal.set(Calendar.MONTH, startDateInt[1]);
+                        startDateCal.set(Calendar.MONTH, startDateInt[1]-1);
                         startDateCal.set(Calendar.DATE, startDateInt[0]);
                         current.setCreated(startDateCal.getTime());
                     }
 
-                    if (startDateInt != null) {
+                    if (endDateInt != null) {
                         endDateCal.set(Calendar.YEAR, endDateInt[2]);
-                        endDateCal.set(Calendar.MONTH, endDateInt[1]);
+                        endDateCal.set(Calendar.MONTH, endDateInt[1]-1);
                         endDateCal.set(Calendar.DATE, endDateInt[0]);
                         current.setExpirationDate(endDateCal.getTime());
                     }
@@ -216,7 +216,7 @@ public class EditBoard extends AppCompatActivity {
             bundle.putString(START_DATE_LABEL, START_DATE_LABEL);
 
             //Create new date picker fragment
-            newFragment = new CreateNewPoster.DatePickerFragment();
+            newFragment = new EditBoard.DatePickerFragment();
         }
         else if(button.getText().equals(END_DATE_LABEL)){
 
@@ -224,7 +224,7 @@ public class EditBoard extends AppCompatActivity {
             bundle.putString(END_DATE_LABEL, END_DATE_LABEL);
 
             //Create new date picker fragment
-            newFragment = new CreateNewPoster.DatePickerFragment();
+            newFragment = new EditBoard.DatePickerFragment();
         }
         else if(button.getText().equals(START_TIME_LABEL)){
 
@@ -232,7 +232,7 @@ public class EditBoard extends AppCompatActivity {
             bundle.putString(START_TIME_LABEL, START_TIME_LABEL);
 
             //Create new time picker fragment
-            newFragment = new CreateNewPoster.TimePickerFragment();
+            newFragment = new EditBoard.DatePickerFragment();
         }
         else if(button.getText().equals(END_TIME_LABEL)){
 
@@ -240,7 +240,7 @@ public class EditBoard extends AppCompatActivity {
             bundle.putString(END_TIME_LABEL, END_TIME_LABEL);
 
             //Create new time picker fragment
-            newFragment = new CreateNewPoster.TimePickerFragment();
+            newFragment = new EditBoard.DatePickerFragment();
         }
 
         if(newFragment != null) {
@@ -431,7 +431,7 @@ public class EditBoard extends AppCompatActivity {
          */
         public void onDateSet(DatePicker view, int year, int month, int day) {
 
-            String date =  Integer.toString(day) + "-" + Integer.toString(month + 1) + "-" + Integer.toString(year);
+            String date =  Integer.toString(day) + "-" + Integer.toString(month+1) + "-" + Integer.toString(year);
             //Set the date based on whether its the start or end date
             if(key.equals(START_DATE_LABEL)){
                 TextView startDate = (TextView)getActivity().findViewById(R.id.start_date_text_view);
