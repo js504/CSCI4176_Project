@@ -1,9 +1,11 @@
 package in.geobullet.csci_4176_project;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -25,6 +28,7 @@ import in.geobullet.csci_4176_project.Database.Classes.BoardPosterPair;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.Classes.PosterType;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.Utils.PhotoPicker;
 
 /**
  *
@@ -71,6 +75,8 @@ public class CreateNewPoster extends AppCompatActivity {
     private Button endTimeButton;
     private Button browsePostersButton;
     private Button submitPosterButton;
+
+    private ImageView previewImageView;
 
     private final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"};
 
@@ -123,11 +129,19 @@ public class CreateNewPoster extends AppCompatActivity {
         browsePostersButton = (Button)findViewById(R.id.browse_posters_button);
         submitPosterButton = (Button)findViewById(R.id.submit_poster_button);
 
+        previewImageView = (ImageView)findViewById(R.id.poster_preview);
+
+        //Then we are editing an existing poster
         if(extras != null){
             populateFields(extras);
         }
     }
 
+    /**
+     * Populates the fields of the create poster activity with the existing data to be edited.
+     *
+     * @param extras  The data to populate the fields with
+     */
     private void populateFields(Bundle extras){
         posterId = (int)extras.get("ID");
         title.setText((String)extras.get("TITLE"));
@@ -154,6 +168,10 @@ public class CreateNewPoster extends AppCompatActivity {
         imgSrc = (String)extras.get("IMGSRC");
         iconSrc = (String)extras.get("IMGICONSRC");
 
+
+        imgSrc = imgSrc.substring(0, imgSrc.lastIndexOf("."));
+        int id = this.getResources().getIdentifier(imgSrc, "drawable", this.getPackageName());
+        previewImageView.setImageResource(id);
 
 
     }
@@ -267,6 +285,49 @@ public class CreateNewPoster extends AppCompatActivity {
     }
 
 
+    /**
+     * On click method to the postor picker activity which allows users to select an image for their poster
+     *
+     * @param view  The button view that was clicked
+     */
+    public void getImageOnClick(View view){
+
+        Intent intent = new Intent(CreateNewPoster.this, PhotoPicker.class);
+        startActivityForResult(intent, 0);
+    }
+
+    /**
+     * Result of the photo picker activity is grabbed through this call back method
+     *
+     * @param requestCode   Code of the requesting activity that called the previous
+     * @param resultCode    The code as to whether the last activities operation was successful
+     * @param data          The data that was returned from the activity
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (0) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    String tmpImgSrc = data.getStringExtra("IMG_SRC");
+                    imgSrc = tmpImgSrc;
+
+                    Log.i("IMG_SRC", imgSrc);
+
+                    int id = this.getResources().getIdentifier(imgSrc, "drawable", this.getPackageName());
+                    previewImageView.setImageResource(id);
+                }
+                break;
+            }
+        }
+    }
+
+
+    /**
+     * Onclick that calls the Submit methods a new poster if all required fields have been added.
+     *
+     * @param view  Submit button view
+     */
     public void addPosterOnClick(View view){
 
 
@@ -304,6 +365,11 @@ public class CreateNewPoster extends AppCompatActivity {
 
     }
 
+    /**
+     * Update the poster in the db if the poster already existed
+     *
+     * @param poster  The poster to be updated
+     */
     private void editPosterInDb(Poster poster){
         poster.setId(posterId);
         boolean tmp = dbHandler.updatePoster(poster);
@@ -313,6 +379,11 @@ public class CreateNewPoster extends AppCompatActivity {
         }
     }
 
+    /**
+     * Add a new poster to the db if none existed before
+     *
+     * @param poster  The new poster to be added to the db
+     */
     private void addPosterToDb(Poster poster){
         posterId = dbHandler.addPoster(poster);
 
@@ -334,6 +405,12 @@ public class CreateNewPoster extends AppCompatActivity {
         Toast.makeText(this, "Poster Created!", Toast.LENGTH_SHORT).show();
     }
 
+
+    /**
+     * Creates an event poster based on poster type
+     *
+     * @return  The created poster if all required fields were added, null otherwise
+     */
     private Poster addEventPoster(){
 
 
@@ -358,7 +435,8 @@ public class CreateNewPoster extends AppCompatActivity {
                 !startDateStr.equals("") &&
                 !endDateStr.equals("") &&
                 !startTimeStr.equals("") &&
-                !endTimeStr.equals("")){
+                !endTimeStr.equals("") &&
+                !imgSrc.isEmpty()){
 
                 poster = createNewPoster(PosterType.Event, titleStr, locationAddressStr, cityStr ,detailsStr, startDateStr, endDateStr, startTimeStr, endTimeStr);
 
@@ -379,20 +457,32 @@ public class CreateNewPoster extends AppCompatActivity {
                 error += "\tCity\n";
             }
 
-            if(startDateStr.isEmpty()){
+
+            String[] startDateStrArr = startDateStr.split(":");
+            if(startDateStrArr.length <= 1){
                 error += "\tStart Date\n";
             }
 
-            if(endDateStr.isEmpty()){
+
+            String[] endDateStrArr = endDateStr.split(":");
+            if(endDateStrArr.length <= 1){
                 error += "\tEnd Date\n";
             }
 
-            if(startTimeStr.isEmpty()){
+            String[] startTimeStrArr = startTimeStr.split(":");
+
+            if(startTimeStrArr.length <= 1){
                 error += "\tStar Time\n";
             }
 
-            if(endTimeStr.isEmpty()){
+            String[] endTimeStrArr = endTimeStr.split(":");
+
+            if(endTimeStrArr.length <= 1){
                 error += "\tEnd Time\n";
+            }
+
+            if(imgSrc.isEmpty()){
+                error += "\tPoster Image\n";
             }
 
         }
@@ -404,19 +494,14 @@ public class CreateNewPoster extends AppCompatActivity {
 
     }
 
-    private void resetFields(){
 
-        title.setText("");
-        locationAddress.setText("");
-        city.setText("");
-        startDate.setText(START_DATE);
-        endDate.setText(END_DATE);
-        startTime.setText(START_TIME);
-        endTime.setText(END_TIME);
-        details.setText("");
 
-    }
-
+    /**
+     *  Checks required fields for a service poster then creates one.  If required fields are not filled in
+     *  error message is created and displayed.
+     *
+     * @return  The created service poster, null otherwise.
+     */
     private Poster addServicePoster(){
 
         String titleStr = title.getText().toString();
@@ -434,7 +519,8 @@ public class CreateNewPoster extends AppCompatActivity {
                 !locationAddressStr.equals("") &&
                 !cityStr.equals("") &&
                 !detailsStr.equals("") &&
-                !startDateStr.equals("")){
+                !startDateStr.equals("") &&
+                !imgSrc.isEmpty()){
 
             poster = createNewPoster(PosterType.Service, titleStr, locationAddressStr, cityStr ,detailsStr, startDateStr, "", "", "");
 
@@ -456,10 +542,13 @@ public class CreateNewPoster extends AppCompatActivity {
             }
 
             String[] startDateArr = startDateStr.split(":");
-            Log.i("START DATE SIZE", Integer.toString(startDateArr.length));
             if(startDateArr.length <= 1){
 
                 error += "\tStart Date\n";
+            }
+
+            if(imgSrc.isEmpty()){
+                error += "\tPoster Image\n";
             }
 
         }
@@ -470,6 +559,20 @@ public class CreateNewPoster extends AppCompatActivity {
 
     }
 
+    /**
+     * Method creates a new poster based on its poster type.
+     *
+     * @param posterType    The event type
+     * @param title         The event title
+     * @param address       The event address / location
+     * @param city          The event city
+     * @param details       The event details
+     * @param startDate     The event start date
+     * @param endDate       The event end date (not used for a service)
+     * @param startTime     The event start time (not used for a service)
+     * @param endTime       The event end time (not used for a service)
+     * @return              The created poster
+     */
     private Poster createNewPoster(PosterType posterType, String title, String address, String city, String details,
                                    String startDate, String endDate, String startTime, String endTime){
         Poster poster = new Poster();
@@ -556,6 +659,10 @@ public class CreateNewPoster extends AppCompatActivity {
         poster.setEndTime(endDateCal.getTime());
 
         //TODO get the photo name
+
+        imgSrc = imgSrc + ".png";
+        iconSrc = imgSrc + "_icon.png";
+
         poster.setPhotoName(imgSrc);
         poster.setIconName(iconSrc);
 
@@ -565,6 +672,13 @@ public class CreateNewPoster extends AppCompatActivity {
         return poster;
     }
 
+    /**
+     * Parses the default date displayed when first editing a poster and displays it in its
+     * required format
+     *
+     * @param date  The unformatted date
+     * @return      The formatted date
+     */
     private String parseEditDate(String date){
 
 
@@ -594,6 +708,14 @@ public class CreateNewPoster extends AppCompatActivity {
         return parsedDate;
     }
 
+
+    /**
+     * Parses the date from the expected format and returns it as numbers for use when creating
+     * posters
+     *
+     * @param date
+     * @return
+     */
     private int[] parseDate(String date){
 
         int[] dateArr = null;
@@ -614,6 +736,13 @@ public class CreateNewPoster extends AppCompatActivity {
     }
 
 
+    /**
+     * Parses the default time displayed when first editing a poster and displays it in its
+     * required format
+     *
+     * @param time  The unformatted time
+     * @return      The formatted time
+     */
     private String parseEditTime(String time){
 
         String[] split = time.split(" ");
@@ -644,11 +773,16 @@ public class CreateNewPoster extends AppCompatActivity {
         return newTime;
     }
 
+
+    /**
+     * Parses the time from the time text fields
+     *
+     * @param time  The time text fields stext
+     * @return      The parsed time for use with creating posters
+     */
     private int[] parseTime(String time){
 
         int[] timeIntArr = null;
-
-
 
         String[] timeSplit = time.split(":");
 
@@ -685,6 +819,34 @@ public class CreateNewPoster extends AppCompatActivity {
         return timeIntArr;
     }
 
+
+
+    /**
+     * Resets the fields to blank after a successful submission
+     *
+     */
+    private void resetFields(){
+
+        title.setText("");
+        locationAddress.setText("");
+        city.setText("");
+        startDate.setText(START_DATE);
+        endDate.setText(END_DATE);
+        startTime.setText(START_TIME);
+        endTime.setText(END_TIME);
+        details.setText("");
+        imgSrc = "";
+        previewImageView.setImageResource(-1);
+
+    }
+
+
+
+
+
+
+
+    /**************** Private static classes start here *****************/
 
     /**
      * Fragment for displaying the date picker dialog

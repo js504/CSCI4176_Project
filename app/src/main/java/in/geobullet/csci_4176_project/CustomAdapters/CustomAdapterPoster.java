@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 
@@ -148,6 +149,7 @@ public class CustomAdapterPoster extends BaseAdapter{
                 int posterId = posters.get(position).getId();
                 db.removePosterBoardPairByPosterId(posterId);
                 mainActivity.updateListView();
+                Toast.makeText(mainActivity, "Poster Deleted!", Toast.LENGTH_SHORT);
             }
         });
 

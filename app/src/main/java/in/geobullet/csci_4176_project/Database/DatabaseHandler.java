@@ -485,6 +485,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         pq.removePosterById(posterId);
     }
 
+
+    public List<Poster> getAllPosters(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        PosterQueries pq = new PosterQueries(db);
+        return pq.getAllPosters();
+    }
     /* End User Queries */
 
 
