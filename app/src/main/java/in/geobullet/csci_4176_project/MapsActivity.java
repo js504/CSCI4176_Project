@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -83,7 +84,7 @@ public class MapsActivity extends FragmentActivity
     public static int GEOFENCE_RADIUS_i = MARKER_RADIUS/2;
     public static float GEOFENCE_RADIUS_f = (float)GEOFENCE_RADIUS_i;
     public static final int GEOFENCE_RESPONSIVENESS = 1000;
-    public static final long GEOFENCE_EXPIRATION = 1000 * 60 * 2; // 120 seconds
+    public static final long GEOFENCE_EXPIRATION = 1000 * 60 * 20; // 20 minutes
     public static final int GEOFENCE_LOITER_TIME = 1000 * 5; // 5 seconds
     public static final String GEOFENCE_REQ_ID = "GEOFENCE_REQUEST_ID";
     private PendingIntent geofencePendingIntent = null;
@@ -101,6 +102,7 @@ public class MapsActivity extends FragmentActivity
     private static final float MIN_ZOOM = 12.0f;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 67;
     public double MAP_PAN_RESTRICTION_RADIUS = (double)GEOFENCE_RADIUS_f * Math.sqrt(2.0);
+    boolean infoWindowToggleBool = false;
 
 
     Handler uiHandler = new Handler(Looper.getMainLooper()){
@@ -115,17 +117,14 @@ public class MapsActivity extends FragmentActivity
     // Database
     final DatabaseHandler db = new DatabaseHandler(this);
 
+    // Intent Key
+    public static final String MAPS_BOARD_ID_KEY = "MAPS_BOARD_ID_KEY";
 
     /* Implementations; ideas for the map:
      * > Pan-and-Zoom on pole-click
      *      When a user clicks a pole, pan the camera over to the marker, and zoom down to it
      *      as the pole loads. Serves as an animated loading bar, effectively. Can launch the
      *      db calls at animation start, and then, on load, context switch to the board view.
-     * > Map click => prompt to add new poster/board near there
-     *      When a user clicks the map, prompt the user to add a board in that location.
-     *      Maybe by adding a "shadow" icon of a pole or poster in the location, or something
-     *      similar.
-     * >
      */
 
 
@@ -182,7 +181,22 @@ public class MapsActivity extends FragmentActivity
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Log.d(TAG, "MARKER CLICKED");
+                LatLng markerLatLng = marker.getPosition();
+                Board markerBoard = (Board)marker.getTag();
+                if(markerBoard == null){
+                    if(infoWindowToggleBool){
+                        infoWindowToggleBool = false;
+                        marker.hideInfoWindow();
+                    }else{
+                        infoWindowToggleBool = true;
+                        marker.showInfoWindow();
+                    }
+                    return true;
+                }
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(markerLatLng));
+                Intent i = new Intent(MapsActivity.this, Main_GUI.class);
+                i.putExtra(MAPS_BOARD_ID_KEY, markerBoard.getId());
+                MapsActivity.this.startActivity(i);
                 return true;
             }
         });
@@ -190,7 +204,10 @@ public class MapsActivity extends FragmentActivity
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
-                return null;
+                TextView tv = new TextView(MapsActivity.this);
+                tv.setText(marker.getTitle());
+                tv.setBackgroundColor(0xFFFFFF);
+                return tv;
             }
 
             @Override
@@ -257,7 +274,7 @@ public class MapsActivity extends FragmentActivity
             if (mLastKnownLocation == null) {
                 mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             }
-            buildGeoFence(mLastKnownLocation);
+            buildGeoFence(mLastKnownLocation).setResultCallback(this);
             addInitialMarkers(mLastKnownLocation);
         }
     }
@@ -357,15 +374,15 @@ public class MapsActivity extends FragmentActivity
                 .setExpirationDuration(GEOFENCE_EXPIRATION)
                 .setCircularRegion(loc.getLatitude(), loc.getLongitude(), GEOFENCE_RADIUS_i)
                 .setNotificationResponsiveness(GEOFENCE_RESPONSIVENESS)
-                //.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL) // testing
-                .setLoiteringDelay(GEOFENCE_LOITER_TIME)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
+                //.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL) // testing
+                //.setLoiteringDelay(GEOFENCE_LOITER_TIME)
                 .build();
         currentFence = fence;
         currentFenceLocation = loc;
         GeofencingRequest fenceRequest = new GeofencingRequest.Builder()
                 .addGeofence(fence)
-                .setInitialTrigger(Geofence.GEOFENCE_TRANSITION_DWELL) // Testing
+                //.setInitialTrigger(Geofence.GEOFENCE_TRANSITION_DWELL) // Testing
                 .build();
         try {
             return LocationServices.GeofencingApi.addGeofences(
@@ -391,11 +408,9 @@ public class MapsActivity extends FragmentActivity
         List<BoardAndMarkerOptions> list = new ArrayList<>();
         for(Board board : boardList){
             // Build a object of both a board and a set of MarkerOptions
-            //TODO: add in the icon and anchors
             MarkerOptions mo = new MarkerOptions()
                     .position(new LatLng(board.getLatitude(), board.getLongitude()))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.phone_pole))
-                    //.anchor()
                     .draggable(false)
                     .visible(true);
             BoardAndMarkerOptions bmo = new BoardAndMarkerOptions();
@@ -436,12 +451,17 @@ public class MapsActivity extends FragmentActivity
         for(BoardAndMarkerOptions bmo : newMarkers){
             Marker m = mMap.addMarker(bmo.m);
             m.setTag(bmo.b);
+            m.setTitle(bmo.b.getName());
             oldMarkers.add(m);
         }
         // Note that oldMarkers == shownMarkersList
     }
 
     public void addInitialMarkers(Location loc){
+        if(shownMarkerList.size() > 0){
+            pruneOutOfRangeMarkers(getOldMarkers(), getNewMarkers(loc, MARKER_RADIUS));
+            return;
+        }
         List<Board> boardList = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(
                 MARKER_RADIUS, loc.getLatitude(), loc.getLongitude());
         Log.d(TAG, "There are " + boardList.size() + " boards in range");
@@ -453,6 +473,7 @@ public class MapsActivity extends FragmentActivity
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.phone_pole))
                     .visible(true)
                     .draggable(false)
+                    .title(b.getName())
             );
             m.setTag(b);
             shownMarkerList.add(m);
@@ -489,9 +510,6 @@ public class MapsActivity extends FragmentActivity
         // we can assume that any received data from the intent handler is correct.
         // So: when a message is received, get the ReqId from the constant, GEOFENCE_REQUEST_ID
         // The location is stored in the currentFenceLocation. Other data is in the currentFence.
-
-        // Tasks:
-        // > Remove the
 
         fenceSet = false;
         currentFence = null;
