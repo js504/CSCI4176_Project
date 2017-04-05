@@ -60,8 +60,9 @@ public class Login extends AppCompatActivity {
                 if(!email_input.equals("")&& !pwd_input.equals("")) {
 
                     if (usr != null) { // then there was a match and the user was returned
-
-                        Intent i = new Intent(Login.this, Account_info.class);
+                        Toast.makeText(Login.this, "Login as: "+ usr.getDisplayName(),
+                                Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(Login.this, MainActivity.class);
                         finish();
 
                         i.putExtra("user", usr.getId());

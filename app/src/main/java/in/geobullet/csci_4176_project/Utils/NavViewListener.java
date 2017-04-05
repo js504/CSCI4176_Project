@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.util.Log;
 import android.view.MenuItem;
 
 import in.geobullet.csci_4176_project.Account_info;
@@ -40,33 +41,72 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
         int id = item.getItemId();
 
         if (id == R.id.nav_accountInfo) {
-            Intent i;
+            Intent i=null;
 
             if (SessionData.currentUser == null) {
                 i = new Intent(context, Login.class);
+                context.startActivity(i);
             }
             else {
-                i = new Intent(context, Account_info.class);
+                if( !(context instanceof Account_info) ){
+                    i = new Intent(context, Account_info.class);
+                    context.startActivity(i);
+                }
             }
-            context.startActivity(i);
         } else if (id == R.id.nav_MainGUI) {
-            Intent i = new Intent(context, Main_GUI.class);
-            context.startActivity(i);
+            if ( context instanceof Account_info ) {
+                Intent i = new Intent(context, Main_GUI.class);
+                ((Account_info) context).finish();
+                context.startActivity(i);
+            }else {
+                Intent i = new Intent(context, Main_GUI.class);
+                context.startActivity(i);
+            }
         } else if (id == R.id.nav_mapGUI) {
-            Intent i = new Intent(context, MapsActivity.class);
-            context.startActivity(i);
+            if ( context instanceof Account_info ) {
+                Intent i = new Intent(context, MapsActivity.class);
+                ((Account_info) context).finish();
+                context.startActivity(i);
+            }else {
+                Intent i = new Intent(context, MapsActivity.class);
+                context.startActivity(i);
+            }
         } else if (id == R.id.manage_my_bulletin_boards) {
-            Intent i = new Intent(context, Manage_Bulletins.class);
-            context.startActivity(i);
+            if ( context instanceof Account_info ) {
+                Intent i = new Intent(context, Manage_Bulletins.class);
+                ((Account_info) context).finish();
+                context.startActivity(i);
+            }else {
+                Intent i = new Intent(context, Manage_Bulletins.class);
+                context.startActivity(i);
+            }
         } else if (id == R.id.nav_searchEvents) {
-            Intent i = new Intent(context, Poster_Search.class);
-            context.startActivity(i);
+            if ( context instanceof Account_info ) {
+                Intent i = new Intent(context, Poster_Search.class);
+                ((Account_info) context).finish();
+                context.startActivity(i);
+            }else {
+                Intent i = new Intent(context, Poster_Search.class);
+                context.startActivity(i);
+            }
         } else if (id == R.id.nav_nearby_bulletin_boards) {
-            Intent i = new Intent(context, Nearby_bulletin_boards.class);
-            context.startActivity(i);
+            if ( context instanceof Account_info ) {
+                Intent i = new Intent(context, Nearby_bulletin_boards.class);
+                ((Account_info) context).finish();
+                context.startActivity(i);
+            }else {
+                Intent i = new Intent(context, Nearby_bulletin_boards.class);
+                context.startActivity(i);
+            }
         }else if (id == R.id.manage_my_posters) {
-            Intent i = new Intent(context, Manage_Posters.class);
-            context.startActivity(i);
+            if ( context instanceof Account_info ) {
+                Intent i = new Intent(context, Manage_Posters.class);
+                ((Account_info) context).finish();
+                context.startActivity(i);
+            }else {
+                Intent i = new Intent(context, Manage_Posters.class);
+                context.startActivity(i);
+            }
         }
 
         return true;
