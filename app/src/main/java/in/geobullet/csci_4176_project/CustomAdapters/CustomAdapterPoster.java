@@ -124,6 +124,7 @@ public class CustomAdapterPoster extends BaseAdapter{
                 Bundle editPosterBundle = new Bundle();
                 editPosterBundle.putInt("ID", poster.getId());
                 editPosterBundle.putString("TITLE", poster.getTitle());
+                editPosterBundle.putString("TYPE", poster.getPosterType().toString());
                 editPosterBundle.putString("ADDRESS", poster.getAddress());
                 editPosterBundle.putString("CITY", poster.getCity());
                 editPosterBundle.putString("STARTDATE", poster.getStartDate().toString());

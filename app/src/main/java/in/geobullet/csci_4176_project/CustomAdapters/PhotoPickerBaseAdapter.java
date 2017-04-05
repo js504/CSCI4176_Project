@@ -20,14 +20,14 @@ import in.geobullet.csci_4176_project.Utils.PhotoPicker;
 
 public class PhotoPickerBaseAdapter extends BaseAdapter {
 
-    private List<Poster> posters;
+    private List<String> posters;
 
     private PhotoPicker context;
 
     private LayoutInflater layoutInflater;
 
 
-    public PhotoPickerBaseAdapter(PhotoPicker context, List<Poster> posters){
+    public PhotoPickerBaseAdapter(PhotoPicker context, List<String> posters){
         this.posters = posters;
         this.context = context;
         this.layoutInflater = (LayoutInflater)this.context .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -45,7 +45,7 @@ public class PhotoPickerBaseAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return posters.get(position).getId();
+        return position;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class PhotoPickerBaseAdapter extends BaseAdapter {
 
         ImageView posterImg = (ImageView)convertView.findViewById(R.id.photo_picker_img);
 
-        String name =posters.get(position).getIconName();
+        String name =posters.get(position);
         name = name.substring(0, name.lastIndexOf("."));
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
         Log.i("name", Integer.toString(id));

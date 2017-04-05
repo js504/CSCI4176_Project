@@ -23,6 +23,8 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:id="@+id/create_poster_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             >
 
             <RadioGroup
@@ -56,6 +58,8 @@
                 android:id="@+id/title_edit_text"
                 android:hint="@string/add_poster_title_hint"
                 android:layout_below="@id/radio_button_layout"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 />
             <!---->
             <!--<View-->
@@ -74,6 +78,8 @@
                 android:id="@+id/address_edit_text"
                 android:hint="@string/add_poster_location_hint"
                 android:layout_below="@id/title_edit_text"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 />
 
             <EditText
@@ -84,7 +90,8 @@
                 android:id="@+id/city_edit_text"
                 android:hint="@string/add_poster_city_hint"
                 android:layout_below="@id/address_edit_text"
-
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 />
 
 
@@ -193,6 +200,8 @@
                 android:maxLines="15"
                 android:scrollbars="vertical"
                 android:layout_marginBottom="10dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 />
 
             <TextView

@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -144,6 +145,9 @@ public class CreateNewPoster extends AppCompatActivity {
      */
     private void populateFields(Bundle extras){
         posterId = (int)extras.get("ID");
+
+        displayPosterTypeFields(extras.getString("TYPE"));
+
         title.setText((String)extras.get("TITLE"));
         locationAddress.setText((String)extras.get("ADDRESS"));
         city.setText((String)extras.get("CITY"));
@@ -194,34 +198,7 @@ public class CreateNewPoster extends AppCompatActivity {
     public void onEventOrServiceClick(View v){
         RadioButton rb = (RadioButton)v;
 
-        if(rb.getText().toString().equals("Event")){
-            serviceRadioButton.setChecked(false);
-
-            //show the end date and time labels
-            endDate.setVisibility(View.VISIBLE);
-            startTime.setVisibility(View.VISIBLE);
-            endTime.setVisibility(View.VISIBLE);
-
-            //show the end date and time buttons
-            endDateButton.setVisibility(View.VISIBLE);
-            startTimeButton.setVisibility(View.VISIBLE);
-            endTimeButton.setVisibility(View.VISIBLE);
-
-        }
-        else if(rb.getText().toString().equals("Service"))
-        {
-            eventRadioButton.setChecked(false);
-
-            //hide the end date and time labels
-            endDate.setVisibility(View.GONE);
-            startTime.setVisibility(View.GONE);
-            endTime.setVisibility(View.GONE);
-
-            //hide the end date and time buttons
-            endDateButton.setVisibility(View.GONE);
-            startTimeButton.setVisibility(View.GONE);
-            endTimeButton.setVisibility(View.GONE);
-        }
+        displayPosterTypeFields(rb.getText().toString());
     }
 
     /**
@@ -336,15 +313,10 @@ public class CreateNewPoster extends AppCompatActivity {
 
         Poster poster = null;
 
-        Log.i("EVENT POSTER", "CHECKED");
-
         if(eventRadioButton.isChecked()){
-            Log.i("EVENT POSTER", "CHECKED");
             poster = addEventPoster();
         }
         else if(serviceRadioButton.isChecked()){
-            Log.i("SERVICE POSTER", "CHECKED");
-
             poster = addServicePoster();
         }
 
@@ -596,7 +568,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
             Log.i("start date crated", "");
             startDateCal.set(Calendar.YEAR, startDateInt[2]);
-            startDateCal.set(Calendar.MONTH, startDateInt[1]);
+            startDateCal.set(Calendar.MONTH, startDateInt[1] - 1);
             startDateCal.set(Calendar.DATE, startDateInt[0]);
 
         }
@@ -608,7 +580,10 @@ public class CreateNewPoster extends AppCompatActivity {
 
             int[] startTimeInt = parseTime(startTime);
 
-            if (startTimeInt != null) {
+            Log.i("START TIME INT", "" + startTimeInt.length);
+
+
+            if (startTimeInt.length == 2) {
                 Log.i("start time crated", "");
 
                 startDateCal.set(Calendar.HOUR_OF_DAY, startTimeInt[0]);
@@ -622,18 +597,22 @@ public class CreateNewPoster extends AppCompatActivity {
                 Log.i("end date crated", "");
 
                 endDateCal.set(Calendar.YEAR, endDateInt[2]);
-                endDateCal.set(Calendar.MONTH, endDateInt[1]);
+                endDateCal.set(Calendar.MONTH, endDateInt[1] - 1);
                 endDateCal.set(Calendar.DATE, endDateInt[0]);
             }
 
             int[] endTimeInt = parseTime(endTime);
 
-            if (endTimeInt != null) {
-                Log.i("end time crated", "");
+            Log.i("END TIME INT", "" + endTimeInt.length);
+            Log.i("end time created", endTimeInt[0] + " : " + endTimeInt[1]);
 
-                startDateCal.set(Calendar.HOUR_OF_DAY, endTimeInt[0]);
-                startDateCal.set(Calendar.MINUTE, endTimeInt[1]);
-                startDateCal.set(Calendar.SECOND, 0);
+
+            if (endTimeInt.length == 2) {
+                Log.i("end time created", endTimeInt[0] + " : " + endTimeInt[1]);
+
+                endDateCal.set(Calendar.HOUR_OF_DAY, endTimeInt[0]);
+                endDateCal.set(Calendar.MINUTE, endTimeInt[1]);
+                endDateCal.set(Calendar.SECOND, 0);
             }
 
 
@@ -786,9 +765,15 @@ public class CreateNewPoster extends AppCompatActivity {
 
         String[] timeSplit = time.split(":");
 
-        if(timeSplit.length == 2){
 
-            String amPm = timeSplit[1].substring(timeSplit[1].length() - 2);
+
+        Log.i("PARSE TIME FUNC", "timeSplit: " + timeSplit.length + " " + timeSplit[0] + ", " + timeSplit[1] + ", " + timeSplit[2]);
+
+        if(timeSplit.length == 3){
+
+            String amPm = timeSplit[2].substring(timeSplit[2].length() - 2);
+
+            Log.i("AM PM", amPm);
 
             if(amPm.equals("am") || amPm.equals("pm")){
 
@@ -796,7 +781,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
                 try {
 
-                    int hour = Integer.parseInt(timeSplit[0]);
+                    int hour = Integer.parseInt(timeSplit[1].trim());
 
                     if(amPm.equals("pm")){
                         if(hour == 12) {
@@ -807,11 +792,15 @@ public class CreateNewPoster extends AppCompatActivity {
                         }
                     }
 
+                    Log.i("MIN", timeSplit[2].substring(0, timeSplit[2].length() - 2));
+
+                    int min = Integer.parseInt(timeSplit[2].substring(0, timeSplit[2].length() - 2).trim());
+
                     timeIntArr[0] = hour;
-                    timeIntArr[1] = Integer.parseInt(timeSplit[1].substring(0, timeSplit.length - 2));
+                    timeIntArr[1] = min;
                 }
                 catch(NumberFormatException nfe){
-                    Log.i("NFE", timeSplit[1].substring(0, timeSplit.length - 2));
+                    Log.i("NFE", timeSplit[2].substring(0, timeSplit.length - 2));
                 }
             }
         }
@@ -836,8 +825,38 @@ public class CreateNewPoster extends AppCompatActivity {
         endTime.setText(END_TIME);
         details.setText("");
         imgSrc = "";
-        previewImageView.setImageResource(-1);
 
+    }
+
+    private void displayPosterTypeFields(String type){
+        if(type.equals("Event")){
+            serviceRadioButton.setChecked(false);
+
+            //show the end date and time labels
+            endDate.setVisibility(View.VISIBLE);
+            startTime.setVisibility(View.VISIBLE);
+            endTime.setVisibility(View.VISIBLE);
+
+            //show the end date and time buttons
+            endDateButton.setVisibility(View.VISIBLE);
+            startTimeButton.setVisibility(View.VISIBLE);
+            endTimeButton.setVisibility(View.VISIBLE);
+
+        }
+        else if(type.equals("Service"))
+        {
+            eventRadioButton.setChecked(false);
+
+            //hide the end date and time labels
+            endDate.setVisibility(View.GONE);
+            startTime.setVisibility(View.GONE);
+            endTime.setVisibility(View.GONE);
+
+            //hide the end date and time buttons
+            endDateButton.setVisibility(View.GONE);
+            startTimeButton.setVisibility(View.GONE);
+            endTimeButton.setVisibility(View.GONE);
+        }
     }
 
 
