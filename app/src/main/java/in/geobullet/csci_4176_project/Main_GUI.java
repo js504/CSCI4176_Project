@@ -229,7 +229,7 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Future Poster Sharing Functionality", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -339,7 +339,6 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                     intent.putExtra("postercost", poster_cost);
 
                     startActivity(intent);
-
                 }
             }
         }
