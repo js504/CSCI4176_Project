@@ -15,8 +15,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.os.ResultReceiver;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,13 +27,11 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.ResultTransform;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingEvent;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -58,7 +56,6 @@ public class MapsActivity extends FragmentActivity
         GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener,
         GoogleMap.OnMapClickListener,
-        OnMarkerClickListener,
         ResultCallback<Status>,
         GeofenceResultReceiver.GeofenceReceiver {
 
@@ -100,8 +97,8 @@ public class MapsActivity extends FragmentActivity
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
     private static final float DEFAULT_ZOOM = 16.4f;
-    private static final float MAX_ZOOM = 18.0f; // For restricting access
-    private static final float MIN_ZOOM = 15.0f;
+    private static final float MAX_ZOOM = 17.0f; // For restricting access
+    private static final float MIN_ZOOM = 12.0f;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 67;
     public double MAP_PAN_RESTRICTION_RADIUS = (double)GEOFENCE_RADIUS_f * Math.sqrt(2.0);
 
@@ -181,6 +178,26 @@ public class MapsActivity extends FragmentActivity
         mMap.setMaxZoomPreference(MAX_ZOOM);
         setMapStyling(mMap);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mDefaultLocationHalifax));
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Log.d(TAG, "MARKER CLICKED");
+                return true;
+            }
+        });
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                return null;
+            }
+        });
     }
 
     // If desired, can add different styles depending on the time
@@ -369,13 +386,15 @@ public class MapsActivity extends FragmentActivity
         // then build a list of markers from the boards; markers will have the boards as tags
         List<Board> boardList = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(
                 radius, loc.getLatitude(), loc.getLongitude());
+        boardList = db.getAllBoards();
+
         List<BoardAndMarkerOptions> list = new ArrayList<>();
         for(Board board : boardList){
             // Build a object of both a board and a set of MarkerOptions
             //TODO: add in the icon and anchors
             MarkerOptions mo = new MarkerOptions()
-                    .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.telphone_pole_maps_icon))
+                    .position(new LatLng(board.getLatitude(), board.getLongitude()))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.phone_pole))
                     //.anchor()
                     .draggable(false)
                     .visible(true);
@@ -395,51 +414,49 @@ public class MapsActivity extends FragmentActivity
     public void pruneOutOfRangeMarkers(List<Marker> oldMarkers, List<BoardAndMarkerOptions> newMarkers){
         // Compare the tags of the previously lain markers to the boards in the newMarker
         Log.d(TAG, "There are " + oldMarkers.size() + " OldMarkers, and " + newMarkers.size() + " NewMarkers in range");
-        List<Marker> toBeKept = new ArrayList<>();
-        for(BoardAndMarkerOptions bmo : newMarkers){
-            Board newBoard = bmo.b;
-            MarkerOptions newOptions = bmo.m;
-            for(Marker m : oldMarkers){
-                Board oldBoard = (Board)m.getTag();
-                // If the board is a duplicate of the other
-                if(oldBoard.getId() == newBoard.getId()){
-                    toBeKept.add(m);
-                    oldMarkers.remove(m);
-                    m.remove();
+        boolean break_bool = false;
+        for(Marker m : oldMarkers){
+            Board oldBoard = (Board)m.getTag();
+            for(BoardAndMarkerOptions bmo : newMarkers){
+                if(oldBoard.getId() == bmo.b.getId()){
+                    // match
+                    newMarkers.remove(bmo);
+                    break_bool = true;
                     break;
                 }
             }
-            // Not found in the Old Board list
-            Marker mark = mMap.addMarker(newOptions);
-            mark.setTag(newBoard);
-            toBeKept.add(mark);
+            if(break_bool){
+                break_bool = false;
+            }else{
+                oldMarkers.remove(m);
+            }
+            // Old doesn't match the new board
         }
-
-        shownMarkerList = toBeKept;
+        // Add the remaining new markers.
+        for(BoardAndMarkerOptions bmo : newMarkers){
+            Marker m = mMap.addMarker(bmo.m);
+            m.setTag(bmo.b);
+            oldMarkers.add(m);
+        }
+        // Note that oldMarkers == shownMarkersList
     }
 
     public void addInitialMarkers(Location loc){
         List<Board> boardList = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(
                 MARKER_RADIUS, loc.getLatitude(), loc.getLongitude());
         Log.d(TAG, "There are " + boardList.size() + " boards in range");
+        boardList = db.getAllBoards();
         for(Board b : boardList){
             //TODO: add in the icon and anchors
             Marker m = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.telphone_pole_maps_icon))
+                    .position(new LatLng(b.getLatitude(), b.getLongitude()))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.phone_pole))
                     .visible(true)
                     .draggable(false)
             );
             m.setTag(b);
             shownMarkerList.add(m);
         }
-
-    }
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(this, "YOU CLICKED A MARKER!", Toast.LENGTH_LONG).show();
-        return false;
     }
 
     private PendingIntent getGeofencePendingIntent() {
@@ -489,7 +506,6 @@ public class MapsActivity extends FragmentActivity
                 // Callback on the success of the Removal, done in the background
                 // Add a new Geofence at the current location
                 uiHandler.obtainMessage(MARKER_PRUNE_MARKERS, mLastKnownLocation).sendToTarget();
-                Log.d(TAG, "REMOVAL SUCCESS");
                 return buildGeoFence(mLastKnownLocation);
             }
 
@@ -507,7 +523,6 @@ public class MapsActivity extends FragmentActivity
             public PendingResult<Result> onSuccess(@NonNull Status status) {
                 // callback for Adding the new Geofence at mLastKnownLocation
                 //Toast.makeText(MapsActivity.this, "GeoFence rebuilt!", Toast.LENGTH_LONG).show();
-                Log.d(TAG, "TOTALLY AWESOME");
                 //System.gc(); // End of the geofence handling, so clean up the disposed of Markers
                 return null;
             }
