@@ -77,8 +77,13 @@ public class MapsActivity extends FragmentActivity
     private Location mLastKnownLocation = null;
     LocationRequest mLocationRequest;
 
+    // Markers
+    public static int MARKER_RADIUS = 3 * SessionData.posterSearchRadiusInMeters;
+    public final int MARKER_PRUNE_MARKERS = 1234;
+    List<Marker> shownMarkerList = new ArrayList<>();
+
     // GeoFencing
-    public static int GEOFENCE_RADIUS_i = 1000;
+    public static int GEOFENCE_RADIUS_i = MARKER_RADIUS/2;
     public static float GEOFENCE_RADIUS_f = (float)GEOFENCE_RADIUS_i;
     public static final int GEOFENCE_RESPONSIVENESS = 1000;
     public static final long GEOFENCE_EXPIRATION = 1000 * 60 * 2; // 120 seconds
@@ -98,12 +103,8 @@ public class MapsActivity extends FragmentActivity
     private static final float MAX_ZOOM = 18.0f; // For restricting access
     private static final float MIN_ZOOM = 15.0f;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 67;
-    public static double MAP_PAN_RESTRICTION_RADIUS = (double)GEOFENCE_RADIUS_f * Math.sqrt(2.0);
+    public double MAP_PAN_RESTRICTION_RADIUS = (double)GEOFENCE_RADIUS_f * Math.sqrt(2.0);
 
-    // Markers
-    public final int MARKER_RADIUS = 3 * GEOFENCE_RADIUS_i;
-    public final int MARKER_PRUNE_MARKERS = 1234;
-    List<Marker> shownMarkerList = new ArrayList<>();
 
     Handler uiHandler = new Handler(Looper.getMainLooper()){
         @Override
@@ -322,6 +323,13 @@ public class MapsActivity extends FragmentActivity
                         SphericalUtil.computeOffset(currLocation, MAP_PAN_RESTRICTION_RADIUS, 45)
                 )
         );
+        // Update Radius data from the session data
+        if(MARKER_RADIUS != SessionData.posterSearchRadiusInMeters){
+            MARKER_RADIUS = SessionData.posterSearchRadiusInMeters;
+            GEOFENCE_RADIUS_i = MARKER_RADIUS/2;
+            GEOFENCE_RADIUS_f = (float)GEOFENCE_RADIUS_i;
+            MAP_PAN_RESTRICTION_RADIUS = (double)GEOFENCE_RADIUS_f * Math.sqrt(2);
+        }
     }
 
     public PendingResult<Status> buildGeoFence(Location loc) {
