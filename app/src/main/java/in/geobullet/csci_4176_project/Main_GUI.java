@@ -259,6 +259,7 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
             String poster_address = "Empty";
             String poster_sdate = "Empty";
             String poster_edate = "Empty";
+            String poster_cost = "Empty";
 
             int ib_ident = v.getId();
 
@@ -269,6 +270,7 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                     poster_address = p.getAddress();
                     poster_sdate = DateUtil.formatDate(p.getStartDate());
                     poster_edate = DateUtil.formatDate(p.getEndDate());
+                    poster_cost = p.getCost();
                     poster_name_pass = p.getPhotoName();
                     poster_name_pass = poster_name_pass.substring(0, poster_name_pass.lastIndexOf("."));
 
@@ -278,6 +280,7 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                     intent.putExtra("posteraddress", poster_address);
                     intent.putExtra("postersdate", poster_sdate);
                     intent.putExtra("posteredate", poster_edate);
+                    intent.putExtra("postercost", poster_cost);
 
                     startActivity(intent);
 
