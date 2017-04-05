@@ -215,6 +215,7 @@
                 android:text="@string/browse_button_label"
                 android:layout_toEndOf="@id/poster_text_view"
                 android:layout_below="@id/details_text_area"
+                android:onClick="getImageOnClick"
                 />
 
             <TextView
@@ -231,8 +232,8 @@
 
 
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="300dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/poster_preview"
                 android:layout_below="@id/poster_preview_label"
                 android:layout_centerHorizontal="true"

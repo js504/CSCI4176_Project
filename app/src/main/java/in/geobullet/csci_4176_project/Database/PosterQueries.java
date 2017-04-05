@@ -285,4 +285,30 @@ public class PosterQueries {
         return p;
     }
 
+    public void removePosterById(int posterId){
+        String query = "DELETE FROM " + DatabaseHandler.TABLE_POSTER + " WHERE Id=" + posterId + ";";
+
+        db.execSQL(query);
+    }
+
+    public List<Poster> getAllPosters(){
+        List<Poster> posters = new ArrayList<Poster>();
+        String query = "SELECT * FROM  " + DatabaseHandler.TABLE_POSTER + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Poster p = new Poster();
+
+                p = this.setPosterFields(cursor, p);
+
+                posters.add(p);
+
+            } while (cursor.moveToNext());
+        }
+
+        return posters;
+    }
+
 }

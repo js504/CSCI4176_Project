@@ -14,12 +14,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 
 import java.util.List;
 
 import in.geobullet.csci_4176_project.CreateNewPoster;
+import in.geobullet.csci_4176_project.Database.BoardPosterPairQueries;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 import in.geobullet.csci_4176_project.MainActivity;
 import in.geobullet.csci_4176_project.Manage_Posters;
@@ -144,7 +146,10 @@ public class CustomAdapterPoster extends BaseAdapter{
             @Override
             public void onClick(View v) {
 
-                Log.i("SWIPE BOTTOM CLICKED!", "BOTTOM" + posters.get(position).getTitle());
+                int posterId = posters.get(position).getId();
+                db.removePosterBoardPairByPosterId(posterId);
+                mainActivity.updateListView();
+                Toast.makeText(mainActivity, "Poster Deleted!", Toast.LENGTH_SHORT);
             }
         });
 
