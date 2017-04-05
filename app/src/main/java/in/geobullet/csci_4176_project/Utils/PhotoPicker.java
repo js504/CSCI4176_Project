@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.CustomAdapters.PhotoPickerBaseAdapter;
@@ -24,6 +25,7 @@ public class PhotoPicker extends AppCompatActivity {
 
     private GridView gridView;
 
+    public static final int NUM_PHOTOS = 15;
 
 
     @Override
@@ -35,7 +37,16 @@ public class PhotoPicker extends AppCompatActivity {
 
         gridView = (GridView)findViewById(R.id.photo_picker_grid_view);
 
-        List<Poster> posters = db.getAllPosters();
+       // List<Poster> posters = db.getAllPosters();
+
+        //Default poster creation based on posters locally stored in app since no server is used
+        List<String> posters = new ArrayList<String>();
+        for(int i = 0; i < NUM_PHOTOS; i++){
+            posters.add("poster_" + (i+1) + "_icon.png");
+
+        }
+
+
         if(posters == null){
             Log.i("POSTERS COUNT", "NULL");
 

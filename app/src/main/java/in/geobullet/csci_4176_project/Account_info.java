@@ -180,6 +180,8 @@ public class Account_info extends AppCompatActivity {
             Intent intent = new Intent(Account_info.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            Toast.makeText(Account_info.this, "Your logged out",
+                    Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
