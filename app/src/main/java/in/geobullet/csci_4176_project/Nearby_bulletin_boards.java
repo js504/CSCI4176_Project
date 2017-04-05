@@ -42,10 +42,7 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(Nearby_bulletin_boards.this, Main_GUI.class);
-                //get the poster by its id
-                //Poster selected_poster = db.getPosterById(position);
-                //pass selected poster to new intent for user to edit
-                //intent.putExtra("posterID", (Serializable) selected_poster);
+                finish();
                 startActivity(intent);
             }
         });

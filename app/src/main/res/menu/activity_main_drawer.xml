@@ -45,11 +45,6 @@
                 android:id="@+id/manage_my_bulletin_boards"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Manage My Bulletin Boards" />
-            <item
-                android:id="@+id/nav_delBulletinBoards"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Delete Bulletin Boards" />
-
         </menu>
     </item>
 

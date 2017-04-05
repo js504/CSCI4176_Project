@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -38,21 +40,22 @@ public class EditBoard extends AppCompatActivity {
     private TextView radius;
     private TextView startDate;
     private TextView endDate;
-    private TextView errorTv;
 
 
     //Layout buttons to activate date and time pickers
+    private Button delete_button;
+    private Button update_button;
     private Button startDateButton;
     private Button endDateButton;
-    private Button startTimeButton;
-    private Button endTimeButton;
-    private Button browsePostersButton;
     private Button submitPosterButton;
+
 
     private final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"};
 
 
     Board current = new Board();
+    //add boards or edit boards flag
+    Boolean addmod = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,81 +71,114 @@ public class EditBoard extends AppCompatActivity {
         radius = (TextView) findViewById(R.id.edit_radius);
         startDate = (TextView)findViewById(R.id.start_date_text_view);
         endDate = (TextView)findViewById(R.id.end_date_text_view);
+        //button reference
+        update_button = (Button) findViewById(R.id.update_board);
+        delete_button = (Button) findViewById(R.id.delete_board);
+        startDateButton = (Button)findViewById(R.id.select_start_date_button);
+        endDateButton = (Button)findViewById(R.id.select_end_date_button);
+        submitPosterButton = (Button)findViewById(R.id.submit_poster_button);
 
 
         int boardId = 0;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             boardId = extras.getInt("boardID");
+            addmod = extras.getBoolean("addmod");
         }
 
 
-        //populate board data
-        current = db.getBoardById(boardId);
-        Log.i("boardname",current.getName());
-        board_name.setText(current.getName());
-        radius.setText(Integer.toString(current.getRadiusInMeters()));
-        startDate.setText(current.getCreated().toString());
-        endDate.setText(current.getExpirationDate().toString());
+        //check if its in add mod or edit mod
+        if(!addmod){
+            //populate board data
+            current = db.getBoardById(boardId);
+            Log.i("boardname",current.getName());
+            board_name.setText(current.getName());
+            radius.setText(Integer.toString(current.getRadiusInMeters()));
+            startDate.setText(current.getCreated().toString());
+            endDate.setText(current.getExpirationDate().toString());
+            getSupportActionBar().setTitle("Edit Bulletin Boards");
+
+        }else{
+            current = new Board();
+            getSupportActionBar().setTitle("Add Bulletin Boards");
+            update_button.setText("Add Boards");
+            View button = findViewById(R.id.delete_board);
+            button.setVisibility(View.GONE);
+        }
 
 
 
-        //buttone references
-        startDateButton = (Button)findViewById(R.id.select_start_date_button);
-        endDateButton = (Button)findViewById(R.id.select_end_date_button);
-        submitPosterButton = (Button)findViewById(R.id.submit_poster_button);
-
-        Button update_button = (Button) findViewById(R.id.update_board);
         //update the board information
         update_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                current.setName(board_name.getText().toString());
-                current.setRadiusInMeters(Integer.parseInt(radius.getText().toString()));
-                if( SessionData.location != null){
-                    current.setLatitude(SessionData.location.getLatitude());
-                    current.setLongitude(SessionData.location.getLongitude());
+                // initialize variables
+                Boolean flag=false;
+                int radius_meter=0;
+                String startDateStr=null;
+                String endDateStr=null;
+                int[] startDateInt=null;
+                int[] endDateInt=null;
+                //check for user input
+                try {
+                    radius_meter = Integer.parseInt(radius.getText().toString());
+                    startDateStr = startDate.getText().toString();
+                    endDateStr = endDate.getText().toString();
+                    startDateInt = parseDate(startDateStr);
+                    endDateInt = parseDate(endDateStr);
+                } catch (NumberFormatException e) {
+                    flag = true;
+                    Toast.makeText(EditBoard.this, "Radius not valid",
+                            Toast.LENGTH_LONG).show();
+                } catch (IndexOutOfBoundsException e){
+                    flag = true;
+                    Toast.makeText(EditBoard.this, "Please select date",
+                            Toast.LENGTH_LONG).show();
                 }
 
 
+                if(!flag) {
+                    //Bard data
+                    if (SessionData.location != null) {
+                        current.setLatitude(SessionData.location.getLatitude());
+                        current.setLongitude(SessionData.location.getLongitude());
+                    }
+                    current.setRadiusInMeters(radius_meter);
+                    current.setName(board_name.getText().toString());
+                    //here todo select date option seems not doing its job
 
-                //here todo select date option seems not doing its job
-                String startDateStr = startDate.getText().toString();
-                String endDateStr = endDate.getText().toString();
 
 
+                    Calendar startDateCal = Calendar.getInstance();
+                    Calendar endDateCal = Calendar.getInstance();
 
-                int[] startDateInt = parseDate(startDateStr);
-                int[] endDateInt = parseDate(endDateStr);
+                    if (startDateInt != null) {
+                        startDateCal.set(Calendar.YEAR, startDateInt[2]);
+                        startDateCal.set(Calendar.MONTH, startDateInt[1]);
+                        startDateCal.set(Calendar.DATE, startDateInt[0]);
+                        current.setCreated(startDateCal.getTime());
+                    }
 
-                Calendar startDateCal = Calendar.getInstance();
-                Calendar endDateCal = Calendar.getInstance();
+                    if (startDateInt != null) {
+                        endDateCal.set(Calendar.YEAR, endDateInt[2]);
+                        endDateCal.set(Calendar.MONTH, endDateInt[1]);
+                        endDateCal.set(Calendar.DATE, endDateInt[0]);
+                        current.setExpirationDate(endDateCal.getTime());
+                    }
+                    if (!addmod) {
+                        db.updateBoard(current);
+                    } else if (addmod) {
+                        db.addBoard(current);
+                    }
 
-                if(startDateInt != null) {
-                    startDateCal.set(Calendar.YEAR, startDateInt[2]);
-                    startDateCal.set(Calendar.MONTH, startDateInt[1]);
-                    startDateCal.set(Calendar.DATE, startDateInt[0]);
-                    current.setCreated(startDateCal.getTime());
+                    Intent intent = new Intent(EditBoard.this, Manage_Bulletins.class);
+                    finish();
+                    startActivity(intent);
                 }
-
-                if(startDateInt != null) {
-                    endDateCal.set(Calendar.YEAR, endDateInt[2]);
-                    endDateCal.set(Calendar.MONTH, endDateInt[1]);
-                    endDateCal.set(Calendar.DATE, endDateInt[0]);
-                    current.setExpirationDate(endDateCal.getTime());
-                }
-
-                db.updateBoard(current);
-
-                Intent intent = new Intent(EditBoard.this, Manage_Bulletins.class);
-                finish();
-                startActivity(intent);
             }
         });
 
 
-        Button delete_button = (Button) findViewById(R.id.delete_board);
-        //update the board information
+        //delete the board information
         delete_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                //todo need delete board databasehandler function

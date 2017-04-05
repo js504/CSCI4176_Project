@@ -40,7 +40,6 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
         int id = item.getItemId();
 
         if (id == R.id.nav_accountInfo) {
-            // Handle the camera action
             Intent i;
 
             if (SessionData.currentUser == null) {
@@ -49,33 +48,22 @@ public class NavViewListener implements NavigationView.OnNavigationItemSelectedL
             else {
                 i = new Intent(context, Account_info.class);
             }
-
             context.startActivity(i);
-
         } else if (id == R.id.nav_MainGUI) {
-
             Intent i = new Intent(context, Main_GUI.class);
             context.startActivity(i);
-
         } else if (id == R.id.nav_mapGUI) {
             Intent i = new Intent(context, MapsActivity.class);
             context.startActivity(i);
-
         } else if (id == R.id.manage_my_bulletin_boards) {
-
             Intent i = new Intent(context, Manage_Bulletins.class);
             context.startActivity(i);
-
         } else if (id == R.id.nav_searchEvents) {
             Intent i = new Intent(context, Poster_Search.class);
             context.startActivity(i);
-
-
-        } else if (id == R.id.nav_delBulletinBoards) {
-
         } else if (id == R.id.nav_nearby_bulletin_boards) {
-                Intent i = new Intent(context, Nearby_bulletin_boards.class);
-                context.startActivity(i);
+            Intent i = new Intent(context, Nearby_bulletin_boards.class);
+            context.startActivity(i);
         }else if (id == R.id.manage_my_posters) {
             Intent i = new Intent(context, Manage_Posters.class);
             context.startActivity(i);

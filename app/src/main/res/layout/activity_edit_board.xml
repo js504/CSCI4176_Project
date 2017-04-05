@@ -18,20 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="500dp">
 
-            <TextView
-                android:textSize="20sp"
-                android:id="@+id/edit_bulletin_boards"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit Bulletin Boards" />
+
 
             <TextView
                 android:textSize="20sp"
                 android:id="@+id/board_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bulletin Board Name:"
-                android:layout_below="@+id/edit_bulletin_boards"/>
+                android:text="Bulletin Board Name:" />
 
             <EditText
                 android:id="@+id/edit_board_name"
