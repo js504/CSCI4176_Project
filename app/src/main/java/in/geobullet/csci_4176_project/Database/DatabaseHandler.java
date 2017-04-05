@@ -293,6 +293,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return boards;
     }
 
+    //todo sql to remove board by set board object as parameter
+
     /* End Board Queries */
 
 
