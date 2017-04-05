@@ -1,15 +1,10 @@
 package in.geobullet.csci_4176_project;
 
-import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
-import android.location.Location;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.os.ResultReceiver;
 import android.util.Log;
-
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.List;
@@ -21,20 +16,16 @@ public class GeofenceIntentHandler extends IntentService {
 
     public GeofenceIntentHandler(){
         super(TAG);
-        Log.d(TAG, "IN THE GFH CONSTRUCTOR");
-
     }
 
     @Override
     public void onCreate(){
         super.onCreate();
-        Log.d(TAG, "GFH BEING CREATED");
     }
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         resultReceiver = intent.getParcelableExtra(GeofenceResultReceiver.TAG);
-        Log.d(TAG, "Assigning resultreceiver inside Handler");
         return super.onStartCommand(intent, flags, startId);
     }
 

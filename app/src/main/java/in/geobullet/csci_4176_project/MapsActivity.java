@@ -36,11 +36,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,17 +77,9 @@ public class MapsActivity extends FragmentActivity
     private Location mLastKnownLocation = null;
     LocationRequest mLocationRequest;
 
-    // Maps
-    private GoogleMap mMap;
-    private CameraPosition mCameraPosition;
-    private static final float DEFAULT_ZOOM = 16.4f;
-    private static final float MAX_ZOOM = 18.0f; // For restricting access
-    private static final float MIN_ZOOM = 15.0f;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 67;
-
     // GeoFencing
-    public static final float GEOFENCE_RADIUS_f = 50.0f;
-    public static final int GEOFENCE_RADIUS_i = 25;
+    public static int GEOFENCE_RADIUS_i = 1000;
+    public static float GEOFENCE_RADIUS_f = (float)GEOFENCE_RADIUS_i;
     public static final int GEOFENCE_RESPONSIVENESS = 1000;
     public static final long GEOFENCE_EXPIRATION = 1000 * 60 * 2; // 120 seconds
     public static final int GEOFENCE_LOITER_TIME = 1000 * 5; // 5 seconds
@@ -95,6 +90,15 @@ public class MapsActivity extends FragmentActivity
     public Geofence currentFence = null;
     public Location currentFenceLocation = null;
     public boolean fenceSet = false;
+
+    // Maps
+    private GoogleMap mMap;
+    private CameraPosition mCameraPosition;
+    private static final float DEFAULT_ZOOM = 16.4f;
+    private static final float MAX_ZOOM = 18.0f; // For restricting access
+    private static final float MIN_ZOOM = 15.0f;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 67;
+    public static double MAP_PAN_RESTRICTION_RADIUS = (double)GEOFENCE_RADIUS_f * Math.sqrt(2.0);
 
     // Markers
     public final int MARKER_RADIUS = 3 * GEOFENCE_RADIUS_i;
@@ -311,11 +315,13 @@ public class MapsActivity extends FragmentActivity
                 mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM));
-
-        //if(mGoogleApiClient != null){
-        //    LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        //}
-
+        // Set camera panning bounds: restrict the user's vision
+        mMap.setLatLngBoundsForCameraTarget(
+                new LatLngBounds(
+                        SphericalUtil.computeOffset(currLocation, MAP_PAN_RESTRICTION_RADIUS, 225),
+                        SphericalUtil.computeOffset(currLocation, MAP_PAN_RESTRICTION_RADIUS, 45)
+                )
+        );
     }
 
     public PendingResult<Status> buildGeoFence(Location loc) {
@@ -361,7 +367,7 @@ public class MapsActivity extends FragmentActivity
             //TODO: add in the icon and anchors
             MarkerOptions mo = new MarkerOptions()
                     .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
-                    //.icon()
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.telphone_pole_maps_icon))
                     //.anchor()
                     .draggable(false)
                     .visible(true);
@@ -412,10 +418,9 @@ public class MapsActivity extends FragmentActivity
             //TODO: add in the icon and anchors
             Marker m = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
-                    //.icon()
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.telphone_pole_maps_icon))
                     .visible(true)
                     .draggable(false)
-                    //.anchor()
             );
             m.setTag(b);
             shownMarkerList.add(m);
@@ -425,7 +430,7 @@ public class MapsActivity extends FragmentActivity
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(this, "YOU CLICKED A MARKER!", Toast.LENGTH_LONG);
+        Toast.makeText(this, "YOU CLICKED A MARKER!", Toast.LENGTH_LONG).show();
         return false;
     }
 
@@ -472,7 +477,7 @@ public class MapsActivity extends FragmentActivity
         ).then(new ResultTransform<Status, Status>(){
             @Nullable
             @Override
-            public PendingResult<Status> onSuccess(Status status){
+            public PendingResult<Status> onSuccess(@NonNull Status status){
                 // Callback on the success of the Removal, done in the background
                 // Add a new Geofence at the current location
                 uiHandler.obtainMessage(MARKER_PRUNE_MARKERS, mLastKnownLocation).sendToTarget();
