@@ -53,6 +53,32 @@ public class CreateNewPoster extends AppCompatActivity {
     private static final String START_TIME = "Start Time:";
     private static final String END_TIME = "End Time:";
 
+
+    public static final String BUNDLE_ID = "ID";
+    public static final String BUNDLE_TITLE = "TITLE";
+    public static final String BUNDLE_TYPE = "TYPE";
+    public static final String BUNDLE_ADDRESS = "ADDRESS";
+    public static final String BUNDLE_CITY = "CITY";
+    public static final String BUNDLE_STARTDATE = "STARTDATE";
+    public static final String BUNDLE_STARTTIME = "STARTTIME";
+    public static final String BUNDLE_ENDDATE = "ENDDATE";
+    public static final String BUNDLE_ENDTIME = "ENDTIME";
+    public static final String BUNDLE_DETAILS = "DETAILS";
+    public static final String BUNDLE_IMGSRC = "IMGSRC";
+    public static final String BUNDLE_IMGICONSRC = "IMGICONSRC";
+
+
+
+
+
+
+
+
+
+
+
+
+
     //Layout radio buttons
     private RadioButton eventRadioButton;
     private RadioButton serviceRadioButton;
@@ -144,33 +170,35 @@ public class CreateNewPoster extends AppCompatActivity {
      * @param extras  The data to populate the fields with
      */
     private void populateFields(Bundle extras){
-        posterId = (int)extras.get("ID");
+        posterId = (int)extras.get(BUNDLE_ID);
 
-        displayPosterTypeFields(extras.getString("TYPE"));
+        displayPosterTypeFields(extras.getString(BUNDLE_TYPE));
 
-        title.setText((String)extras.get("TITLE"));
-        locationAddress.setText((String)extras.get("ADDRESS"));
-        city.setText((String)extras.get("CITY"));
+        title.setText((String)extras.get(BUNDLE_TITLE));
+        locationAddress.setText((String)extras.get(BUNDLE_ADDRESS));
+        city.setText((String)extras.get(BUNDLE_CITY));
 
-        String startDateStr = (String)extras.get("STARTDATE");
+        String startDateStr = (String)extras.get(BUNDLE_STARTDATE);
         startDateStr = "Start Date: " + parseEditDate(startDateStr);
 
-        String endDateStr = (String)extras.get("ENDDATE");
+        String endDateStr = (String)extras.get(BUNDLE_ENDDATE);
         endDateStr = "End Date: " + parseEditDate(endDateStr);
 
-        String startTimeStr = (String)extras.get("STARTTIME");
+        String startTimeStr = (String)extras.get(BUNDLE_STARTTIME);
         startTimeStr = "Start Time: " + parseEditTime(startTimeStr);
 
-        String endTimeStr = (String)extras.get("ENDTIME");
+        String endTimeStr = (String)extras.get(BUNDLE_ENDTIME);
         endTimeStr = "End Time: " + parseEditTime(endTimeStr);
 
         startDate.setText(startDateStr);
         endDate.setText(endDateStr);
         startTime.setText(startTimeStr);
         endTime.setText(endTimeStr);
-        details.setText((String)extras.get("DETAILS"));
-        imgSrc = (String)extras.get("IMGSRC");
-        iconSrc = (String)extras.get("IMGICONSRC");
+        details.setText((String)extras.get(BUNDLE_DETAILS));
+        imgSrc = (String)extras.get(BUNDLE_IMGSRC);
+        iconSrc = (String)extras.get(BUNDLE_IMGICONSRC);
+
+        Log.i("IMG SRC", imgSrc);
 
 
         imgSrc = imgSrc.substring(0, imgSrc.lastIndexOf("."));
@@ -289,8 +317,6 @@ public class CreateNewPoster extends AppCompatActivity {
                     String tmpImgSrc = data.getStringExtra("IMG_SRC");
                     imgSrc = tmpImgSrc;
 
-                    Log.i("IMG_SRC", imgSrc);
-
                     int id = this.getResources().getIdentifier(imgSrc, "drawable", this.getPackageName());
                     previewImageView.setImageResource(id);
                 }
@@ -345,7 +371,7 @@ public class CreateNewPoster extends AppCompatActivity {
     private void editPosterInDb(Poster poster){
         poster.setId(posterId);
         boolean tmp = dbHandler.updatePoster(poster);
-        Log.i("UPDATED POSTER", poster.toString());
+
         if(tmp){
             Toast.makeText(this, "Poster Updated!", Toast.LENGTH_SHORT).show();
         }
@@ -361,8 +387,6 @@ public class CreateNewPoster extends AppCompatActivity {
 
         poster = dbHandler.getPosterById(posterId);
 
-        Log.i("New Poster: ", poster.toString());
-
         BoardPosterPair boardPosterPair = new BoardPosterPair();
 
         boardPosterPair.setBoardId(SessionData.boardId);
@@ -372,7 +396,6 @@ public class CreateNewPoster extends AppCompatActivity {
 
         BoardPosterPair bpp = dbHandler.getBoardPosterPairById(bppId);
 
-        Log.d("Seeding", "Added board poster pair: " + bpp.toString());
         resetFields();
         Toast.makeText(this, "Poster Created!", Toast.LENGTH_SHORT).show();
     }
@@ -566,7 +589,6 @@ public class CreateNewPoster extends AppCompatActivity {
 
         if(startDateInt != null){
 
-            Log.i("start date crated", "");
             startDateCal.set(Calendar.YEAR, startDateInt[2]);
             startDateCal.set(Calendar.MONTH, startDateInt[1] - 1);
             startDateCal.set(Calendar.DATE, startDateInt[0]);
@@ -575,16 +597,10 @@ public class CreateNewPoster extends AppCompatActivity {
 
 
         if(posterType == PosterType.Event) {
-            Log.i("event type", "");
-
 
             int[] startTimeInt = parseTime(startTime);
 
-            Log.i("START TIME INT", "" + startTimeInt.length);
-
-
             if (startTimeInt.length == 2) {
-                Log.i("start time crated", "");
 
                 startDateCal.set(Calendar.HOUR_OF_DAY, startTimeInt[0]);
                 startDateCal.set(Calendar.MINUTE, startTimeInt[1]);
@@ -594,7 +610,6 @@ public class CreateNewPoster extends AppCompatActivity {
             int[] endDateInt = parseDate(endDate);
 
             if(endDateInt != null){
-                Log.i("end date crated", "");
 
                 endDateCal.set(Calendar.YEAR, endDateInt[2]);
                 endDateCal.set(Calendar.MONTH, endDateInt[1] - 1);
@@ -603,12 +618,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
             int[] endTimeInt = parseTime(endTime);
 
-            Log.i("END TIME INT", "" + endTimeInt.length);
-            Log.i("end time created", endTimeInt[0] + " : " + endTimeInt[1]);
-
-
             if (endTimeInt.length == 2) {
-                Log.i("end time created", endTimeInt[0] + " : " + endTimeInt[1]);
 
                 endDateCal.set(Calendar.HOUR_OF_DAY, endTimeInt[0]);
                 endDateCal.set(Calendar.MINUTE, endTimeInt[1]);
@@ -637,16 +647,11 @@ public class CreateNewPoster extends AppCompatActivity {
         poster.setStartTime(startDateCal.getTime());
         poster.setEndTime(endDateCal.getTime());
 
-        //TODO get the photo name
-
         imgSrc = imgSrc + ".png";
         iconSrc = imgSrc + "_icon.png";
 
         poster.setPhotoName(imgSrc);
         poster.setIconName(iconSrc);
-
-
-        //int posterId = dbHandler.addPoster(poster);
 
         return poster;
     }
@@ -664,10 +669,6 @@ public class CreateNewPoster extends AppCompatActivity {
 
         String parsedDate = "";
         String[] dateSplit = date.split(" ");
-
-        Log.i("DATE", Integer.toString(dateSplit.length));
-        Log.i("DATE", date);
-
 
         if(dateSplit.length == 6){
 
@@ -726,8 +727,6 @@ public class CreateNewPoster extends AppCompatActivity {
 
         String[] split = time.split(" ");
 
-        Log.i("TIME", split[3]);
-
         String[] timeItems = split[3].split(":");
 
         int hour = Integer.parseInt(timeItems[0]);
@@ -765,15 +764,9 @@ public class CreateNewPoster extends AppCompatActivity {
 
         String[] timeSplit = time.split(":");
 
-
-
-        Log.i("PARSE TIME FUNC", "timeSplit: " + timeSplit.length + " " + timeSplit[0] + ", " + timeSplit[1] + ", " + timeSplit[2]);
-
         if(timeSplit.length == 3){
 
             String amPm = timeSplit[2].substring(timeSplit[2].length() - 2);
-
-            Log.i("AM PM", amPm);
 
             if(amPm.equals("am") || amPm.equals("pm")){
 
@@ -791,8 +784,6 @@ public class CreateNewPoster extends AppCompatActivity {
                             hour += 12;
                         }
                     }
-
-                    Log.i("MIN", timeSplit[2].substring(0, timeSplit[2].length() - 2));
 
                     int min = Integer.parseInt(timeSplit[2].substring(0, timeSplit[2].length() - 2).trim());
 
@@ -829,7 +820,7 @@ public class CreateNewPoster extends AppCompatActivity {
     }
 
     private void displayPosterTypeFields(String type){
-        if(type.equals("Event")){
+        if(type.equals(PosterType.Event.toString())){
             serviceRadioButton.setChecked(false);
 
             //show the end date and time labels
@@ -843,7 +834,7 @@ public class CreateNewPoster extends AppCompatActivity {
             endTimeButton.setVisibility(View.VISIBLE);
 
         }
-        else if(type.equals("Service"))
+        else if(type.equals(PosterType.Service.toString()))
         {
             eventRadioButton.setChecked(false);
 

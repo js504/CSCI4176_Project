@@ -1,7 +1,6 @@
 package in.geobullet.csci_4176_project.CustomAdapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.Utils.PhotoPicker;
 
@@ -60,7 +58,6 @@ public class PhotoPickerBaseAdapter extends BaseAdapter {
         String name =posters.get(position);
         name = name.substring(0, name.lastIndexOf("."));
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
-        Log.i("name", Integer.toString(id));
 
         posterImg.setImageResource(id);
 

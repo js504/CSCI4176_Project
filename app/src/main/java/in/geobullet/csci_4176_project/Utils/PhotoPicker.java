@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -16,8 +15,6 @@ import in.geobullet.csci_4176_project.CustomAdapters.PhotoPickerBaseAdapter;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 import in.geobullet.csci_4176_project.R;
-
-import static in.geobullet.csci_4176_project.Shared.SessionData.currentUser;
 
 public class PhotoPicker extends AppCompatActivity {
 
@@ -46,24 +43,16 @@ public class PhotoPicker extends AppCompatActivity {
 
         }
 
-
-        if(posters == null){
-            Log.i("POSTERS COUNT", "NULL");
-
-        }
-        else{
-            Log.i("POSTERS COUNT", "COUNT: " + posters.size());
-        }
-
         gridView.setAdapter(new PhotoPickerBaseAdapter(this, posters));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Poster poster = (Poster)parent.getItemAtPosition(position);
+                String imgSrc = (String)parent.getItemAtPosition(position);
 
-                String imgSrc = poster.getPhotoName();
                 imgSrc = imgSrc.substring(0, imgSrc.lastIndexOf("."));
+                imgSrc = imgSrc.substring(0, imgSrc.lastIndexOf("_"));
+
 
                 Intent result = new Intent();
                 result.putExtra("IMG_SRC", imgSrc);

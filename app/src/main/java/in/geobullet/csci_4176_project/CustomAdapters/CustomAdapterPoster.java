@@ -122,20 +122,19 @@ public class CustomAdapterPoster extends BaseAdapter{
                 Poster poster = posters.get(position);
 
                 Bundle editPosterBundle = new Bundle();
-                editPosterBundle.putInt("ID", poster.getId());
-                editPosterBundle.putString("TITLE", poster.getTitle());
-                editPosterBundle.putString("TYPE", poster.getPosterType().toString());
-                editPosterBundle.putString("ADDRESS", poster.getAddress());
-                editPosterBundle.putString("CITY", poster.getCity());
-                editPosterBundle.putString("STARTDATE", poster.getStartDate().toString());
-                editPosterBundle.putString("ENDDATE", poster.getEndDate().toString());
-                editPosterBundle.putString("STARTTIME", poster.getStartTime().toString());
-                editPosterBundle.putString("ENDTIME", poster.getEndTime().toString());
-                editPosterBundle.putString("DETAILS", poster.getDetails());
-                editPosterBundle.putString("IMGSRC", poster.getPhotoName());
-                editPosterBundle.putString("IMGICONSRC", poster.getIconName());
+                editPosterBundle.putInt(CreateNewPoster.BUNDLE_ID, poster.getId());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_TITLE, poster.getTitle());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_TYPE, poster.getPosterType().toString());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_ADDRESS, poster.getAddress());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_CITY, poster.getCity());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_STARTDATE, poster.getStartDate().toString());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_ENDDATE, poster.getEndDate().toString());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_STARTTIME, poster.getStartTime().toString());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_ENDTIME, poster.getEndTime().toString());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_DETAILS, poster.getDetails());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_IMGSRC, poster.getPhotoName());
+                editPosterBundle.putString(CreateNewPoster.BUNDLE_IMGICONSRC, poster.getIconName());
 
-                Log.i("SWIPE SURFACE CLICKED!", "CLICKED" + posters.get(position).getTitle());
                 Intent intent = new Intent(mainActivity, CreateNewPoster.class);
                 intent.putExtras(editPosterBundle);
 
