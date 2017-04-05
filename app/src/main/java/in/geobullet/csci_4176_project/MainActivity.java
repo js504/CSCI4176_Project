@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import in.geobullet.csci_4176_project.Database.DBSeeder;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
@@ -64,6 +65,12 @@ public class MainActivity extends AppCompatActivity {
         //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+
+        View hView =  navigationView.getHeaderView(0);
+        TextView welcome_menu = (TextView)hView.findViewById(R.id.nav_welcome);
+        if(SessionData.currentUser != null) {
+            welcome_menu.setText("Welcome: " + SessionData.currentUser.getFirstName() + " " + SessionData.currentUser.getLastName());
+        }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
