@@ -124,6 +124,8 @@ public class DBSeeder {
                 "NS", "NS", "NS", "NS", "NS"
         };
 
+
+
         String[] posterDetails = {
                 "Join us for 3 hours of high energy fun while we host three " +
                         "incredible speakers, showcase local businesses, and connect " +
@@ -340,6 +342,12 @@ public class DBSeeder {
                 0, 59, 0, 0, 30
         };
 
+        String[] posterCosts = {
+                "$25-$45", "$167-$282", "$699-$899", "$1999-$2400", "FREE",
+                "$30", "$30-$150", "$15", "$40", "$30-$250",
+                "FREE", "$10-$15", "$5-$15", "FREE", "FREE"
+        };
+
         for (int i = 0; i < 15; i++) {
             Poster poster = new Poster();
 
@@ -377,6 +385,7 @@ public class DBSeeder {
             poster.setEndTime(endDateCal1.getTime());
 
             poster.setPhotoName("poster_" + (i + 1) + ".png");
+            poster.setCost(posterCosts[i]);
 
             int posterId = dbHandler.addPoster(poster);
 

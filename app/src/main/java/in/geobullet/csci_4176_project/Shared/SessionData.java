@@ -12,4 +12,6 @@ public class SessionData {
     public static int boardId = -1;
     public static Location location = null;
     public static int radius = -1;
+
+    public static int posterSearchRadiusInMeters = 500; // default radius of 500 meters
 }
