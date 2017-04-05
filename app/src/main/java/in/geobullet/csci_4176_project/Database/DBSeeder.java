@@ -50,8 +50,8 @@ public class DBSeeder {
         b1.setName("Local Bulletin 1");
         b1.setExpirationDate(c2.getTime());
         b1.setRadiusInMeters(1000);
-        b1.setLongitude(-63.57523);
-        b1.setLatitude(44.64876);
+        b1.setLongitude(-63.5917);
+        b1.setLatitude(44.6366);
         //add this to display board created by user ID
         b1.setCreatedByUserId(u1.getId());
 

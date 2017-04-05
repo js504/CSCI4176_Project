@@ -51,9 +51,27 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
         });
 
         SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+
         final TextView textView = (TextView) findViewById(R.id.textView_seek);
 
-        textView.setText("Location: +" + 50 + " Meters");
+        int posterRadius = SessionData.posterSearchRadiusInMeters;
+        int prog = 0;
+
+        if (posterRadius <= 50) {
+            prog = 20;
+        } else if (posterRadius <= 100) {
+            prog = 40;
+        } else if (posterRadius <= 250) {
+            prog = 60;
+        } else if (posterRadius <= 500) {
+            prog = 80;
+        } else if (posterRadius <= 1000) {
+            prog = 100;
+        }
+
+        textView.setText("Location: +" + posterRadius + " Meters");
+        seekBar.setProgress(prog);
+        progress = prog;
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -66,7 +84,7 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
                 } else if (progressVal <= 40) {
                     radius = 100;
                 } else if (progressVal <= 60) {
-                    radius = 200;
+                    radius = 250;
                 } else if (progressVal <= 80) {
                     radius = 500;
                 } else if (progressVal <= 100) {
