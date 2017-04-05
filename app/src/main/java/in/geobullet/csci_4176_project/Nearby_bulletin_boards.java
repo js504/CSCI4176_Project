@@ -1,9 +1,8 @@
 package in.geobullet.csci_4176_project;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -58,52 +57,27 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progressVal, boolean fromUser) {
 
-                String suffix = "";
-                boolean isNational = false;
+                int radius = 0;
 
-                if (0 <= progresValue && progresValue <= 5) {
-                    progress = 50;
-                } else if (5 < progresValue && progresValue <= 10) {
-                    progress = 100;
-                    suffix = "Meters";
-                } else if (10 < progresValue && progresValue <= 15) {
-                    progress = 200;
-                    suffix = "Meters";
-                } else if (15 < progresValue && progresValue <= 20) {
-                    progress = 500;
-                    suffix = "Meters";
-                } else if (20 < progresValue && progresValue <= 30) {
-                    progress = 1000;
-                    suffix = "Meters";
-                } else if (30 < progresValue && progresValue <= 40) {
-                    progress = 2000;
-                    suffix = "Meters";
-                } else if (40 < progresValue && progresValue <= 50) {
-                    progress = 5000;
-                    suffix = "Meters";
-                } else if (50 < progresValue && progresValue <= 70) {
-                    progress = 10000;
-                    suffix = "Meters";
-                } else if (70 < progresValue && progresValue <= 90) {
-                    progress = 20000;
-                    suffix = "Meters";
-                } else if (90 < progresValue && progresValue <= 100) {
-                    progress = 100000;
-                    isNational = true;
+                if (progressVal <= 20) {
+                    radius = 50;
+                } else if (progressVal <= 40) {
+                    radius = 100;
+                } else if (progressVal <= 60) {
+                    radius = 200;
+                } else if (progressVal <= 80) {
+                    radius = 500;
+                } else if (progressVal <= 100) {
+                    radius = 1000;
                 }
 
-                String text;
-                if (isNational) {
-                    text = "Location: National";
-                } else {
-                    text = "Location: +" + progress + " " + suffix;
-                }
-
-                textView.setText(text);
-
+                SessionData.posterSearchRadiusInMeters = radius;
+                progress = radius;
+                textView.setText("Location: +" + radius + " Meters");
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }

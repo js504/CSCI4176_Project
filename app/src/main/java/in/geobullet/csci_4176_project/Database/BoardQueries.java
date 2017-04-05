@@ -166,8 +166,11 @@ public class BoardQueries {
         return matchingBoards;
     }
 
+    public boolean removeBoard(int boardId) {
 
-    // todo deleteBoard
+        return false;
+
+    }
 
 
     private ContentValues setContentValues(ContentValues vals, Board board) {
