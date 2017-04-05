@@ -93,8 +93,8 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                     {
                         if(row_index <=2)
                         {
-                            top_margin_index = (230*row_index);
-                            left_margin_index = (520*column_index);
+                            top_margin_index = (600*row_index);
+                            left_margin_index = (1500*column_index);
                             params.setMargins(left_margin_index, top_margin_index, 0, 0);
                             ib.setLayoutParams(params);
                             RelLayout.addView(ib);
@@ -104,8 +104,8 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                         {
                             column_index++;
                             row_index = 0;
-                            left_margin_index = (520*column_index);
-                            top_margin_index = (230*row_index);
+                            left_margin_index = (1500*column_index);
+                            top_margin_index = (600*row_index);
                             params.setMargins(left_margin_index, top_margin_index, 0, 0);
                             ib.setLayoutParams(params);
                             RelLayout.addView(ib);
@@ -143,8 +143,8 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                         {
                             if(row_index <=2)
                             {
-                                top_margin_index = (230*row_index);
-                                left_margin_index = (520*column_index);
+                                top_margin_index = (600*row_index);
+                                left_margin_index = (1500*column_index);
                                 params.setMargins(left_margin_index, top_margin_index, 0, 0);
                                 ib.setLayoutParams(params);
                                 RelLayout.addView(ib);
@@ -154,8 +154,8 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                             {
                                 column_index++;
                                 row_index = 0;
-                                left_margin_index = (520*column_index);
-                                top_margin_index = (230*row_index);
+                                left_margin_index = (1500*column_index);
+                                top_margin_index = (600*row_index);
                                 params.setMargins(left_margin_index, top_margin_index, 0, 0);
                                 ib.setLayoutParams(params);
                                 RelLayout.addView(ib);
@@ -194,8 +194,8 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                         {
                             if(row_index <=2)
                             {
-                                top_margin_index = (230*row_index);
-                                left_margin_index = (520*column_index);
+                                top_margin_index = (600*row_index);
+                                left_margin_index = (1500*column_index);
                                 params.setMargins(left_margin_index, top_margin_index, 0, 0);
                                 ib.setLayoutParams(params);
                                 RelLayout.addView(ib);
@@ -205,8 +205,8 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
                             {
                                 column_index++;
                                 row_index = 0;
-                                left_margin_index = (520*column_index);
-                                top_margin_index = (230*row_index);
+                                left_margin_index = (1500*column_index);
+                                top_margin_index = (600*row_index);
                                 params.setMargins(left_margin_index, top_margin_index, 0, 0);
                                 ib.setLayoutParams(params);
                                 RelLayout.addView(ib);
