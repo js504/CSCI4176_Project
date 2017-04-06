@@ -1,6 +1,8 @@
 package in.geobullet.csci_4176_project;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import in.geobullet.csci_4176_project.Database.Classes.User;
 import in.geobullet.csci_4176_project.Database.DBSeeder;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 import in.geobullet.csci_4176_project.Shared.SessionData;
@@ -42,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
         dbSeeder.seedDatabase(dbHandler);
         Log.d("Seeding", "************************************ End Database Seeding *******************************************");
 
+
+        //shared preference
+        Context context = getBaseContext();
+        SharedPreferences pref = context.getSharedPreferences("Session Data", MODE_PRIVATE);
+        if(pref.contains("UserEmail")){
+            User usr = dbHandler.getUserByEmailPass(pref.getString("UserEmail", ""),pref.getString("Password", ""));
+            SessionData.currentUser = usr;
+            //password = pref.getString("Password", "");
+        }
 
         // launch the Maps view
         Intent mapsIntent = new Intent(this, MapsActivity.class);

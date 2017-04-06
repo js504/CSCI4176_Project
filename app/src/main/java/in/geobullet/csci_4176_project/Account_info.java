@@ -8,6 +8,7 @@ package in.geobullet.csci_4176_project;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -177,6 +178,10 @@ public class Account_info extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.logout) {
             SessionData.currentUser = null;
+            //remove shared preference
+            Context context = getBaseContext();
+            context.getSharedPreferences("Session Data", 0).edit().clear().apply(); ;
+
             Intent intent = new Intent(Account_info.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

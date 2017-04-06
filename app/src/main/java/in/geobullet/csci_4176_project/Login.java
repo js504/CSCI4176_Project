@@ -1,8 +1,11 @@
 package in.geobullet.csci_4176_project;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -67,6 +70,14 @@ public class Login extends AppCompatActivity {
 
                         i.putExtra("user", usr.getId());
                         SessionData.currentUser = usr;
+
+                        //shared preferences
+                        Context context = getBaseContext();
+                        SharedPreferences pref = context.getSharedPreferences("Session Data", MODE_PRIVATE);
+                        SharedPreferences.Editor edit = pref.edit();
+                        edit.putString("UserEmail", usr.getEmail());
+                        edit.putString("Password", usr.getPassword());
+                        edit.apply();
 
                         startActivity(i);
                     }
