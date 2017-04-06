@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,7 +22,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +42,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -81,7 +78,7 @@ public class MapsActivity extends AppCompatActivity
     private static final String TAG = "Maps";
 
     // Location
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient = null;
     private LatLng mDefaultLocationHalifax = new LatLng(44.6488, 63.5752);
     private Location mLastKnownLocation = null;
     LocationRequest mLocationRequest;
@@ -107,7 +104,6 @@ public class MapsActivity extends AppCompatActivity
 
     // Maps
     private GoogleMap mMap;
-    private CameraPosition mCameraPosition;
     private static final float DEFAULT_ZOOM = 15.3f;
     private static final float MAX_ZOOM = 16.5f; // For restricting access
     private static final float MIN_ZOOM = 15.0f;
@@ -139,12 +135,13 @@ public class MapsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // set the View to be the map
-        //setContentView(R.layout.activity_maps);
         setContentView(R.layout.activity_main);
-
         // Check for permissions
+        resultReceiver = new GeofenceResultReceiver(new Handler());
+        resultReceiver.setGFReceiver(this);
+        cameraAdjustCounter = 0;
+        setUpNavBar();
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
@@ -153,12 +150,7 @@ public class MapsActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        resultReceiver = new GeofenceResultReceiver(new Handler());
-        resultReceiver.setGFReceiver(this);
-        buildGoogleApiClient();
-        cameraAdjustCounter = 0;
-
-        setUpNavBar();
+        if(mGoogleApiClient == null){ buildGoogleApiClient(); }
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -249,15 +241,12 @@ public class MapsActivity extends AppCompatActivity
                             this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-                        if (mGoogleApiClient == null) {
+                        mMap.setMyLocationEnabled(true);
+                        if(mGoogleApiClient == null){
                             buildGoogleApiClient();
                         }
-                        mMap.setMyLocationEnabled(true);
-                        // Get the last known location
-                        if (mLastKnownLocation == null) {
-                            mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                        }
-                        if(mGoogleApiClient != null && !mGoogleApiClient.isConnected()){
+                        if(mGoogleApiClient.isConnected()){
+                            mGoogleApiClient.disconnect();
                             mGoogleApiClient.connect();
                         }
                     }
@@ -286,7 +275,8 @@ public class MapsActivity extends AppCompatActivity
             if (mLastKnownLocation == null) {
                 mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             }
-            buildGeoFence(mLastKnownLocation).setResultCallback(this);
+            PendingResult<Status> result = buildGeoFence(mLastKnownLocation);
+            if(result != null){ result.setResultCallback(this); }
             addInitialMarkers(mLastKnownLocation);
         }
     }
