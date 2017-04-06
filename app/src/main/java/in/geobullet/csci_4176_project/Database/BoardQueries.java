@@ -157,8 +157,10 @@ public class BoardQueries {
 
             double distanceInKm = radiusOfEarthInMeters * c;
 
+            double distanceInMeters = distanceInKm * 1000;
+
             // If the board is within numMeters to the target coordinates, it's a match
-            if ((distanceInKm * 1000) <= numMeters) {
+            if (distanceInMeters <= numMeters && distanceInMeters <= board.getRadiusInMeters()) {
                 matchingBoards.add(board);
             }
         }
