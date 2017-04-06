@@ -97,12 +97,13 @@ public class MapsActivity extends FragmentActivity
     // Maps
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
-    private static final float DEFAULT_ZOOM = 16.4f;
-    private static final float MAX_ZOOM = 17.0f; // For restricting access
-    private static final float MIN_ZOOM = 12.0f;
+    private static final float DEFAULT_ZOOM = 15.3f;
+    private static final float MAX_ZOOM = 16.5f; // For restricting access
+    private static final float MIN_ZOOM = 15.0f;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 67;
     public double MAP_PAN_RESTRICTION_RADIUS = (double)GEOFENCE_RADIUS_f * Math.sqrt(2.0);
     boolean infoWindowToggleBool = false;
+    public int cameraAdjustCounter = 0;
 
 
     Handler uiHandler = new Handler(Looper.getMainLooper()){
@@ -147,6 +148,7 @@ public class MapsActivity extends FragmentActivity
         resultReceiver = new GeofenceResultReceiver(new Handler());
         resultReceiver.setGFReceiver(this);
         buildGoogleApiClient();
+        cameraAdjustCounter = 0;
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -176,7 +178,7 @@ public class MapsActivity extends FragmentActivity
         mMap.setMinZoomPreference(MIN_ZOOM);
         mMap.setMaxZoomPreference(MAX_ZOOM);
         setMapStyling(mMap);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mDefaultLocationHalifax));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocationHalifax, DEFAULT_ZOOM));
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             @Override
@@ -349,7 +351,10 @@ public class MapsActivity extends FragmentActivity
         LatLng currLocation = new LatLng(
                 mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM));
+        // Adjust the camera, but not too quickly.
+        if((cameraAdjustCounter++ % 5) == 0){
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM));
+        }
         // Set camera panning bounds: restrict the user's vision
         mMap.setLatLngBoundsForCameraTarget(
                 new LatLngBounds(
@@ -403,7 +408,7 @@ public class MapsActivity extends FragmentActivity
         // then build a list of markers from the boards; markers will have the boards as tags
         List<Board> boardList = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(
                 radius, loc.getLatitude(), loc.getLongitude());
-        boardList = db.getAllBoards();
+        //boardList = db.getAllBoards();
 
         List<BoardAndMarkerOptions> list = new ArrayList<>();
         for(Board board : boardList){
@@ -459,13 +464,15 @@ public class MapsActivity extends FragmentActivity
 
     public void addInitialMarkers(Location loc){
         if(shownMarkerList.size() > 0){
+            // Already populated list
+            Log.d(TAG, "Already populated list");
             pruneOutOfRangeMarkers(getOldMarkers(), getNewMarkers(loc, MARKER_RADIUS));
             return;
         }
         List<Board> boardList = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(
                 MARKER_RADIUS, loc.getLatitude(), loc.getLongitude());
         Log.d(TAG, "There are " + boardList.size() + " boards in range");
-        boardList = db.getAllBoards();
+        //boardList = db.getAllBoards();
         for(Board b : boardList){
             //TODO: add in the icon and anchors
             Marker m = mMap.addMarker(new MarkerOptions()

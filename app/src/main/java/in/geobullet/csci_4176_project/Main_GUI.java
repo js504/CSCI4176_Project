@@ -49,11 +49,20 @@ public class Main_GUI extends AppCompatActivity implements View.OnClickListener{
         navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
 
         Intent intent = this.getIntent();
+        Board board = null;
 
-        if(intent != null)
+        if(intent != null) {
             selected_poster_type = intent.getStringExtra("postertype");
+            int id;
+            // If there is an int passed, then get the board associated with it.
+            if((id = intent.getIntExtra(MapsActivity.MAPS_BOARD_ID_KEY, -1)) != -1){
+                board = dbHandler.getBoardById(id);
+            }
+        }
+        if(board == null){
+            board = dbHandler.getFirstBoard();
+        }
 
-        Board board = dbHandler.getFirstBoard();
         List<Poster> postersForBoard1 = dbHandler.getPostersForBoard(board.getId());
         int left_margin_index = 0;
         int top_margin_index = 0;
