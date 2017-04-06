@@ -7,10 +7,6 @@ import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
 
 
-/**
- * Created by Nick on 2017-03-23.
- */
-
 public class DateUtil {
 
     private static SimpleDateFormat df = new SimpleDateFormat(DateUtil.DATE_FORMAT);

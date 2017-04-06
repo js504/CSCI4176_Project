@@ -13,9 +13,6 @@ import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.Classes.User;
 import in.geobullet.csci_4176_project.Database.Classes.UserFavorite;
 
-/**
- * Created by Nick on 2017-03-04.
- */
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 

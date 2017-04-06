@@ -13,10 +13,6 @@ import in.geobullet.csci_4176_project.Database.Classes.PosterType;
 import in.geobullet.csci_4176_project.Database.Classes.User;
 import in.geobullet.csci_4176_project.Shared.SessionData;
 
-/**
- * Created by Nick on 2017-03-23.
- * Darrell to add
- */
 
 public class DBSeeder {
 

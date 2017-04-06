@@ -10,9 +10,6 @@ import java.util.List;
 
 import in.geobullet.csci_4176_project.Database.Classes.BoardPosterPair;
 
-/**
- * Created by Nick on 2017-03-15.
- */
 
 public class BoardPosterPairQueries {
 
@@ -116,6 +113,7 @@ public class BoardPosterPairQueries {
 
         Log.i("DELETED BOARD PAIRS", "COUNT: " + bppsDelete.size());
 
+        // (The calling class is responsible for closing the database)
     }
 
 

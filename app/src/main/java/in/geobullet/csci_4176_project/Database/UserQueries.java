@@ -6,9 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import in.geobullet.csci_4176_project.Database.Classes.User;
 
-/**
- * Created by Nick on 2017-03-15.
- */
 
 public class UserQueries {
 

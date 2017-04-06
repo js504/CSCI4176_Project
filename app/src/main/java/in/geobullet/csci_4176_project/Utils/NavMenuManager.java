@@ -7,10 +7,6 @@ import android.view.MenuItem;
 import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.Shared.SessionData;
 
-/**
- * Created by Nick on 2017-04-02.
- */
-
 public class NavMenuManager {
 
     /**

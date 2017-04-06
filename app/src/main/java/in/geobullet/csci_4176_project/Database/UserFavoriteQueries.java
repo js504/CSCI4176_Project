@@ -9,9 +9,6 @@ import java.util.List;
 
 import in.geobullet.csci_4176_project.Database.Classes.UserFavorite;
 
-/**
- * Created by Nick on 2017-03-15.
- */
 
 public class UserFavoriteQueries {
 

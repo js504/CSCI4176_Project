@@ -17,9 +17,6 @@ import in.geobullet.csci_4176_project.Utils.DateUtil;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.Classes.PosterType;
 
-/**
- * Created by Nick on 2017-03-15.
- */
 
 public class PosterQueries {
 
