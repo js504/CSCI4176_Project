@@ -163,7 +163,6 @@ public class BoardQueries {
 
             Log.d("Dist:", "Distance in Km: " + distanceInKm);
 
-            // If the board is within numMeters to the target coordinates, it's a match
             if (distanceInMeters <= numMeters && distanceInMeters <= board.getRadiusInMeters()) {
                 matchingBoards.add(board);
             }

@@ -128,11 +128,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
 
-        if (id == R.id.action_something1) {
-            return true;
-        } else if (id == R.id.action_something2) {
-            return true;
-        }
+//        if (id == R.id.action_something1) {
+//            return true;
+//        } else if (id == R.id.action_something2) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

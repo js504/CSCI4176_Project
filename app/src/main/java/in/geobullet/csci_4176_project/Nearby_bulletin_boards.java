@@ -66,7 +66,7 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
             prog = 100;
         }
 
-        textView.setText("Location: +" + posterRadius + " Meters");
+        textView.setText("Search within: " + posterRadius + " meters");
         seekBar.setProgress(prog);
         progress = prog;
 
@@ -90,7 +90,7 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
 
                 SessionData.posterSearchRadiusInMeters = radius;
                 progress = radius;
-                textView.setText("Location: +" + radius + " Meters");
+                textView.setText("Search within: " + radius + " meters");
             }
 
             @Override
