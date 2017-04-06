@@ -1,5 +1,6 @@
 package in.geobullet.csci_4176_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -42,47 +43,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Seeding", "************************************ End Database Seeding *******************************************");
 
 
-//        Board b = dbHandler.getFirstBoard();
-        // coordinates for downtown halifax:
-//        List<Board> searchedboards = dbHandler.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(500, 44.6488, -63.5752);
-//        Log.d("boards:", "Searched boards: " + searchedboards.toString());
-
-
-        setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Well, hello there!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        navManager = new NavMenuManager();
-        //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
-
-        View hView =  navigationView.getHeaderView(0);
-        TextView welcome_menu = (TextView)hView.findViewById(R.id.nav_welcome);
-        if(SessionData.currentUser != null) {
-            welcome_menu.setText("Welcome: " + SessionData.currentUser.getFirstName() + " " + SessionData.currentUser.getLastName());
-        }
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
-
+        // launch the Maps view
+        Intent mapsIntent = new Intent(this, MapsActivity.class);
+        startActivity(mapsIntent);
     }
 
     @Override

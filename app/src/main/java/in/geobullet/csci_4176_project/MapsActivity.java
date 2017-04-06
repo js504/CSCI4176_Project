@@ -12,10 +12,18 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,8 +58,11 @@ import java.util.List;
 import in.geobullet.csci_4176_project.Database.Classes.Board;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 import in.geobullet.csci_4176_project.Shared.SessionData;
+import in.geobullet.csci_4176_project.Utils.NavMenuManager;
+import in.geobullet.csci_4176_project.Utils.NavViewListener;
 
-public class MapsActivity extends FragmentActivity
+//public class MapsActivity extends FragmentActivity
+public class MapsActivity extends AppCompatActivity
         implements  OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -121,20 +132,17 @@ public class MapsActivity extends FragmentActivity
     // Intent Key
     public static final String MAPS_BOARD_ID_KEY = "MAPS_BOARD_ID_KEY";
 
-    /* Implementations; ideas for the map:
-     * > Pan-and-Zoom on pole-click
-     *      When a user clicks a pole, pan the camera over to the marker, and zoom down to it
-     *      as the pole loads. Serves as an animated loading bar, effectively. Can launch the
-     *      db calls at animation start, and then, on load, context switch to the board view.
-     */
-
+    // Navigation Menu
+    private NavMenuManager navManager;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // set the View to be the map
-        setContentView(R.layout.activity_maps);
+        //setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_main);
 
         // Check for permissions
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -149,6 +157,8 @@ public class MapsActivity extends FragmentActivity
         resultReceiver.setGFReceiver(this);
         buildGoogleApiClient();
         cameraAdjustCounter = 0;
+
+        setUpNavBar();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -304,6 +314,21 @@ public class MapsActivity extends FragmentActivity
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        // Check if a user has logged in , if so show the hidden menu items
+        if (navigationView != null) {
+            if (SessionData.currentUser != null) {
+                navManager.showUserMenuItems(navigationView);
+            } else {
+                navManager.hideUserMenuItem(navigationView);
+            }
+        }
+    }
+
+
+    @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
         // Handler for case where connection fails
         Log.d(TAG, "Connection Failed: " + result.getErrorCode());
@@ -371,6 +396,7 @@ public class MapsActivity extends FragmentActivity
         }
     }
 
+    // Geofence Methods
     public PendingResult<Status> buildGeoFence(Location loc) {
         // Only set up Exiting as the Geofence transition: only care abo0ut a user leaving a fence.
         if (loc == null) return null;
@@ -560,5 +586,43 @@ public class MapsActivity extends FragmentActivity
                 return super.onFailure(status);
             }
         });
+    }
+
+    // Navigation methods
+    public void setUpNavBar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        navManager = new NavMenuManager();
+        //Changed how nav view operates, listener has now been moved into its own class so repeat code is avoided
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
+        View hView =  navigationView.getHeaderView(0);
+        TextView welcome_menu = (TextView)hView.findViewById(R.id.nav_welcome);
+        if(SessionData.currentUser != null) {
+            welcome_menu.setText("Welcome: " + SessionData.currentUser.getFirstName() + " " + SessionData.currentUser.getLastName());
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
