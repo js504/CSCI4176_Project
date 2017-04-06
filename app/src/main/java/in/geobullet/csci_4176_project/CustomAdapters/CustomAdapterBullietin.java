@@ -1,8 +1,5 @@
 package in.geobullet.csci_4176_project.CustomAdapters;
 
-/**
- * Created by tianyewang on 2017-03-22.
- */
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -25,9 +22,9 @@ public class CustomAdapterBullietin extends BaseAdapter{
     private Context context;
     private List<Poster> posters;
     private List<Board> board;
-    private static LayoutInflater inflater=null;
+    private LayoutInflater inflater=null;
     public CustomAdapterBullietin(Manage_Bulletins mainActivity, List<Board> board) {
-        this.posternames =posternames;
+        this.posternames = posternames;
         context=mainActivity;
         this.board =board;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -47,7 +44,7 @@ public class CustomAdapterBullietin extends BaseAdapter{
         return position;
     }
 
-    public class Holder
+    private class Holder
     {
         TextView tv;
         ImageView img;

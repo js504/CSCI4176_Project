@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -54,6 +53,7 @@ public class CreateNewPoster extends AppCompatActivity {
     private static final String END_TIME = "End Time:";
 
 
+    //Bundle IDs
     public static final String BUNDLE_ID = "ID";
     public static final String BUNDLE_TITLE = "TITLE";
     public static final String BUNDLE_TYPE = "TYPE";
@@ -67,16 +67,8 @@ public class CreateNewPoster extends AppCompatActivity {
     public static final String BUNDLE_IMGSRC = "IMGSRC";
     public static final String BUNDLE_IMGICONSRC = "IMGICONSRC";
 
-
-
-
-
-
-
-
-
-
-
+    //Months for converting edit poster dates to expected dates
+    private final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"};
 
 
     //Layout radio buttons
@@ -104,8 +96,6 @@ public class CreateNewPoster extends AppCompatActivity {
     private Button submitPosterButton;
 
     private ImageView previewImageView;
-
-    private final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"};
 
     private DatabaseHandler dbHandler = null;
 
@@ -197,9 +187,6 @@ public class CreateNewPoster extends AppCompatActivity {
         details.setText((String)extras.get(BUNDLE_DETAILS));
         imgSrc = (String)extras.get(BUNDLE_IMGSRC);
         iconSrc = (String)extras.get(BUNDLE_IMGICONSRC);
-
-        Log.i("IMG SRC", imgSrc);
-
 
         imgSrc = imgSrc.substring(0, imgSrc.lastIndexOf("."));
         int id = this.getResources().getIdentifier(imgSrc, "drawable", this.getPackageName());
@@ -314,8 +301,7 @@ public class CreateNewPoster extends AppCompatActivity {
         switch(requestCode) {
             case (0) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    String tmpImgSrc = data.getStringExtra("IMG_SRC");
-                    imgSrc = tmpImgSrc;
+                    imgSrc = data.getStringExtra("IMG_SRC");
 
                     int id = this.getResources().getIdentifier(imgSrc, "drawable", this.getPackageName());
                     previewImageView.setImageResource(id);
@@ -332,9 +318,6 @@ public class CreateNewPoster extends AppCompatActivity {
      * @param view  Submit button view
      */
     public void addPosterOnClick(View view){
-
-
-        RadioButton eventRadio = (RadioButton)findViewById(R.id.event_radio_button);
 
 
         Poster poster = null;
@@ -385,8 +368,6 @@ public class CreateNewPoster extends AppCompatActivity {
     private void addPosterToDb(Poster poster){
         posterId = dbHandler.addPoster(poster);
 
-        poster = dbHandler.getPosterById(posterId);
-
         BoardPosterPair boardPosterPair = new BoardPosterPair();
 
         boardPosterPair.setBoardId(SessionData.boardId);
@@ -394,7 +375,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
         int bppId = dbHandler.addBoardPosterPair(boardPosterPair);
 
-        BoardPosterPair bpp = dbHandler.getBoardPosterPairById(bppId);
+        dbHandler.getBoardPosterPairById(bppId);
 
         resetFields();
         Toast.makeText(this, "Poster Created!", Toast.LENGTH_SHORT).show();
@@ -483,7 +464,7 @@ public class CreateNewPoster extends AppCompatActivity {
         }
 
 
-        errorTv.setText(error.toString());
+        errorTv.setText(error);
 
         return poster;
 
@@ -548,7 +529,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
         }
 
-        errorTv.setText(error.toString());
+        errorTv.setText(error);
 
         return poster;
 
@@ -693,8 +674,8 @@ public class CreateNewPoster extends AppCompatActivity {
      * Parses the date from the expected format and returns it as numbers for use when creating
      * posters
      *
-     * @param date
-     * @return
+     * @param date  The date to parse into ints
+     * @return      The date parsed into ints in dd-mm-yy format
      */
     private int[] parseDate(String date){
 
@@ -731,7 +712,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
         int hour = Integer.parseInt(timeItems[0]);
 
-        String amPm = "";
+        String amPm;
 
         if(hour >= 12){
             amPm = "pm";
@@ -746,9 +727,8 @@ public class CreateNewPoster extends AppCompatActivity {
             hour -= 12;
         }
 
-        String newTime = Integer.toString(hour) + ":" + timeItems[1]  + amPm;
 
-        return newTime;
+        return Integer.toString(hour) + ":" + timeItems[1]  + amPm;
     }
 
 
@@ -791,7 +771,8 @@ public class CreateNewPoster extends AppCompatActivity {
                     timeIntArr[1] = min;
                 }
                 catch(NumberFormatException nfe){
-                    Log.i("NFE", timeSplit[2].substring(0, timeSplit.length - 2));
+                    Log.i("NFE", nfe.toString());
+
                 }
             }
         }
@@ -856,7 +837,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
 
 
-    /**************** Private static classes start here *****************/
+    //**************** Private static classes start here *****************/
 
     /**
      * Fragment for displaying the date picker dialog

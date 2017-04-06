@@ -12,9 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.CustomAdapters.PhotoPickerBaseAdapter;
-import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 import in.geobullet.csci_4176_project.R;
+
+
+/**
+ *
+ * Class creates a basic photo pickers that allows users to select from a list of images locally stored within the application for
+ * use with the creation of posters.  This would have been hooked up to a server if that were part of the assignment.
+ *
+ */
 
 public class PhotoPicker extends AppCompatActivity {
 
@@ -34,8 +41,6 @@ public class PhotoPicker extends AppCompatActivity {
 
         gridView = (GridView)findViewById(R.id.photo_picker_grid_view);
 
-       // List<Poster> posters = db.getAllPosters();
-
         //Default poster creation based on posters locally stored in app since no server is used
         List<String> posters = new ArrayList<String>();
         for(int i = 0; i < NUM_PHOTOS; i++){
@@ -43,9 +48,19 @@ public class PhotoPicker extends AppCompatActivity {
 
         }
 
+        //set the custom adapter to gridview
         gridView.setAdapter(new PhotoPickerBaseAdapter(this, posters));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
+            /**
+             * gets the img icon source from the photo picker and truncates it to match the normal
+             * image name, then sends that back to calling activity.
+             *
+             * @param parent        The caller
+             * @param view          The current selected view
+             * @param position      The position in the grid
+             * @param id            The id of item
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String imgSrc = (String)parent.getItemAtPosition(position);

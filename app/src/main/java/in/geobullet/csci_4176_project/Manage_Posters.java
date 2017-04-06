@@ -52,36 +52,5 @@ public class Manage_Posters extends AppCompatActivity {
         ListView lv=(ListView) findViewById(R.id.listView);
         lv.setAdapter(new CustomAdapterPoster(this, userPoster, db));
 
-        //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                Poster poster = (Poster)parent.getItemAtPosition(position);
-//
-//                if(poster != null) {
-//                    Bundle editPosterBundle = new Bundle();
-//                    editPosterBundle.putInt("ID", poster.getId());
-//                    editPosterBundle.putString("TITLE", poster.getTitle());
-//                    editPosterBundle.putString("ADDRESS", poster.getAddress());
-//                    editPosterBundle.putString("CITY", poster.getCity());
-//                    editPosterBundle.putString("STARTDATE", poster.getStartDate().toString());
-//                    editPosterBundle.putString("ENDDATE", poster.getEndDate().toString());
-//                    editPosterBundle.putString("STARTTIME", poster.getStartTime().toString());
-//                    editPosterBundle.putString("ENDTIME", poster.getEndTime().toString());
-//                    editPosterBundle.putString("DETAILS", poster.getDetails());
-//                    editPosterBundle.putString("IMGSRC", poster.getPhotoName());
-//                    editPosterBundle.putString("IMGICONSRC", poster.getIconName());
-//
-//                    Log.i("Getting Poster", poster.getStartDate().toString());
-//
-////                    Intent intent = new Intent(Manage_Posters.this, CreateNewPoster.class);
-////                    intent.putExtras(editPosterBundle);
-////
-////                    startActivity(intent);
-//                }
-//            }
-//        });
-
     }
 }

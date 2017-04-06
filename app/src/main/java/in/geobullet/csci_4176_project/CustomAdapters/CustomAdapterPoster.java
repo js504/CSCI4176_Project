@@ -1,8 +1,6 @@
 package in.geobullet.csci_4176_project.CustomAdapters;
 
-/**
- * Created by tianyewang on 2017-03-22.
- */
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +26,13 @@ import in.geobullet.csci_4176_project.Manage_Posters;
 import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 
+/**
+ *
+ * Class populates list of items in manage posters activity with list of posters associated with currently logged in user.
+ *
+ * Class uses the SwipeLayout Library, found at "https://github.com/daimajia/AndroidSwipeLayout"
+ *
+ */
 
 public class CustomAdapterPoster extends BaseAdapter{
     private String [] posternames;
@@ -121,6 +126,7 @@ public class CustomAdapterPoster extends BaseAdapter{
 
                 Poster poster = posters.get(position);
 
+                //create a bundle with all posters attributes saved to pass along to the create poster activity for editing
                 Bundle editPosterBundle = new Bundle();
                 editPosterBundle.putInt(CreateNewPoster.BUNDLE_ID, poster.getId());
                 editPosterBundle.putString(CreateNewPoster.BUNDLE_TITLE, poster.getTitle());
@@ -149,7 +155,6 @@ public class CustomAdapterPoster extends BaseAdapter{
                 int posterId = posters.get(position).getId();
                 db.removePosterBoardPairByPosterId(posterId);
                 mainActivity.updateListView();
-                Toast.makeText(mainActivity, "Poster Deleted!", Toast.LENGTH_SHORT);
             }
         });
 

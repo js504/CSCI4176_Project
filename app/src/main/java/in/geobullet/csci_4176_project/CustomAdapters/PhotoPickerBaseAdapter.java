@@ -13,7 +13,9 @@ import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.Utils.PhotoPicker;
 
 /**
- * Created by jt on 2017-04-04.
+ *
+ * Class represents a custom base adapted for insertion into the photo picker grid view
+ *
  */
 
 public class PhotoPickerBaseAdapter extends BaseAdapter {
