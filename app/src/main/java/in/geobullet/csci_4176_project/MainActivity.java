@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
         dbSeeder.seedDatabase(dbHandler);
         Log.d("Seeding", "************************************ End Database Seeding *******************************************");
 
+
+//        Board b = dbHandler.getFirstBoard();
+        // coordinates for downtown halifax:
+//        List<Board> searchedboards = dbHandler.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(500, 44.6488, -63.5752);
+//        Log.d("boards:", "Searched boards: " + searchedboards.toString());
+
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
