@@ -155,9 +155,13 @@ public class BoardQueries {
 
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-            double distanceInKm = radiusOfEarthInMeters * c;
+            double distanceInMeters = radiusOfEarthInMeters * c;
 
-            double distanceInMeters = distanceInKm * 1000;
+            Log.d("KM Dist:", "Distance in meters: " + distanceInMeters);
+
+            double distanceInKm = distanceInMeters / 1000;
+
+            Log.d("M Dist:", "Distance in Km: " + distanceInKm);
 
             // If the board is within numMeters to the target coordinates, it's a match
             if (distanceInMeters <= numMeters && distanceInMeters <= board.getRadiusInMeters()) {
