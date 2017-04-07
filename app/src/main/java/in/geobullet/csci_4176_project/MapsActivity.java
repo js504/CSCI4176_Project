@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -282,6 +283,13 @@ public class MapsActivity extends AppCompatActivity
             if (mLastKnownLocation == null) {
                 mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             }
+            if (mLastKnownLocation == null){
+                // If it is still null, even now.
+                // Concession for emulator
+                mLastKnownLocation = new Location(LocationManager.GPS_PROVIDER);
+                mLastKnownLocation.setLatitude(mDefaultLocationHalifax.latitude);
+                mLastKnownLocation.setLongitude(mDefaultLocationHalifax.longitude);
+            }
             try{
                 // Build the geofences around the current location
                 PendingResult<Status> result = buildGeoFence(mLastKnownLocation);
@@ -379,13 +387,12 @@ public class MapsActivity extends AppCompatActivity
 
         LatLng currLocation;
 
-        if (location != null && location.getLatitude() > 0 && location.getLongitude() > 0) {
+        // Ensure that the location isn't null
+        if (location != null && location.getLatitude() != 0 && location.getLongitude() != 0) {
             currLocation = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
         } else {
-            currLocation = new LatLng(44.6366, -63.5917);
+            currLocation = mDefaultLocationHalifax;
         }
-
-
 
         // Adjust the camera, but not too quickly.
         if((cameraAdjustCounter++ % 5) == 0){
