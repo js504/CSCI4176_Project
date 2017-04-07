@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import java.io.Serializable;
 import java.util.List;
 
 import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterBullietin;

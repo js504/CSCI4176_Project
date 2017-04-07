@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.util.Log;
 import android.view.MenuItem;
 
 import in.geobullet.csci_4176_project.Account_info;
 import in.geobullet.csci_4176_project.Login;
-import in.geobullet.csci_4176_project.MainActivity;
 import in.geobullet.csci_4176_project.Main_GUI;
 import in.geobullet.csci_4176_project.Manage_Bulletins;
 import in.geobullet.csci_4176_project.Manage_Posters;

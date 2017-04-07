@@ -7,8 +7,6 @@ import android.support.v4.os.ResultReceiver;
 import android.util.Log;
 import com.google.android.gms.location.GeofencingEvent;
 
-import java.util.List;
-
 
 public class GeofenceIntentHandler extends IntentService {
     public static final String TAG = "GfHandler";

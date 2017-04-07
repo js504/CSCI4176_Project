@@ -158,11 +158,9 @@ public class CreateNewPoster extends AppCompatActivity {
 
         //Then we are editing an existing poster
         if(extras.get(BUNDLE_BOARDID) == null){
-            Log.i("EDITING", "EDITING POSTER");
             populateFields(extras);
         }
         else{
-            Log.i("CREATING POSTER", "CREATING POSTER");
             boardId = extras.getInt(BUNDLE_BOARDID);
         }
     }
