@@ -170,7 +170,7 @@ public class BoardQueries {
 
     public boolean removeBoard(int boardId) {
 
-        String query = "DELETE FROM Board WHERE BoardId = " + boardId + ";";
+        String query = "DELETE FROM Board WHERE Id = " + boardId + ";";
 
         Cursor c = db.rawQuery(query, null);
 
