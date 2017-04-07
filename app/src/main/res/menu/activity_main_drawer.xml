@@ -9,7 +9,7 @@
             android:title="Map View" />
         <item
             android:id="@+id/nav_nearby_bulletin_boards"
-            android:icon="@drawable/ic_person_boards"
+            android:icon="@drawable/ic_nearby"
             android:title="Nearby Bulletin Boards"
             />
         <item
