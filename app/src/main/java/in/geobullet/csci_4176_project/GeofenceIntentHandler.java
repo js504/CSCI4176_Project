@@ -19,20 +19,16 @@ public class GeofenceIntentHandler extends IntentService {
     }
 
     @Override
-    public void onCreate(){
-        super.onCreate();
-    }
-
-    @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        // Initialize the Result Receiver at startup of the service
         resultReceiver = intent.getParcelableExtra(GeofenceResultReceiver.TAG);
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     protected void onHandleIntent(Intent intent){
+        // Get the geofencing event
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
-        Log.d(TAG, "Intent handler triggered");
 
         if(event.hasError()){
             // Handle errors
@@ -40,7 +36,7 @@ public class GeofenceIntentHandler extends IntentService {
             return;
         }
         int transition = event.getGeofenceTransition();
-        event = null;
+        // Send off the transition to the result receiver
         resultReceiver.send(transition, null);
     }
 }

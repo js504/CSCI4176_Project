@@ -58,7 +58,6 @@ import in.geobullet.csci_4176_project.Shared.SessionData;
 import in.geobullet.csci_4176_project.Utils.NavMenuManager;
 import in.geobullet.csci_4176_project.Utils.NavViewListener;
 
-//public class MapsActivity extends FragmentActivity
 public class MapsActivity extends AppCompatActivity
         implements  OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -136,12 +135,15 @@ public class MapsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Check for permissions
+        // Set up the result receiver for the geofence service
         resultReceiver = new GeofenceResultReceiver(new Handler());
         resultReceiver.setGFReceiver(this);
+        // Counter for delaying the camera movement
         cameraAdjustCounter = 0;
+        // Hamburger menu
         setUpNavBar();
 
+        // Permissions
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
@@ -150,6 +152,7 @@ public class MapsActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        // Build the API client
         if(mGoogleApiClient == null){ buildGoogleApiClient(); }
     }
 
@@ -177,11 +180,13 @@ public class MapsActivity extends AppCompatActivity
         } else {
             mMap.setMyLocationEnabled(true);
         }
+        // Set restrictions on the user: Zoom, panning
         mMap.setMinZoomPreference(MIN_ZOOM);
         mMap.setMaxZoomPreference(MAX_ZOOM);
         setMapStyling(mMap);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocationHalifax, DEFAULT_ZOOM));
 
+        // Add click listener for the markers
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -204,7 +209,7 @@ public class MapsActivity extends AppCompatActivity
                 return true;
             }
         });
-
+        // Add listener for the info window, if used
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
@@ -221,7 +226,7 @@ public class MapsActivity extends AppCompatActivity
         });
     }
 
-    // If desired, can add different styles depending on the time
+    // Add styling to the map
     private void setMapStyling(GoogleMap googleMap) {
         googleMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
@@ -245,6 +250,7 @@ public class MapsActivity extends AppCompatActivity
                         if(mGoogleApiClient == null){
                             buildGoogleApiClient();
                         }
+                        // Reconnect to hte API refreshes the map
                         if(mGoogleApiClient.isConnected()){
                             mGoogleApiClient.disconnect();
                             mGoogleApiClient.connect();
@@ -268,6 +274,7 @@ public class MapsActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
+            // Begin getting location updates
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this
             );
@@ -275,8 +282,10 @@ public class MapsActivity extends AppCompatActivity
             if (mLastKnownLocation == null) {
                 mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             }
+            // Build the geofences around the current location
             PendingResult<Status> result = buildGeoFence(mLastKnownLocation);
             if(result != null){ result.setResultCallback(this); }
+            // Add markers to the map
             addInitialMarkers(mLastKnownLocation);
         }
     }
@@ -359,6 +368,7 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public void onLocationChanged(Location location) {
+        // Store the new location locally and in session
         mLastKnownLocation = location;
         SessionData.location = location;
         // move the User Marker
@@ -396,15 +406,13 @@ public class MapsActivity extends AppCompatActivity
                 .setCircularRegion(loc.getLatitude(), loc.getLongitude(), GEOFENCE_RADIUS_i)
                 .setNotificationResponsiveness(GEOFENCE_RESPONSIVENESS)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
-                //.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL) // testing
-                //.setLoiteringDelay(GEOFENCE_LOITER_TIME)
                 .build();
         currentFence = fence;
         currentFenceLocation = loc;
         GeofencingRequest fenceRequest = new GeofencingRequest.Builder()
                 .addGeofence(fence)
-                //.setInitialTrigger(Geofence.GEOFENCE_TRANSITION_DWELL) // Testing
                 .build();
+        // Add the new fence to the application
         try {
             return LocationServices.GeofencingApi.addGeofences(
                     mGoogleApiClient,
@@ -451,6 +459,7 @@ public class MapsActivity extends AppCompatActivity
         // Compare the tags of the previously lain markers to the boards in the newMarker
         Log.d(TAG, "There are " + oldMarkers.size() + " OldMarkers, and " + newMarkers.size() + " NewMarkers in range");
         boolean break_bool = false;
+        // Loop through the old markers, and then the new markers
         for(Marker m : oldMarkers){
             Board oldBoard = (Board)m.getTag();
             for(BoardAndMarkerOptions bmo : newMarkers){
@@ -462,6 +471,7 @@ public class MapsActivity extends AppCompatActivity
                 }
             }
             if(break_bool){
+                // marker for us having broken out of the loop
                 break_bool = false;
             }else{
                 oldMarkers.remove(m);
@@ -485,12 +495,13 @@ public class MapsActivity extends AppCompatActivity
             pruneOutOfRangeMarkers(getOldMarkers(), getNewMarkers(loc, MARKER_RADIUS));
             return;
         }
+        // Get all of the boards in the current range
         List<Board> boardList = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(
                 MARKER_RADIUS, loc.getLatitude(), loc.getLongitude());
         Log.d(TAG, "There are " + boardList.size() + " boards in range");
         //boardList = db.getAllBoards();
         for(Board b : boardList){
-            //TODO: add in the icon and anchors
+            // Build up the marker
             Marker m = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(b.getLatitude(), b.getLongitude()))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.phone_pole))
@@ -498,15 +509,19 @@ public class MapsActivity extends AppCompatActivity
                     .draggable(false)
                     .title(b.getName())
             );
+            // Associate the marker with the board
             m.setTag(b);
+            // Add to the main list, for storage
             shownMarkerList.add(m);
         }
     }
 
     private PendingIntent getGeofencePendingIntent() {
+        // Get the Pending intent for Geofences, if they exist
         if (geofencePendingIntent != null) {
             return geofencePendingIntent;
         }
+        // If not, create one and associate it to the result receiver
         Intent intent = new Intent(this, GeofenceIntentHandler.class);
         intent.putExtra(GeofenceResultReceiver.TAG, resultReceiver);
         geofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -555,7 +570,6 @@ public class MapsActivity extends AppCompatActivity
             public Status onFailure(@NonNull Status status) {
                 // Failure to remove
                 Log.d(TAG, "REMOVAL FAILURE");
-                //Toast.makeText(MapsActivity.this, "Error in removing the Geofence", Toast.LENGTH_LONG).show();
                 return super.onFailure(status);
             }
         }).then(new ResultTransform<Status, Result>() {
@@ -563,7 +577,6 @@ public class MapsActivity extends AppCompatActivity
             @Override
             public PendingResult<Result> onSuccess(@NonNull Status status) {
                 // callback for Adding the new Geofence at mLastKnownLocation
-                //Toast.makeText(MapsActivity.this, "GeoFence rebuilt!", Toast.LENGTH_LONG).show();
                 //System.gc(); // End of the geofence handling, so clean up the disposed of Markers
                 return null;
             }
@@ -571,7 +584,6 @@ public class MapsActivity extends AppCompatActivity
             @NonNull
             @Override
             public Status onFailure(@NonNull Status status) {
-                //Toast.makeText(MapsActivity.this, "Error in Building new Geofence", Toast.LENGTH_LONG).show();
                 Log.d(TAG, "NOT AWESOME");
                 return super.onFailure(status);
             }

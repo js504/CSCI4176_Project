@@ -5,10 +5,8 @@ import android.os.Handler;
 import android.support.v4.os.ResultReceiver;
 import android.util.Log;
 
-/**
- * Created by rkett on 4/4/2017.
- */
-
+// Asynchronous receiver for the Geofence Intent service.
+// Provides an interface for the MapsActivity to implement
 public class GeofenceResultReceiver extends ResultReceiver {
     public static String TAG = "GeofenceReceiver";
     private GeofenceReceiver receiver;
@@ -19,7 +17,7 @@ public class GeofenceResultReceiver extends ResultReceiver {
     }
 
     public interface GeofenceReceiver {
-        public void onReceiveResult(int resultCode, Bundle resultData);
+        void onReceiveResult(int resultCode, Bundle resultData);
     }
 
     public void setGFReceiver(GeofenceReceiver r) {
