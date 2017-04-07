@@ -53,6 +53,35 @@ public class SoundManager {
     }
 
     /**
+     * Play the error sound effect
+     *
+     * @param context The calling activities context
+     */
+    public void playError(Context context){
+
+        resetMediaPlayer();
+
+        mediaPlayer = MediaPlayer.create(context, R.raw.selection_wrong);
+        mediaPlayer.start();
+    }
+
+
+    /**
+     * Play the success sound effect
+     *
+     * @param context  The calling activities context
+     */
+    public void playSuccess(Context context){
+
+        resetMediaPlayer();
+
+        mediaPlayer = MediaPlayer.create(context, R.raw.selection_correct);
+        mediaPlayer.start();
+    }
+
+
+
+    /**
      *
      * Method resets and releases the media player after the sound has been played.
      *

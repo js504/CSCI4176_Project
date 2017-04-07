@@ -29,6 +29,7 @@ import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.Classes.PosterType;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 import in.geobullet.csci_4176_project.Utils.PhotoPicker;
+import in.geobullet.csci_4176_project.Utils.SoundManager;
 
 /**
  *
@@ -54,6 +55,9 @@ public class CreateNewPoster extends AppCompatActivity {
 
 
     //Bundle IDs
+    public static final String BUNDLE_BOARDID = "BOARD_ID";
+
+
     public static final String BUNDLE_ID = "ID";
     public static final String BUNDLE_TITLE = "TITLE";
     public static final String BUNDLE_TYPE = "TYPE";
@@ -103,12 +107,16 @@ public class CreateNewPoster extends AppCompatActivity {
     private String imgSrc;
     private String iconSrc;
 
+    private int boardId;
+
+    private SoundManager soundManagerInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_poster);
 
+        soundManagerInstance = SoundManager.getInstance();
 
         dbHandler = new DatabaseHandler(this);
 
@@ -149,8 +157,13 @@ public class CreateNewPoster extends AppCompatActivity {
         previewImageView = (ImageView)findViewById(R.id.poster_preview);
 
         //Then we are editing an existing poster
-        if(extras != null){
+        if(extras.get(BUNDLE_BOARDID) == null){
+            Log.i("EDITING", "EDITING POSTER");
             populateFields(extras);
+        }
+        else{
+            Log.i("CREATING POSTER", "CREATING POSTER");
+            boardId = extras.getInt(BUNDLE_BOARDID);
         }
     }
 
@@ -367,6 +380,8 @@ public class CreateNewPoster extends AppCompatActivity {
 
         if(tmp){
 
+            soundManagerInstance.playSuccess(this);
+
             Toast.makeText(this, "Poster Updated!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -381,7 +396,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
         BoardPosterPair boardPosterPair = new BoardPosterPair();
 
-        boardPosterPair.setBoardId(SessionData.boardId);
+        boardPosterPair.setBoardId(boardId);
         boardPosterPair.setPosterId(posterId);
 
         int bppId = dbHandler.addBoardPosterPair(boardPosterPair);
@@ -389,6 +404,8 @@ public class CreateNewPoster extends AppCompatActivity {
         dbHandler.getBoardPosterPairById(bppId);
 
         resetFields();
+
+        soundManagerInstance.playSuccess(this);
         Toast.makeText(this, "Poster Created!", Toast.LENGTH_SHORT).show();
     }
 
@@ -479,6 +496,8 @@ public class CreateNewPoster extends AppCompatActivity {
                 error += "\tPoster Image\n";
             }
 
+            soundManagerInstance.playError(this);
+
         }
 
 
@@ -547,6 +566,8 @@ public class CreateNewPoster extends AppCompatActivity {
 
                 error += "\tPoster Image\n";
             }
+
+            soundManagerInstance.playError(this);
 
         }
 
@@ -830,6 +851,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
         if(type.equals(PosterType.Event.toString())){
 
+            eventRadioButton.setChecked(true);
             serviceRadioButton.setChecked(false);
 
             //show the end date and time labels
@@ -845,6 +867,7 @@ public class CreateNewPoster extends AppCompatActivity {
         }
         else if(type.equals(PosterType.Service.toString())) {
 
+            serviceRadioButton.setChecked(true);
             eventRadioButton.setChecked(false);
 
             //hide the end date and time labels

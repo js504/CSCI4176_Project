@@ -41,6 +41,7 @@ public class Account_info extends AppCompatActivity {
     //hardcoded poster items
     private NavigationView navigationView;
     private NavMenuManager navManager;
+    final User currentUser = SessionData.currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class Account_info extends AppCompatActivity {
         final TextView oldpwd = (TextView) findViewById(R.id.editOldpwd);
         final TextView newpwd = (TextView) findViewById(R.id.edit_Newpwd);
 
-        final User currentUser = SessionData.currentUser;
+
         List<Poster> userPoster = null;
         if (currentUser != null) {
             username.setText(currentUser.getDisplayName());
@@ -94,9 +95,9 @@ public class Account_info extends AppCompatActivity {
                     currentUser.setPassword(newpwd.getText().toString());
 
                     db.updateUser(currentUser);
-                    Intent intent = new Intent(Account_info.this, Account_info.class);
-                    finish();
-                    startActivity(intent);
+
+                    Toast toast = Toast.makeText(getApplicationContext(), "User Information Updated!", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
                 else{
                     //showing toast message alert user that the original password not match when trying to change user information
@@ -155,6 +156,8 @@ public class Account_info extends AppCompatActivity {
         if (navigationView != null) {
             if (SessionData.currentUser != null) {
                 navManager.showUserMenuItems(navigationView);
+                getSupportActionBar().setTitle("Login as: " + (currentUser == null ? "" : currentUser.getDisplayName()));
+
             } else {
                 navManager.hideUserMenuItem(navigationView);
             }

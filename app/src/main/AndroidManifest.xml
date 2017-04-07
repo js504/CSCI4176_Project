@@ -39,23 +39,41 @@
             android:name=".Main_GUI"
             android:label="@string/title_activity_main__gui"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Poster_Search"
-            android:label="Poster_Search"
+            android:label="Poster Search"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Poster_Look"
             android:label="Poster_Look"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Account_info"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Login" />
-        <activity android:name=".Manage_Bulletins" />
-        <activity android:name=".EditBoard" />
-        <activity android:name=".Nearby_bulletin_boards" />
-        <activity android:name=".Manage_Posters" />
+
+        <activity
+            android:name=".Login"
+            android:label="Login"/>
+
+        <activity
+            android:name=".Manage_Bulletins"
+            android:label="Manage Boards"/>
+
+        <activity
+            android:name=".EditBoard"
+            android:label="Edit Board"/>
+
+        <activity
+            android:name=".Nearby_bulletin_boards"
+            android:label="Nearby Bulletin Boards"/>
+
+        <activity
+            android:name=".Manage_Posters"
+            android:label="Manage Posters" />
 
         <service
             android:name=".GeofenceIntentHandler"
