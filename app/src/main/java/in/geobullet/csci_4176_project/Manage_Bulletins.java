@@ -54,7 +54,5 @@ public class Manage_Bulletins extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 }
