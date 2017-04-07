@@ -35,6 +35,7 @@ import in.geobullet.csci_4176_project.Utils.NavViewListener;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.Classes.User;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.Utils.SoundManager;
 
 public class Account_info extends AppCompatActivity {
 
@@ -96,6 +97,8 @@ public class Account_info extends AppCompatActivity {
 
                     db.updateUser(currentUser);
 
+                    SoundManager.getInstance().playSuccess(getApplicationContext());
+
                     Toast toast = Toast.makeText(getApplicationContext(), "User Information Updated!", Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -104,6 +107,9 @@ public class Account_info extends AppCompatActivity {
                     Context context = getApplicationContext();
                     CharSequence text = "Original password not valid!";
                     int duration = Toast.LENGTH_SHORT;
+
+                    SoundManager.getInstance().playError(context);
+
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }
