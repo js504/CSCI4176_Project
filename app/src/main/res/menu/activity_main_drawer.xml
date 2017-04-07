@@ -5,21 +5,21 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_mapGUI"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_map"
             android:title="Map View" />
         <item
             android:id="@+id/nav_nearby_bulletin_boards"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_person_boards"
             android:title="Nearby Bulletin Boards"
             />
         <item
             android:id="@+id/nav_MainGUI"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_boards"
             android:title="View Posters"
             />
         <item
             android:id="@+id/nav_searchEvents"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_search"
             android:title="Search Posters" />
     </group>
 
@@ -27,11 +27,11 @@
         <menu>
             <item
                 android:id="@+id/manage_my_posters"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_boards"
                 android:title="Manage My Posters" />
             <item
                 android:id="@+id/nav_accountInfo"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_person"
                 android:title="Account Info" />
 
         </menu>
@@ -43,7 +43,7 @@
         <menu>
             <item
                 android:id="@+id/manage_my_bulletin_boards"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_person_boards"
                 android:title="Manage My Bulletin Boards" />
         </menu>
     </item>
