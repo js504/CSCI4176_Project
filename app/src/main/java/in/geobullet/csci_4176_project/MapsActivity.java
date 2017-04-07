@@ -282,11 +282,15 @@ public class MapsActivity extends AppCompatActivity
             if (mLastKnownLocation == null) {
                 mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             }
-            // Build the geofences around the current location
-            PendingResult<Status> result = buildGeoFence(mLastKnownLocation);
-            if(result != null){ result.setResultCallback(this); }
-            // Add markers to the map
-            addInitialMarkers(mLastKnownLocation);
+            try{
+                // Build the geofences around the current location
+                PendingResult<Status> result = buildGeoFence(mLastKnownLocation);
+                if(result != null){ result.setResultCallback(this); }
+                // Add markers to the map
+                addInitialMarkers(mLastKnownLocation);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
