@@ -4,6 +4,7 @@ package in.geobullet.csci_4176_project.CustomAdapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import in.geobullet.csci_4176_project.MainActivity;
 import in.geobullet.csci_4176_project.Manage_Posters;
 import in.geobullet.csci_4176_project.R;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
+import in.geobullet.csci_4176_project.Utils.SoundManager;
 
 /**
  *
@@ -152,9 +154,13 @@ public class CustomAdapterPoster extends BaseAdapter{
             @Override
             public void onClick(View v) {
 
+
                 int posterId = posters.get(position).getId();
                 db.removePosterBoardPairByPosterId(posterId);
+
+
                 mainActivity.updateListView();
+                SoundManager.getInstance().playDeleteItem(mainActivity);
             }
         });
 
@@ -172,5 +178,7 @@ public class CustomAdapterPoster extends BaseAdapter{
 
         return listview;
     }
+
+
 
 }

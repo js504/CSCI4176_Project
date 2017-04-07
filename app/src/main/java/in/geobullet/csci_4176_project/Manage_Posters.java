@@ -1,6 +1,7 @@
 package in.geobullet.csci_4176_project;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,17 +17,20 @@ import in.geobullet.csci_4176_project.CustomAdapters.CustomAdapterPoster;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Database.Classes.User;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
+import in.geobullet.csci_4176_project.Utils.SoundManager;
 
 public class Manage_Posters extends AppCompatActivity {
 
     final User currentUser = SessionData.currentUser;
     final DatabaseHandler db = new DatabaseHandler(this);
-
+    private SoundManager soundManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_posters);
+
+        soundManager = SoundManager.getInstance();
 
         //create new poster button to invoke the create new poster activity
         Button submit_button = (Button) findViewById(R.id.create_new_poster);
@@ -45,6 +49,13 @@ public class Manage_Posters extends AppCompatActivity {
         updateListView();
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+
+        soundManager.resetMediaPlayer();
+    }
+
     public void updateListView(){
         List<Poster> userPoster = null;
         userPoster = db.getPostersForUser(currentUser.getId());
@@ -53,4 +64,6 @@ public class Manage_Posters extends AppCompatActivity {
         lv.setAdapter(new CustomAdapterPoster(this, userPoster, db));
 
     }
+
+
 }

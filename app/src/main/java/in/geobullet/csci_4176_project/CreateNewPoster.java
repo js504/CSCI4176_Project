@@ -160,6 +160,7 @@ public class CreateNewPoster extends AppCompatActivity {
      * @param extras  The data to populate the fields with
      */
     private void populateFields(Bundle extras){
+
         posterId = (int)extras.get(BUNDLE_ID);
 
         displayPosterTypeFields(extras.getString(BUNDLE_TYPE));
@@ -265,6 +266,7 @@ public class CreateNewPoster extends AppCompatActivity {
         }
 
         if(newFragment != null) {
+
             //send bundle to new fragment
             newFragment.setArguments(bundle);
 
@@ -298,14 +300,18 @@ public class CreateNewPoster extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         switch(requestCode) {
             case (0) : {
+
                 if (resultCode == Activity.RESULT_OK) {
+
                     imgSrc = data.getStringExtra("IMG_SRC");
 
                     int id = this.getResources().getIdentifier(imgSrc, "drawable", this.getPackageName());
                     previewImageView.setImageResource(id);
                 }
+
                 break;
             }
         }
@@ -323,9 +329,11 @@ public class CreateNewPoster extends AppCompatActivity {
         Poster poster = null;
 
         if(eventRadioButton.isChecked()){
+
             poster = addEventPoster();
         }
         else if(serviceRadioButton.isChecked()){
+
             poster = addServicePoster();
         }
 
@@ -333,8 +341,10 @@ public class CreateNewPoster extends AppCompatActivity {
         if(poster != null){
             errorTv.setVisibility(View.GONE);
             if(posterId != -1){
+
                 editPosterInDb(poster);
             }else{
+
                 addPosterToDb(poster);
             }
 
@@ -356,6 +366,7 @@ public class CreateNewPoster extends AppCompatActivity {
         boolean tmp = dbHandler.updatePoster(poster);
 
         if(tmp){
+
             Toast.makeText(this, "Poster Updated!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -422,42 +433,49 @@ public class CreateNewPoster extends AppCompatActivity {
             error = "Please enter the required fields before submitting: \n";
 
             if(titleStr.isEmpty()){
+
                 error += "\tPoster Title\n";
             }
 
             if(locationAddressStr.isEmpty()){
+
                 error += "\tLocation Address\n";
             }
 
             if(cityStr.isEmpty()){
+
                 error += "\tCity\n";
             }
 
 
             String[] startDateStrArr = startDateStr.split(":");
             if(startDateStrArr.length <= 1){
+
                 error += "\tStart Date\n";
             }
 
 
             String[] endDateStrArr = endDateStr.split(":");
             if(endDateStrArr.length <= 1){
+
                 error += "\tEnd Date\n";
             }
 
             String[] startTimeStrArr = startTimeStr.split(":");
-
             if(startTimeStrArr.length <= 1){
+
                 error += "\tStar Time\n";
             }
 
             String[] endTimeStrArr = endTimeStr.split(":");
 
             if(endTimeStrArr.length <= 1){
+
                 error += "\tEnd Time\n";
             }
 
             if(imgSrc.isEmpty()){
+
                 error += "\tPoster Image\n";
             }
 
@@ -484,7 +502,6 @@ public class CreateNewPoster extends AppCompatActivity {
         String locationAddressStr = locationAddress.getText().toString();
         String cityStr = city.getText().toString();
         String detailsStr = details.getText().toString();
-
         String startDateStr = startDate.getText().toString();
 
         Poster poster = null;
@@ -500,30 +517,34 @@ public class CreateNewPoster extends AppCompatActivity {
 
             poster = createNewPoster(PosterType.Service, titleStr, locationAddressStr, cityStr ,detailsStr, startDateStr, "", "", "");
 
-
         }
         else{
             error = "Please enter the required fields before submitting: \n";
 
             if(titleStr.isEmpty()){
+
                 error += "\tPoster Title\n";
             }
 
             if(locationAddressStr.isEmpty()){
+
                 error += "\tLocation Address\n";
             }
 
             if(cityStr.isEmpty()){
+
                 error += "\tCity\n";
             }
 
             String[] startDateArr = startDateStr.split(":");
+
             if(startDateArr.length <= 1){
 
                 error += "\tStart Date\n";
             }
 
             if(imgSrc.isEmpty()){
+
                 error += "\tPoster Image\n";
             }
 
@@ -610,6 +631,7 @@ public class CreateNewPoster extends AppCompatActivity {
 
         }
         else{
+
             startDateCal.set(Calendar.HOUR_OF_DAY, 0);
             startDateCal.set(Calendar.MINUTE, 0);
             startDateCal.set(Calendar.SECOND, 0);
@@ -656,7 +678,9 @@ public class CreateNewPoster extends AppCompatActivity {
             parsedDate = dateSplit[2].trim() + "-";
 
             for(int i = 0; i < MONTHS.length; i++){
+
                 if(MONTHS[i].equals(dateSplit[1].trim())){
+
                     parsedDate += (i + 1) + "-";
                     break;
                 }
@@ -686,9 +710,11 @@ public class CreateNewPoster extends AppCompatActivity {
         String[] dateSplit = getDateSplit[1].split("-");
 
         if(dateSplit.length == 3){
+
             dateArr = new int[3];
 
             for(int i = 0; i < 3; i++){
+
                 dateArr[i] = Integer.parseInt(dateSplit[i].trim());
             }
         }
@@ -801,7 +827,9 @@ public class CreateNewPoster extends AppCompatActivity {
     }
 
     private void displayPosterTypeFields(String type){
+
         if(type.equals(PosterType.Event.toString())){
+
             serviceRadioButton.setChecked(false);
 
             //show the end date and time labels
@@ -815,8 +843,8 @@ public class CreateNewPoster extends AppCompatActivity {
             endTimeButton.setVisibility(View.VISIBLE);
 
         }
-        else if(type.equals(PosterType.Service.toString()))
-        {
+        else if(type.equals(PosterType.Service.toString())) {
+
             eventRadioButton.setChecked(false);
 
             //hide the end date and time labels
@@ -865,11 +893,14 @@ public class CreateNewPoster extends AppCompatActivity {
 
 
             if (bundle.getString(START_DATE_LABEL) != null) {
+
                 key = bundle.getString(START_DATE_LABEL);
             } else if (bundle.getString(END_DATE_LABEL) != null) {
+
                 key = bundle.getString(END_DATE_LABEL);
             }
             else{
+
                 Log.i("Bundle NULL", "Bundle Null");
             }
 
@@ -897,11 +928,13 @@ public class CreateNewPoster extends AppCompatActivity {
             String date =  Integer.toString(day) + "-" + Integer.toString(month + 1) + "-" + Integer.toString(year);
             //Set the date based on whether its the start or end date
             if(key.equals(START_DATE_LABEL)){
+
                 TextView startDate = (TextView)getActivity().findViewById(R.id.start_date_text_view);
                 date = "Start Date: " + date;
                 startDate.setText(date);
             }
             else if(key.equals(END_DATE_LABEL)){
+
                 TextView endDate = (TextView)getActivity().findViewById(R.id.end_date_text_view);
                 date = "End Date: " + date;
                 endDate.setText(date);
@@ -934,8 +967,10 @@ public class CreateNewPoster extends AppCompatActivity {
             Bundle bundle = getArguments();
 
             if (bundle.getString(START_TIME_LABEL) != null) {
+
                 key = bundle.getString(START_TIME_LABEL);
             } else if (bundle.getString(END_TIME_LABEL) != null) {
+
                 key = bundle.getString(END_TIME_LABEL);
             }
 
@@ -962,17 +997,20 @@ public class CreateNewPoster extends AppCompatActivity {
             //Check if the time is greater than or equal to 12. if it is subtract 12 to make it
             //in 12 hour time and set am - pm to pm
             if(hourOfDay >= 12){
+
                 noTwntFourHour = hourOfDay - 12;
                 amPm = "pm";
             }
 
             //If the hour ends up being a 0 set it to 12
             if(hourOfDay == 0 || noTwntFourHour == 0){
+
                 noTwntFourHour = 12;
             }
 
             //if the min is less than 10 then add an extra 0 for the proper display
             if(minute < 10){
+
                 min = "0" + min;
             }
 
@@ -981,10 +1019,13 @@ public class CreateNewPoster extends AppCompatActivity {
 
             //Set the time based on whether its the start or end time
             if (key.equals(START_TIME_LABEL)) {
+
                 TextView startTime = (TextView)getActivity().findViewById(R.id.start_time_text_view);
                 time = "Start Time: " + time;
                 startTime.setText(time);
+
             } else if (key.equals(END_TIME_LABEL)) {
+
                 TextView endTime = (TextView)getActivity().findViewById(R.id.end_time_text_view);
 
                 time = "End Time: " + time;
