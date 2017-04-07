@@ -47,7 +47,6 @@ public class Manage_Bulletins extends AppCompatActivity {
         //update the board information
         addboard.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 Intent intent = new Intent(Manage_Bulletins.this, EditBoard.class);
                 intent.putExtra("addmod", true);
                 finish();

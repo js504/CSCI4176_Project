@@ -172,8 +172,8 @@ public class BoardQueries {
 
         String query = "DELETE FROM Board WHERE Id = " + boardId + ";";
 
-        Cursor c = db.rawQuery(query, null);
-
+        //Cursor c = db.rawQuery(query, null);
+        db.execSQL(query);
         return true;
 
         // (The calling class is responsible for closing the database)
