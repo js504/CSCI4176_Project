@@ -37,7 +37,6 @@ import in.geobullet.csci_4176_project.Utils.SoundManager;
  */
 
 public class CustomAdapterPoster extends BaseAdapter{
-    private String [] posternames;
     private Context context;
     private List<Poster> posters;
     private static LayoutInflater inflater=null;
@@ -48,7 +47,6 @@ public class CustomAdapterPoster extends BaseAdapter{
     public CustomAdapterPoster(Manage_Posters mainActivity, List<Poster> posters, DatabaseHandler db) {
         this.mainActivity = mainActivity;
         this.db = db;
-        this.posternames =posternames;
         context=mainActivity;
         this.posters =posters;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
