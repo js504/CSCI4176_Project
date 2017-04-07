@@ -174,8 +174,11 @@ public class EditBoard extends AppCompatActivity {
         //delete the board information
         delete_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                db.removeBoard(current.getId());
+                db.getBoardById(current.getId());
                 Log.i("dsdf", Integer.toString(current.getId()));
+
+                db.removeBoard(current.getId());
+                Log.i("dsdfxxx", Integer.toString(current.getId()));
                 Intent intent = new Intent(EditBoard.this, Manage_Bulletins.class);
                 finish();
                 startActivity(intent);
