@@ -24,24 +24,24 @@ public class Poster_Search extends AppCompatActivity {
         poster_type_picker.setMaxValue(1);
         poster_type_picker.setDisplayedValues( new String[] { "Event", "Service" } );
 
-        //Get the widgets reference from XML layout
+        // Get the widgets reference from XML layout
         final TextView tv = (TextView) findViewById(R.id.tv);
         NumberPicker np = (NumberPicker) findViewById(R.id.np);
         np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         Button button = (Button) findViewById(R.id.poster_search_btn);
 
-        //Initializing a new string array with elements
-        final String[] values= {"Event", "Service"};
+        // Initializing a new string array with elements
+        final String[] values = { "Event", "Service" };
 
-        //Specify the NumberPicker data source as array elements
+        // Specify the NumberPicker data source as array elements
         np.setDisplayedValues(values);
 
-        //Set a value change listener for NumberPicker
+        // Set a value change listener for NumberPicker
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-                //Display the newly selected value from picker
-                type_selected =  values[newVal];
+            // Display the newly selected value from picker
+            type_selected =  values[newVal];
             }
         });
 

@@ -373,8 +373,15 @@ public class MapsActivity extends AppCompatActivity
         SessionData.location = location;
         // move the User Marker
 
-        LatLng currLocation = new LatLng(
-                mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+        LatLng currLocation;
+
+        if (location != null && location.getLatitude() > 0 && location.getLongitude() > 0) {
+            currLocation = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+        } else {
+            currLocation = new LatLng(44.6366, -63.5917);
+        }
+
+
 
         // Adjust the camera, but not too quickly.
         if((cameraAdjustCounter++ % 5) == 0){
