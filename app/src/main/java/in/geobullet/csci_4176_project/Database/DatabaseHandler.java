@@ -290,7 +290,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return boards;
     }
 
-    //todo sql to remove board by set board object as parameter
+    public boolean removeBoard(int boardId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        BoardQueries bqs = new BoardQueries(db);
+
+        return bqs.removeBoard(boardId);
+    }
 
     /* End Board Queries */
 

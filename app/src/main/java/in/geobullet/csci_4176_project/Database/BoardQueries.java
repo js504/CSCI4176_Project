@@ -170,8 +170,13 @@ public class BoardQueries {
 
     public boolean removeBoard(int boardId) {
 
-        return false;
+        String query = "DELETE FROM Board WHERE BoardId = " + boardId + ";";
 
+        Cursor c = db.rawQuery(query, null);
+
+        return true;
+
+        // (The calling class is responsible for closing the database)
     }
 
 
