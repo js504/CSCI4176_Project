@@ -51,6 +51,7 @@ public class CustomAdapterPoster extends BaseAdapter{
         this.posters =posters;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     @Override
     public int getCount() {
         return posters.size();
@@ -66,11 +67,6 @@ public class CustomAdapterPoster extends BaseAdapter{
         return position;
     }
 
-    public class Holder
-    {
-        TextView tv;
-        ImageView img;
-    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Holder holder=new Holder();
@@ -81,10 +77,10 @@ public class CustomAdapterPoster extends BaseAdapter{
 
         SwipeLayout swipeLayout =  (SwipeLayout)listview.findViewById(R.id.swipe_layout);
 
-//set show mode.
+        //set show mode.
         swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
 
-//add drag edge.(If the BottomView has 'layout_gravity' attribute, this line is unnecessary)
+        //add drag edge.(If the BottomView has 'layout_gravity' attribute, this line is unnecessary)
         swipeLayout.addDrag(SwipeLayout.DragEdge.Left, listview.findViewById(R.id.bottom_wrapper));
 
         swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
@@ -166,17 +162,23 @@ public class CustomAdapterPoster extends BaseAdapter{
         holder.tv=(TextView) listview.findViewById(R.id.textView1);
         holder.img=(ImageView) listview.findViewById(R.id.imageView1);
         holder.tv.setText(posters.get(position).getTitle());
+
         String name =posters.get(position).getIconName();
         name = name.substring(0, name.lastIndexOf("."));
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
-        Log.i("name", Integer.toString(id));
-        //c.getResources().getIdentifier(ImageName, "drawable", c.getPackageName());
+
         holder.img.setImageResource(id);
 
 
         return listview;
     }
 
+
+    private class Holder
+    {
+        TextView tv;
+        ImageView img;
+    }
 
 
 }
