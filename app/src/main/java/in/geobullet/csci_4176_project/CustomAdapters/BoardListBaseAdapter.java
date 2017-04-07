@@ -26,11 +26,11 @@ public class BoardListBaseAdapter extends BaseAdapter {
     private Manage_Posters context;
     private LayoutInflater layoutInflater;
 
-    public BoardListBaseAdapter(Manage_Posters managePosters, List<Board> boards){
+    public BoardListBaseAdapter(Manage_Posters managePosters, List<Board> boards) {
         context = managePosters;
         this.boards = boards;
 
-        layoutInflater =  ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
@@ -52,18 +52,16 @@ public class BoardListBaseAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if(convertView == null){
+        if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.custom_board_listview, null);
         }
 
-        TextView boardName = (TextView)convertView.findViewById(R.id.boardtext);
+        TextView boardName = (TextView) convertView.findViewById(R.id.boardtext);
 
-        if(!boards.isEmpty()){
+        if (!boards.isEmpty()) {
             Board board = boards.get(position);
             boardName.setText(board.getName());
         }
-
-
 
 
         return convertView;

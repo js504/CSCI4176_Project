@@ -29,7 +29,7 @@ public class Manage_Bulletins extends AppCompatActivity {
 
 
         List<Board> bl = db.getAllBoards();
-        ListView lv=(ListView) findViewById(R.id.board_list);
+        ListView lv = (ListView) findViewById(R.id.board_list);
         lv.setAdapter(new CustomAdapterBullietin(this, bl));
 
         //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
@@ -37,7 +37,7 @@ public class Manage_Bulletins extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(Manage_Bulletins.this, EditBoard.class);
-                Board board = db.getBoardById(position+1);
+                Board board = db.getBoardById(position + 1);
                 intent.putExtra("boardID", board.getId());
                 finish();
                 startActivity(intent);

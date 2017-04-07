@@ -37,6 +37,10 @@ import in.geobullet.csci_4176_project.Database.Classes.User;
 import in.geobullet.csci_4176_project.Database.DatabaseHandler;
 import in.geobullet.csci_4176_project.Utils.SoundManager;
 
+/**
+ * Class represents user info activity and displays user info fields.  Allows the user to update their user info if desired
+ */
+
 public class Account_info extends AppCompatActivity {
 
     //hardcoded poster items
@@ -59,7 +63,7 @@ public class Account_info extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             id = extras.getInt("user");
-            Log.i("id",Integer.toString(id));
+            Log.i("id", Integer.toString(id));
         }
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -88,7 +92,7 @@ public class Account_info extends AppCompatActivity {
         submit_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 assert currentUser != null;
-                if(oldpwd.getText().toString().equals(currentUser.getPassword())) {
+                if (oldpwd.getText().toString().equals(currentUser.getPassword())) {
                     currentUser.setDisplayName(username.getText().toString());
                     currentUser.setFirstName(first_name.getText().toString());
                     currentUser.setLastName(last_name.getText().toString());
@@ -101,8 +105,7 @@ public class Account_info extends AppCompatActivity {
 
                     Toast toast = Toast.makeText(getApplicationContext(), "User Information Updated!", Toast.LENGTH_SHORT);
                     toast.show();
-                }
-                else{
+                } else {
                     //showing toast message alert user that the original password not match when trying to change user information
                     Context context = getApplicationContext();
                     CharSequence text = "Original password not valid!";
@@ -135,9 +138,9 @@ public class Account_info extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavViewListener(this));
 
         //update header information about user
-        View hView =  navigationView.getHeaderView(0);
-        TextView welcome_menu = (TextView)hView.findViewById(R.id.nav_welcome);
-        welcome_menu.setText("Welcome: " + SessionData.currentUser.getFirstName() +" "+ SessionData.currentUser.getLastName());
+        View hView = navigationView.getHeaderView(0);
+        TextView welcome_menu = (TextView) hView.findViewById(R.id.nav_welcome);
+        welcome_menu.setText("Welcome: " + SessionData.currentUser.getFirstName() + " " + SessionData.currentUser.getLastName());
 
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -189,7 +192,8 @@ public class Account_info extends AppCompatActivity {
             SessionData.currentUser = null;
             //remove shared preference
             Context context = getBaseContext();
-            context.getSharedPreferences("Session Data", 0).edit().clear().apply(); ;
+            context.getSharedPreferences("Session Data", 0).edit().clear().apply();
+
 
             Intent intent = new Intent(Account_info.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

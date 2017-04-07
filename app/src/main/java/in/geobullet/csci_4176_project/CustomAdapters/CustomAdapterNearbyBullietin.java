@@ -20,18 +20,20 @@ import in.geobullet.csci_4176_project.Database.Classes.Board;
 import in.geobullet.csci_4176_project.Database.Classes.Poster;
 
 
-public class CustomAdapterNearbyBullietin extends BaseAdapter{
-    private String [] posternames;
+public class CustomAdapterNearbyBullietin extends BaseAdapter {
+    private String[] posternames;
     private Context context;
     private List<Poster> posters;
     private List<Board> board;
-    private static LayoutInflater inflater=null;
+    private static LayoutInflater inflater = null;
+
     public CustomAdapterNearbyBullietin(Nearby_bulletin_boards mainActivity, List<Board> board) {
-        this.posternames =posternames;
-        context=mainActivity;
-        this.board =board;
-        inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.posternames = posternames;
+        context = mainActivity;
+        this.board = board;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     @Override
     public int getCount() {
         return board.size();
@@ -47,18 +49,18 @@ public class CustomAdapterNearbyBullietin extends BaseAdapter{
         return position;
     }
 
-    public class Holder
-    {
+    public class Holder {
         TextView tv;
         ImageView img;
     }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Holder holder=new Holder();
+        Holder holder = new Holder();
         View listview;
         listview = inflater.inflate(R.layout.custom_board_listview, null);
-        holder.tv=(TextView) listview.findViewById(R.id.boardtext);
-        holder.img=(ImageView) listview.findViewById(R.id.boardimage);
+        holder.tv = (TextView) listview.findViewById(R.id.boardtext);
+        holder.img = (ImageView) listview.findViewById(R.id.boardimage);
         holder.tv.setText(board.get(position).getName());
         //c.getResources().getIdentifier(ImageName, "drawable", c.getPackageName());
         holder.img.setImageResource(R.drawable.pin);

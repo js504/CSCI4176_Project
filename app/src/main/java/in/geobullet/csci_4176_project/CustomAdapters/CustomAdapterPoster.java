@@ -1,7 +1,6 @@
 package in.geobullet.csci_4176_project.CustomAdapters;
 
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -29,17 +28,15 @@ import in.geobullet.csci_4176_project.Database.Classes.Poster;
 import in.geobullet.csci_4176_project.Utils.SoundManager;
 
 /**
- *
  * Class populates list of items in manage posters activity with list of posters associated with currently logged in user.
- *
+ * <p>
  * Class uses the SwipeLayout Library, found at "https://github.com/daimajia/AndroidSwipeLayout"
- *
  */
 
-public class CustomAdapterPoster extends BaseAdapter{
+public class CustomAdapterPoster extends BaseAdapter {
     private Context context;
     private List<Poster> posters;
-    private static LayoutInflater inflater=null;
+    private static LayoutInflater inflater = null;
 
     private Manage_Posters mainActivity;
     private DatabaseHandler db;
@@ -47,9 +44,9 @@ public class CustomAdapterPoster extends BaseAdapter{
     public CustomAdapterPoster(Manage_Posters mainActivity, List<Poster> posters, DatabaseHandler db) {
         this.mainActivity = mainActivity;
         this.db = db;
-        context=mainActivity;
-        this.posters =posters;
-        inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        context = mainActivity;
+        this.posters = posters;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -69,13 +66,12 @@ public class CustomAdapterPoster extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Holder holder=new Holder();
+        Holder holder = new Holder();
         View listview;
         listview = inflater.inflate(R.layout.custom_poster_listview, null);
 
 
-
-        SwipeLayout swipeLayout =  (SwipeLayout)listview.findViewById(R.id.swipe_layout);
+        SwipeLayout swipeLayout = (SwipeLayout) listview.findViewById(R.id.swipe_layout);
 
         //set show mode.
         swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
@@ -116,7 +112,7 @@ public class CustomAdapterPoster extends BaseAdapter{
         });
 
 
-        swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener(){
+        swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -144,7 +140,7 @@ public class CustomAdapterPoster extends BaseAdapter{
             }
         });
 
-        swipeLayout.findViewById(R.id.bottom_wrapper).setOnClickListener(new View.OnClickListener(){
+        swipeLayout.findViewById(R.id.bottom_wrapper).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -159,11 +155,11 @@ public class CustomAdapterPoster extends BaseAdapter{
         });
 
 
-        holder.tv=(TextView) listview.findViewById(R.id.textView1);
-        holder.img=(ImageView) listview.findViewById(R.id.imageView1);
+        holder.tv = (TextView) listview.findViewById(R.id.textView1);
+        holder.img = (ImageView) listview.findViewById(R.id.imageView1);
         holder.tv.setText(posters.get(position).getTitle());
 
-        String name =posters.get(position).getIconName();
+        String name = posters.get(position).getIconName();
         name = name.substring(0, name.lastIndexOf("."));
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
 
@@ -174,8 +170,7 @@ public class CustomAdapterPoster extends BaseAdapter{
     }
 
 
-    private class Holder
-    {
+    private class Holder {
         TextView tv;
         ImageView img;
     }

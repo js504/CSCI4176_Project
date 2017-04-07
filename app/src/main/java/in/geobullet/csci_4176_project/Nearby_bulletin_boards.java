@@ -21,6 +21,7 @@ import in.geobullet.csci_4176_project.Shared.SessionData;
 public class Nearby_bulletin_boards extends AppCompatActivity {
     private int progress = 0;
     List<Board> bl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,13 +29,13 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
 
         DatabaseHandler db = new DatabaseHandler(this);
 
-        if(SessionData.location == null && SessionData.radius == -1 || progress == 100000){
+        if (SessionData.location == null && SessionData.radius == -1 || progress == 100000) {
             bl = db.getAllBoards();
-        }else{
+        } else {
             bl = db.searchAllBoardsWithinMetersOfGivenLatitudeLongitude(SessionData.radius, SessionData.location.getLatitude(), SessionData.location.getLongitude());
         }
 
-        ListView lv=(ListView) findViewById(R.id.nearby_board_list);
+        ListView lv = (ListView) findViewById(R.id.nearby_board_list);
         lv.setAdapter(new CustomAdapterNearbyBullietin(this, bl));
 
         //add click listener to the list view of posters when click call CreateNewPoster activity and pass in poster object
@@ -107,10 +108,10 @@ public class Nearby_bulletin_boards extends AppCompatActivity {
         //update the board information
         update_radius.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(SessionData.location == null){
+                if (SessionData.location == null) {
                     Toast.makeText(Nearby_bulletin_boards.this, "Location are not avaliable",
                             Toast.LENGTH_LONG).show();
-                }else {
+                } else {
                     Intent intent = new Intent(Nearby_bulletin_boards.this, Nearby_bulletin_boards.class);
                     SessionData.radius = progress;
                     finish();

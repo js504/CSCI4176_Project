@@ -56,7 +56,7 @@ public class Manage_Posters extends AppCompatActivity {
         submit_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if(boardId != -1) {
+                if (boardId != -1) {
                     Intent intent = new Intent(Manage_Posters.this, CreateNewPoster.class);
 
                     Bundle bundle = new Bundle();
@@ -72,7 +72,7 @@ public class Manage_Posters extends AppCompatActivity {
         boardSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Board board = (Board)parent.getItemAtPosition(position);
+                Board board = (Board) parent.getItemAtPosition(position);
                 boardId = board.getId();
 
                 updateListView();
@@ -87,7 +87,7 @@ public class Manage_Posters extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         createUserBoardList();
@@ -95,7 +95,7 @@ public class Manage_Posters extends AppCompatActivity {
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
 
         soundManager.resetMediaPlayer();
@@ -105,15 +105,14 @@ public class Manage_Posters extends AppCompatActivity {
     /**
      * Creates the board and poster list based on the posters that the user has created and that are associted
      * with those boards.
-     *
      */
-    public void createUserBoardList(){
+    public void createUserBoardList() {
 
         List<Board> allBoards = db.getAllBoards();
         userBoardsAndPosters = new HashMap<Integer, List<Poster>>();
         userBoards = new ArrayList<Board>();
 
-        for(int i = 0; i < allBoards.size(); i++){
+        for (int i = 0; i < allBoards.size(); i++) {
 
             Board board = allBoards.get(i);
 
@@ -121,15 +120,15 @@ public class Manage_Posters extends AppCompatActivity {
 
             List<Poster> tmpUserPosters = null;
 
-            for(int j = 0; j < tmpPosters.size(); j++){
+            for (int j = 0; j < tmpPosters.size(); j++) {
 
-                if(!tmpPosters.isEmpty()){
+                if (!tmpPosters.isEmpty()) {
 
                     Poster tmpPoster = tmpPosters.get(j);
 
-                    if(tmpPoster.getCreatedByUserId() == currentUser.getId()){
+                    if (tmpPoster.getCreatedByUserId() == currentUser.getId()) {
 
-                        if(tmpUserPosters == null) {
+                        if (tmpUserPosters == null) {
 
                             tmpUserPosters = new ArrayList<Poster>();
                         }
@@ -140,13 +139,11 @@ public class Manage_Posters extends AppCompatActivity {
                 }
             }
 
-            if(tmpUserPosters != null){
+            if (tmpUserPosters != null) {
                 userBoardsAndPosters.put(board.getId(), tmpUserPosters);
                 userBoards.add(board);
             }
         }
-
-
 
 
     }
@@ -154,9 +151,8 @@ public class Manage_Posters extends AppCompatActivity {
 
     /**
      * Method updates the board list with boards that have posters associated with the user added to them
-     *
      */
-    public void updateBoardList(){
+    public void updateBoardList() {
 
 
         boardSpinner.setAdapter(new BoardListBaseAdapter(this, userBoards));
@@ -170,14 +166,13 @@ public class Manage_Posters extends AppCompatActivity {
 
     /**
      * Function updates the list view of users posters associated with the selected board
-     *
      */
-    public void updateListView(){
+    public void updateListView() {
 
         createUserBoardList();
         userPosters = userBoardsAndPosters.get(boardId);
 
-        ListView lv=(ListView) findViewById(R.id.listView);
+        ListView lv = (ListView) findViewById(R.id.listView);
         lv.setAdapter(new CustomAdapterPoster(this, userPosters, db));
 
     }
