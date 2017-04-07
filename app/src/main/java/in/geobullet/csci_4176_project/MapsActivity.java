@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -281,6 +282,13 @@ public class MapsActivity extends AppCompatActivity
             // Get the last known location
             if (mLastKnownLocation == null) {
                 mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            }
+            if (mLastKnownLocation == null){
+                // If it is still null, even now.
+                // Concession for emulator
+                mLastKnownLocation = new Location(LocationManager.GPS_PROVIDER);
+                mLastKnownLocation.setLatitude(mDefaultLocationHalifax.latitude);
+                mLastKnownLocation.setLongitude(mDefaultLocationHalifax.longitude);
             }
             try{
                 // Build the geofences around the current location
