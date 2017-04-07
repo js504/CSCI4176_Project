@@ -387,13 +387,12 @@ public class MapsActivity extends AppCompatActivity
 
         LatLng currLocation;
 
-        if (location != null && location.getLatitude() > 0 && location.getLongitude() > 0) {
+        // Ensure that the location isn't null
+        if (location != null && location.getLatitude() != 0 && location.getLongitude() != 0) {
             currLocation = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
         } else {
-            currLocation = new LatLng(44.6366, -63.5917);
+            currLocation = mDefaultLocationHalifax;
         }
-
-
 
         // Adjust the camera, but not too quickly.
         if((cameraAdjustCounter++ % 5) == 0){
